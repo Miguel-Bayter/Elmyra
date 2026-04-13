@@ -32,6 +32,13 @@ export {
   MOOD_THRESHOLDS,
 } from './model/constants';
 
+export type {
+  CompanionStore,
+  StoreNotification,
+  NotificationHandler,
+} from './model/companionStore';
+export { useCompanionStore } from './model/companionStore';
+
 export {
   clampStat,
   clampStats,

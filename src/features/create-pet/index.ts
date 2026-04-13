@@ -1,1 +1,2 @@
-// Public API — add exports here as layer is built
+export type { CreateCompanionResult } from './model/useCreateCompanion';
+export { useCreateCompanion } from './model/useCreateCompanion';

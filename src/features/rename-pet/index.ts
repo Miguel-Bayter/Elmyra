@@ -1,1 +1,2 @@
-// Public API — add exports here as layer is built
+export type { RenameCompanionResult } from './model/useRenameCompanion';
+export { useRenameCompanion } from './model/useRenameCompanion';

@@ -1,1 +1,1 @@
-// Public API — add exports here as layer is built
+export { useComfortPet } from './model/useComfortPet';

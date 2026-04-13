@@ -7,6 +7,14 @@ import { createRoot } from 'react-dom/client';
 import { AppProviders } from './app/providers/AppProviders';
 import { AppRouter } from './app/router/AppRouter';
 
+// DEV ONLY — expose store to window for manual smoke testing
+// Remove before Sprint 3 commit
+if (import.meta.env.DEV) {
+  import('./entities/companion/model/companionStore').then(({ useCompanionStore }) => {
+    (window as Record<string, unknown>)['__store'] = useCompanionStore;
+  });
+}
+
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error('Root element not found — check index.html has <div id="root">');
