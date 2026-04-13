@@ -1,0 +1,19 @@
+{
+  "nudges": {
+    "nourishment": "Tu compañero busca algo de nutrición. ¿Qué tal un pequeño bocado?",
+    "rest": "Sentirse cansado es válido. El descanso es parte de sanar.",
+    "joy": "Un momento de juego puede cambiar tu estado de ánimo. Tu compañero adoraría tu compañía.",
+    "vitality": "Tu compañero necesita algo de cuidado. Tú también mereces cuidarte."
+  },
+  "affirmations": [
+    "Hoy apareciste. Eso importa.",
+    "Los pasos pequeños siguen siendo pasos hacia adelante.",
+    "No tienes que sentirte bien para seguir adelante.",
+    "Tu compañero siempre está aquí cuando lo necesitas.",
+    "Cuidar de algo puede ser una forma gentil de cuidarte a ti mismo.",
+    "Lo estás haciendo mejor de lo que crees.",
+    "El descanso es productivo. Tu compañero lo entiende."
+  ],
+  "returnGreeting": "Bienvenido de vuelta. Tu compañero te extrañó.",
+  "firstMeeting": "¡Hola! Estoy muy contento de que estés aquí."
+}

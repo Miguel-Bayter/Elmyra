@@ -1,0 +1,19 @@
+{
+  "nudges": {
+    "nourishment": "Your companion is looking for some nourishment. How about a small snack?",
+    "rest": "Feeling tired is valid. Rest is part of healing.",
+    "joy": "A moment of play can shift your mood. Your companion would love your company.",
+    "vitality": "Your companion needs some care. You deserve care too."
+  },
+  "affirmations": [
+    "You showed up today. That matters.",
+    "Small steps are still steps forward.",
+    "You don't have to feel okay to keep going.",
+    "Your companion is always here when you need them.",
+    "Taking care of something else can be a gentle way to take care of yourself.",
+    "You are doing better than you think.",
+    "Rest is productive. Your companion understands."
+  ],
+  "returnGreeting": "Welcome back. Your companion missed you.",
+  "firstMeeting": "Hello! I'm so glad you're here."
+}

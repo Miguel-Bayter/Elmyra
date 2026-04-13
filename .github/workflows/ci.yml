@@ -1,0 +1,67 @@
+name: Quality & Security Gate
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # S1: Use lockfile — prevents supply chain substitution attacks
+      - name: Install with lockfile
+        run: npm ci
+
+      # S2: SAST — ESLint with all security plugins
+      - name: Static analysis
+        run: npm run lint
+
+      # S3: TypeScript strict check
+      - name: Type check
+        run: npm run typecheck
+
+      # S4: Unit tests
+      - name: Test
+        run: npm run test:run
+
+      # S5: Dependency vulnerability audit
+      - name: Security audit
+        run: npm audit --audit-level=high
+
+      # S6: Build verification
+      - name: Build
+        run: npm run build
+
+      # S7: Verify no secrets in build output
+      - name: Scan build for exposed secrets
+        run: |
+          if grep -rE "(API_KEY|SECRET|PASSWORD|TOKEN|PRIVATE_KEY|auth_token)" dist/ \
+            --include="*.js" --include="*.html" -l 2>/dev/null; then
+            echo "::error::Potential secrets found in build output"
+            exit 1
+          fi
+          echo "No secrets detected in build output ✓"
+
+  codeql-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          queries: security-and-quality
+      - uses: github/codeql-action/autobuild@v3
+      - uses: github/codeql-action/analyze@v3

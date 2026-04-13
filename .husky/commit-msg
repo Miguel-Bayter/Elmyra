@@ -1,0 +1,11 @@
+# Conventional Commits validation
+# Format: type(scope): description
+# Types: feat, fix, docs, style, refactor, test, chore, build, ci
+commit_msg=$(cat "$1")
+pattern='^(feat|fix|docs|style|refactor|test|chore|build|ci)(\([a-z0-9/-]+\))?: .{1,100}$'
+if ! echo "$commit_msg" | grep -qE "$pattern"; then
+  echo "❌ Commit message does not follow Conventional Commits format."
+  echo "   Expected: type(scope): description"
+  echo "   Example:  feat(entities): add companion domain types"
+  exit 1
+fi

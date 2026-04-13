@@ -1,0 +1,9 @@
+{
+  "nameRequired": "Your companion needs a name",
+  "nameTooLong": "Name must be 24 characters or fewer",
+  "nameInvalidChars": "Name can only contain letters, numbers, spaces, hyphens, and apostrophes",
+  "loadFailed": "Something went wrong loading your companion. Starting fresh.",
+  "saveFailed": "Could not save progress. Please check your browser storage settings.",
+  "generic": "Something went wrong. Please try again.",
+  "storageUnavailable": "Your browser storage is unavailable. Progress cannot be saved."
+}

@@ -1,0 +1,28 @@
+{
+  "companionName": "Nombre del compañero",
+  "stats": {
+    "nourishment": "Nutrición",
+    "joy": "Alegría",
+    "energy": "Energía",
+    "vitality": "Vitalidad"
+  },
+  "stages": {
+    "seedling": "Semilla",
+    "sprout": "Brote",
+    "bloom": "Flor",
+    "flourish": "Plenitud"
+  },
+  "moods": {
+    "radiant": "Radiante",
+    "calm": "Tranquilo",
+    "restless": "Inquieto",
+    "weary": "Cansado",
+    "fragile": "Frágil",
+    "resting": "Descansando"
+  },
+  "ageLabel": "Edad",
+  "stageLevelLabel": "Etapa",
+  "moodLabel": "Estado",
+  "isResting": "Tu compañero está descansando",
+  "isInRestMode": "Tu compañero está tomando un descanso restaurador"
+}

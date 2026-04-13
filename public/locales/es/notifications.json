@@ -1,0 +1,12 @@
+{
+  "companionCreated": "¡Tu compañero {{name}} está aquí!",
+  "companionRenamed": "Tu compañero ahora se llama {{name}}",
+  "nourishSuccess": "{{name}} se siente nutrido",
+  "playSuccess": "{{name}} se divirtió mucho jugando",
+  "restSuccess": "{{name}} está descansando tranquilamente",
+  "comfortSuccess": "{{name}} se siente mejor",
+  "restModeEntered": "{{name}} está tomando un descanso restaurador. Volverá pronto.",
+  "restModeExited": "¡{{name}} está despierto y sintiéndose mejor!",
+  "dataDeleted": "Todos los datos han sido eliminados",
+  "longAbsence": "¡Bienvenido de vuelta! {{name}} ha estado esperándote."
+}

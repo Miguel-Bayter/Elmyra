@@ -1,0 +1,9 @@
+{
+  "nameRequired": "Tu compañero necesita un nombre",
+  "nameTooLong": "El nombre debe tener 24 caracteres o menos",
+  "nameInvalidChars": "El nombre solo puede contener letras, números, espacios, guiones y apóstrofes",
+  "loadFailed": "Algo salió mal al cargar tu compañero. Empezando de nuevo.",
+  "saveFailed": "No se pudo guardar el progreso. Verifica la configuración de almacenamiento de tu navegador.",
+  "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",
+  "storageUnavailable": "El almacenamiento de tu navegador no está disponible. No se puede guardar el progreso."
+}

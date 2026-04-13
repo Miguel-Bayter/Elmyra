@@ -1,0 +1,17 @@
+{
+  "appTitle": "Lumina",
+  "appSubtitle": "Your Emotional Companion",
+  "loading": "Loading...",
+  "settings": "Settings",
+  "back": "Back",
+  "save": "Save",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "close": "Close",
+  "language": "Language",
+  "theme": "Theme",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "about": "About",
+  "help": "Help & Support"
+}

@@ -1,0 +1,12 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+// Sprint 0 stub — full implementation in Sprint 3
+export function RestModePage(): React.JSX.Element {
+  const { t } = useTranslation('pet');
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-warm-white">
+      <p className="text-calm-text">{t('isInRestMode')}</p>
+    </div>
+  );
+}

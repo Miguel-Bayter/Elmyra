@@ -1,0 +1,148 @@
+# ============================================================
+# ELMYRA — .gitignore
+# Stack: Vite + React + TypeScript + Tailwind + Node.js
+# ============================================================
+
+# ─── Dependencies ───────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# ─── Build outputs ──────────────────────────────────────────
+dist/
+dist-ssr/
+build/
+out/
+.vite/
+
+# ─── Environment & secrets ──────────────────────────────────
+# Never commit secrets — use .env.example to document required vars
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ─── Logs ───────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ─── Test & coverage ────────────────────────────────────────
+coverage/
+.nyc_output/
+*.lcov
+vitest-report/
+playwright-report/
+test-results/
+blob-report/
+
+# ─── Cache ──────────────────────────────────────────────────
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+.prettiercache
+.turbo/
+*.tsbuildinfo
+
+# ─── TypeScript ─────────────────────────────────────────────
+# Keep tsconfig files; ignore generated declaration maps if any
+*.d.ts.map
+
+# ─── OS generated ───────────────────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+
+# ─── Editors & IDEs ─────────────────────────────────────────
+# VS Code — keep shared recommended extensions list
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# JetBrains (WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Vim / Neovim
+*.swp
+*.swo
+*.swn
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+Session.vim
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Visual Studio
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.user
+
+# ─── Local config overrides ─────────────────────────────────
+*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ─── Package manager lock files ─────────────────────────────
+# Commit package-lock.json (npm) — ignore others to avoid conflicts
+yarn.lock
+pnpm-lock.yaml
+.pnpm-store/
+
+# ─── Deployment & cloud ─────────────────────────────────────
+.vercel/
+.netlify/
+.firebase/
+.amplify/
+
+# ─── Storybook ──────────────────────────────────────────────
+storybook-static/
+
+# ─── Project-specific exclusions ───────────────────────────
+Docs/
+.claude/
+
+# ─── Misc ───────────────────────────────────────────────────
+*.pid
+*.seed
+*.pid.lock
+.grunt/
+.lock-wscript
+jspm_packages/
+web_modules/

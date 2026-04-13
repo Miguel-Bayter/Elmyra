@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+/*
+ * Lumina — Mental health design tokens
+ * All styling via Tailwind classes. Zero inline styles (R3).
+ * Colors chosen for their calming psychological effect:
+ *   lavender → reduces anxiety
+ *   sage      → grounding, nature-connected
+ *   warmPeach → warmth, approachability
+ */
+@theme {
+  --color-lavender: #c3aee0;
+  --color-lavender-light: #e8dff5;
+  --color-lavender-dark: #9b7fc7;
+  --color-sage: #a8c5a0;
+  --color-sage-light: #d4e8d0;
+  --color-sage-dark: #7aab70;
+  --color-warm-peach: #f2c4a0;
+  --color-warm-peach-light: #fae0cc;
+  --color-soft-mint: #b8e0d2;
+  --color-warm-white: #faf8f5;
+  --color-soft-gray: #8b8b8b;
+  --color-calm-text: #3d3d3d;
+  --color-calm-text-muted: #6b6b6b;
+
+  /* Animation: max 300ms, ease-out. No bounce/spring for anxious states. */
+  --duration-calm: 200ms;
+  --duration-gentle: 300ms;
+  --ease-calm: cubic-bezier(0, 0, 0.2, 1);
+}

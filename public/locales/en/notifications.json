@@ -1,0 +1,12 @@
+{
+  "companionCreated": "Your companion {{name}} is here!",
+  "companionRenamed": "Your companion is now called {{name}}",
+  "nourishSuccess": "{{name}} feels nourished",
+  "playSuccess": "{{name}} had a great time playing",
+  "restSuccess": "{{name}} is resting peacefully",
+  "comfortSuccess": "{{name}} feels better",
+  "restModeEntered": "{{name}} is taking a restorative rest. They'll be back.",
+  "restModeExited": "{{name}} is awake and feeling better!",
+  "dataDeleted": "All data has been deleted",
+  "longAbsence": "Welcome back! {{name}} has been waiting for you."
+}

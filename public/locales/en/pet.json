@@ -1,0 +1,28 @@
+{
+  "companionName": "Companion's name",
+  "stats": {
+    "nourishment": "Nourishment",
+    "joy": "Joy",
+    "energy": "Energy",
+    "vitality": "Vitality"
+  },
+  "stages": {
+    "seedling": "Seedling",
+    "sprout": "Sprout",
+    "bloom": "Bloom",
+    "flourish": "Flourish"
+  },
+  "moods": {
+    "radiant": "Radiant",
+    "calm": "Calm",
+    "restless": "Restless",
+    "weary": "Weary",
+    "fragile": "Fragile",
+    "resting": "Resting"
+  },
+  "ageLabel": "Age",
+  "stageLevelLabel": "Stage",
+  "moodLabel": "Feeling",
+  "isResting": "Your companion is resting",
+  "isInRestMode": "Your companion is taking a restorative break"
+}
