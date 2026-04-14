@@ -22,5 +22,49 @@
   "deleteAllConfirm": "Esto borrará permanentemente tu compañero y todo tu progreso. ¿Estás seguro?",
   "deleteAllConfirmButton": "Sí, borrar todo",
   "deleteAllCancelButton": "Conservar mi compañero",
-  "affirmationLabel": "Un pensamiento para ti"
+  "affirmationLabel": "Un pensamiento para ti",
+  "speciesSelect": {
+    "title": "¿Quién te acompañará?",
+    "subtitle": "Cada compañero sigue un camino único de crecimiento",
+    "continue": "Continuar",
+    "backToSpecies": "← Elegir otro compañero"
+  },
+  "species": {
+    "felis": {
+      "name": "Felis",
+      "tagline": "Curioso y valiente",
+      "description": "Una criatura llena de vida que ama explorar. Se vuelve más fuerte con cada aventura.",
+      "evolution": "Gato → GatoHumano → DinosaurioHumano → Cyborg",
+      "stages": {
+        "seedling": "Cría",
+        "sprout": "Cazador",
+        "bloom": "Feroz",
+        "flourish": "Cúspide"
+      }
+    },
+    "spectra": {
+      "name": "Spectra",
+      "tagline": "Misterioso y sabio",
+      "description": "Un espíritu gentil que busca el asombro. Crece a través de la curiosidad y la reflexión.",
+      "evolution": "Fantasma → Planeta → Astronauta → Digital",
+      "stages": {
+        "seedling": "Destello",
+        "sprout": "Espectro",
+        "bloom": "Viajero",
+        "flourish": "Eterno"
+      }
+    },
+    "dolcis": {
+      "name": "Dolcis",
+      "tagline": "Cálido y cariñoso",
+      "description": "Un alma dulce que trae alegría. Crece a través de la bondad y la conexión.",
+      "evolution": "Helado → Chocolate → Taza → Voz",
+      "stages": {
+        "seedling": "Dulzura",
+        "sprout": "Tierno",
+        "bloom": "Cálido",
+        "flourish": "Vibrante"
+      }
+    }
+  }
 }

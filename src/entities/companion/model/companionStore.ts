@@ -5,7 +5,7 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
-import type { ActionType } from './types';
+import type { ActionType, CompanionSpecies } from './types';
 import type { AppPreferences, CompanionState, WellnessMilestone } from './schemas';
 import { appPreferencesSchema, companionStateSchema, wellnessMilestoneSchema } from './schemas';
 import { companionNameSchema } from './schemas';
@@ -61,7 +61,7 @@ export interface CompanionStore {
   setNotificationHandler: (handler: NotificationHandler) => void;
 
   // ── Lifecycle ────────────────────────────────────────────────────────────
-  initializeCompanion: (name: string) => void;
+  initializeCompanion: (name: string, species: CompanionSpecies) => void;
   loadFromStorage: () => void;
   resetCompanion: () => void;
   deleteAllData: () => void;
@@ -125,12 +125,12 @@ export const useCompanionStore = create<CompanionStore>()(
 
     // ── Lifecycle ──────────────────────────────────────────────────────────
 
-    initializeCompanion: (name) => {
+    initializeCompanion: (name, species) => {
       const sanitized = sanitizeCompanionName(name);
       const parseResult = companionNameSchema.safeParse(sanitized);
       if (!parseResult.success) return; // Validation failure — caller handles error display
 
-      const companion = createFreshCompanion(parseResult.data);
+      const companion = createFreshCompanion(parseResult.data, species);
       persistCompanion(companion);
 
       set({ companion });

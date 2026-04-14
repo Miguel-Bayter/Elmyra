@@ -21,6 +21,7 @@ import {
 const makeState = (overrides: Partial<CompanionState> = {}): CompanionState => ({
   id: '00000000-0000-4000-8000-000000000001',
   name: 'Luna',
+  species: 'felis',
   nourishment: 80,
   joy: 75,
   energy: 85,
@@ -349,29 +350,29 @@ describe('calculateOfflineDecay', () => {
 // ─── createFreshCompanion (integration) ──────────────────────────────────────
 describe('createFreshCompanion', () => {
   it('creates a companion with the given name', () => {
-    const c = createFreshCompanion('Stella');
+    const c = createFreshCompanion('Stella', 'felis');
     expect(c.name).toBe('Stella');
   });
 
   it('starts at age 0 as seedling', () => {
-    const c = createFreshCompanion('Stella');
+    const c = createFreshCompanion('Stella', 'felis');
     expect(c.age).toBe(0);
     expect(c.stage).toBe('seedling');
   });
 
   it('starts with isResting and isInRestMode both false', () => {
-    const c = createFreshCompanion('Stella');
+    const c = createFreshCompanion('Stella', 'felis');
     expect(c.isResting).toBe(false);
     expect(c.isInRestMode).toBe(false);
   });
 
   it('starts in radiant mood (all stats high)', () => {
-    const c = createFreshCompanion('Stella');
+    const c = createFreshCompanion('Stella', 'felis');
     expect(c.mood).toBe('radiant');
   });
 
   it('generates a UUID-format id', () => {
-    const c = createFreshCompanion('Stella');
+    const c = createFreshCompanion('Stella', 'felis');
     expect(c.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
   });
 });

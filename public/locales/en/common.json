@@ -22,5 +22,49 @@
   "deleteAllConfirm": "This will permanently delete your companion and all progress. Are you sure?",
   "deleteAllConfirmButton": "Yes, delete everything",
   "deleteAllCancelButton": "Keep my companion",
-  "affirmationLabel": "A thought for you"
+  "affirmationLabel": "A thought for you",
+  "speciesSelect": {
+    "title": "Who will join you?",
+    "subtitle": "Each companion follows a unique path of growth",
+    "continue": "Continue",
+    "backToSpecies": "← Choose a different companion"
+  },
+  "species": {
+    "felis": {
+      "name": "Felis",
+      "tagline": "Curious and brave",
+      "description": "A spirited creature that loves to explore. Grows bolder with every adventure.",
+      "evolution": "Cat → HumanCat → HumanDinosaur → Cyborg",
+      "stages": {
+        "seedling": "Kit",
+        "sprout": "Hunter",
+        "bloom": "Prowler",
+        "flourish": "Apex"
+      }
+    },
+    "spectra": {
+      "name": "Spectra",
+      "tagline": "Mysterious and wise",
+      "description": "A gentle spirit that seeks wonder. Grows through curiosity and reflection.",
+      "evolution": "Ghost → Planet → Astronaut → Digital",
+      "stages": {
+        "seedling": "Wisp",
+        "sprout": "Specter",
+        "bloom": "Voyager",
+        "flourish": "Eternal"
+      }
+    },
+    "dolcis": {
+      "name": "Dolcis",
+      "tagline": "Warm and caring",
+      "description": "A sweet soul that brings joy. Grows through kindness and connection.",
+      "evolution": "IceCream → Chocolate → Mug → Voice",
+      "stages": {
+        "seedling": "Sweet",
+        "sprout": "Tender",
+        "bloom": "Warm",
+        "flourish": "Vibrant"
+      }
+    }
+  }
 }

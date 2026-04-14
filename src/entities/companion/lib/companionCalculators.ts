@@ -1,7 +1,7 @@
 // Pure domain functions — NO side effects, NO React imports, NO browser APIs.
 // All functions return new objects (immutable). Safe to call in tests without mocks.
 
-import type { ActionType, CompanionMood, CompanionStage } from '../model/types';
+import type { ActionType, CompanionMood, CompanionSpecies, CompanionStage } from '../model/types';
 import type { CompanionState } from '../model/schemas';
 import {
   ACTION_EFFECTS,
@@ -203,14 +203,15 @@ export const getAffirmationIndex = (seed: number, totalAffirmations: number): nu
 // ─── Companion factory ───────────────────────────────────────────────────────
 
 /**
- * Creates a fresh CompanionState from a validated name.
+ * Creates a fresh CompanionState from a validated name and chosen species.
  * Called by useCreatePet feature hook — not directly in UI.
  */
-export const createFreshCompanion = (name: string): CompanionState => {
+export const createFreshCompanion = (name: string, species: CompanionSpecies): CompanionState => {
   const now = new Date().toISOString();
   return {
     id: generateCompanionId(),
     name,
+    species,
     ...INITIAL_COMPANION_STATS,
     age: 0,
     stage: 'seedling',

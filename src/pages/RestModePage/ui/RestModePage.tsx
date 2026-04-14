@@ -35,7 +35,7 @@ export function RestModePage(): React.JSX.Element {
       <div className="flex w-full max-w-sm flex-col items-center gap-6 py-10 text-center">
         {/* Companion sleeping peacefully */}
         <div className="h-40 w-40 opacity-70">
-          <CompanionAvatar stage={companion.stage} mood="resting" />
+          <CompanionAvatar species={companion.species} stage={companion.stage} mood="resting" />
         </div>
 
         {/* Gentle title — no failure language (R7) */}

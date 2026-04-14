@@ -100,7 +100,7 @@ export function WelcomePage(): React.JSX.Element {
         <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-peach-light opacity-15 blur-2xl" />
       </div>
 
-      <div className="animate-enter relative flex w-full max-w-sm flex-col items-center gap-8">
+      <div className="animate-enter relative flex w-full max-w-2xl flex-col items-center gap-8">
         <div className="animate-float h-36 w-36">
           <SeedlingIllustration />
         </div>

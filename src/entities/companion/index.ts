@@ -2,12 +2,19 @@
 export type {
   CompanionStage,
   CompanionMood,
+  CompanionSpecies,
   ActionType,
   CompanionStats,
   CompanionState as CompanionStateInterface,
   WellnessMilestone as WellnessMilestoneInterface,
   AppPreferences as AppPreferencesInterface,
 } from './model/types';
+
+export type { KawaiiCharacter, SpeciesStageConfig, SpeciesConfig } from './model/species';
+export { SPECIES_CONFIG, getSpeciesStageConfig } from './model/species';
+
+export type { CompanionAvatarProps } from './ui/CompanionAvatar';
+export { CompanionAvatar } from './ui/CompanionAvatar';
 
 export {
   companionNameSchema,

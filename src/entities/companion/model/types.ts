@@ -5,6 +5,9 @@
 
 export type CompanionStage = 'seedling' | 'sprout' | 'bloom' | 'flourish';
 
+// The companion's species — determines its visual evolution line
+export type CompanionSpecies = 'felis' | 'spectra' | 'dolcis';
+
 // Mood names chosen for wellness tone — no negative clinical terms (R7)
 export type CompanionMood =
   | 'radiant' //   All stats high (80+)
@@ -26,6 +29,7 @@ export interface CompanionStats {
 export interface CompanionState extends CompanionStats {
   readonly id: string; //          UUIDv4
   readonly name: string; //        Validated by companionNameSchema (1-24 chars)
+  readonly species: CompanionSpecies; // Visual evolution line chosen at creation
   readonly age: number; //         In game-ticks (not real time)
   readonly stage: CompanionStage;
   readonly mood: CompanionMood;
