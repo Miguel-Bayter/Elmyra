@@ -55,10 +55,10 @@ describe('deleteAllAppData', () => {
     expect(() => deleteAllAppData()).not.toThrow();
   });
 
-  it('removes the lumina_language key (i18next language preference)', () => {
-    localStorage.setItem('lumina_language', 'es');
+  it('removes the elmyra_language key (i18next language preference)', () => {
+    localStorage.setItem('elmyra_language', 'es');
     deleteAllAppData();
-    expect(localStorage.getItem('lumina_language')).toBeNull();
+    expect(localStorage.getItem('elmyra_language')).toBeNull();
   });
 
   it('does not remove unrelated keys', () => {

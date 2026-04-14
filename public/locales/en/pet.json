@@ -21,8 +21,18 @@
     "resting": "Resting"
   },
   "ageLabel": "Age",
+  "ageTicks": "{{count}} tick",
+  "ageTicks_other": "{{count}} ticks",
   "stageLevelLabel": "Stage",
   "moodLabel": "Feeling",
   "isResting": "Your companion is resting",
-  "isInRestMode": "Your companion is taking a restorative break"
+  "isInRestMode": "Your companion is taking a restorative break",
+  "restMode": {
+    "title": "Your companion is resting...",
+    "body": "They need a little time to recover. Come back when you're ready — they'll be here.",
+    "wakeUp": "Gently wake them up",
+    "milestoneReached": "Your companion reached the {{stage}} stage",
+    "longestStreak": "Longest journey: {{count}} tick",
+    "longestStreak_other": "Longest journey: {{count}} ticks"
+  }
 }

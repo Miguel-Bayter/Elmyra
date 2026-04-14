@@ -300,7 +300,7 @@ describe('deleteAllData', () => {
     localStorage.clear();
   });
 
-  it('removes all lumina_* keys from localStorage', () => {
+  it('removes all elmyra_* keys from localStorage', () => {
     useCompanionStore.getState().initializeCompanion('Bye');
     useCompanionStore.getState().acceptDisclaimer();
 

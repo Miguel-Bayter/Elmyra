@@ -72,6 +72,7 @@ export interface CompanionStore {
   // ── User actions ─────────────────────────────────────────────────────────
   performAction: (action: ActionType) => void;
   renameCompanion: (newName: string) => void;
+  wakeFromRestMode: () => void; // Gently revives companion from rest mode (R7)
 
   // ── Preferences ──────────────────────────────────────────────────────────
   setTheme: (theme: 'light' | 'dark') => void;
@@ -235,6 +236,23 @@ export const useCompanionStore = create<CompanionStore>()(
       persistCompanion(next);
       set({ companion: next });
       get()._notificationHandler?.({ type: 'actionSuccess', action, name: next.name });
+    },
+
+    wakeFromRestMode: () => {
+      const { companion } = get();
+      if (!companion || !companion.isInRestMode) return;
+
+      const now = new Date().toISOString();
+      const revived: CompanionState = {
+        ...companion,
+        vitality: 30, // Gentle revival — not full health (R7: no punishment, no instant reward)
+        isInRestMode: false,
+        mood: 'calm',
+        lastUpdatedAt: now,
+      };
+      persistCompanion(revived);
+      set({ companion: revived });
+      get()._notificationHandler?.({ type: 'restModeExited', name: revived.name });
     },
 
     renameCompanion: (newName) => {

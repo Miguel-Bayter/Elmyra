@@ -1,5 +1,5 @@
 {
-  "appTitle": "Lumina",
+  "appTitle": "Elmyra",
   "appSubtitle": "Tu Compañero Emocional",
   "loading": "Cargando...",
   "settings": "Ajustes",
@@ -13,5 +13,14 @@
   "themeLight": "Claro",
   "themeDark": "Oscuro",
   "about": "Acerca de",
-  "help": "Ayuda y Soporte"
+  "help": "Ayuda y Soporte",
+  "crisisHelp": "Obtener apoyo",
+  "companionNameLabel": "Dale un nombre a tu compañero",
+  "companionNamePlaceholder": "ej. Luna, Sol, Mochi...",
+  "createCompanion": "Conocer a mi compañero",
+  "deleteAllData": "Borrar todos mis datos",
+  "deleteAllConfirm": "Esto borrará permanentemente tu compañero y todo tu progreso. ¿Estás seguro?",
+  "deleteAllConfirmButton": "Sí, borrar todo",
+  "deleteAllCancelButton": "Conservar mi compañero",
+  "affirmationLabel": "Un pensamiento para ti"
 }

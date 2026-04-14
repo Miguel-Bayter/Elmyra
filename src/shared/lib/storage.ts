@@ -68,12 +68,12 @@ export const removeFromStorage = (key: string): void => {
 // ─── Delete all app data ──────────────────────────────────────────────────────
 
 /**
- * Removes ALL Lumina data from localStorage.
+ * Removes ALL Elmyra data from localStorage.
  * GDPR-inspired right-to-erasure implementation.
  * Called from the delete-all-data feature.
  */
 export const deleteAllAppData = (): void => {
   Object.values(STORAGE_KEYS).forEach((key) => removeFromStorage(key));
   // Also remove the language preference stored by i18next-browser-languagedetector
-  removeFromStorage('lumina_language');
+  removeFromStorage('elmyra_language');
 };

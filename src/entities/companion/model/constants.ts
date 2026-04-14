@@ -1,12 +1,12 @@
 import type { ActionType, CompanionStage, CompanionStats } from './types';
 
 // ─── Storage keys ─────────────────────────────────────────────────────────────
-// All prefixed 'lumina_' — enables bulk deletion for right-to-erasure (R6)
+// All prefixed 'elmyra_' — enables bulk deletion for right-to-erasure (R6)
 export const STORAGE_KEYS = {
-  COMPANION: 'lumina_companion',
-  MILESTONE: 'lumina_milestone',
-  PREFERENCES: 'lumina_preferences',
-  DISCLAIMER_V: 'lumina_disclaimer_v1',
+  COMPANION: 'elmyra_companion',
+  MILESTONE: 'elmyra_milestone',
+  PREFERENCES: 'elmyra_preferences',
+  DISCLAIMER_V: 'elmyra_disclaimer_v1',
 } as const;
 
 // ─── Game loop timing ─────────────────────────────────────────────────────────

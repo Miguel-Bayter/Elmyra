@@ -21,8 +21,18 @@
     "resting": "Descansando"
   },
   "ageLabel": "Edad",
+  "ageTicks": "{{count}} momento",
+  "ageTicks_other": "{{count}} momentos",
   "stageLevelLabel": "Etapa",
   "moodLabel": "Estado",
   "isResting": "Tu compañero está descansando",
-  "isInRestMode": "Tu compañero está tomando un descanso restaurador"
+  "isInRestMode": "Tu compañero está tomando un descanso restaurador",
+  "restMode": {
+    "title": "Tu compañero está descansando...",
+    "body": "Necesita un poco de tiempo para recuperarse. Vuelve cuando estés listo — aquí estará.",
+    "wakeUp": "Despertarlo suavemente",
+    "milestoneReached": "Tu compañero alcanzó la etapa {{stage}}",
+    "longestStreak": "Viaje más largo: {{count}} momento",
+    "longestStreak_other": "Viaje más largo: {{count}} momentos"
+  }
 }

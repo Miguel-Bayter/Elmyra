@@ -1,1 +1,2 @@
-// Public API — add exports here as layer is built
+export { PetDisplay } from './ui/PetDisplay';
+export { CompanionAvatar } from './ui/CompanionAvatar';

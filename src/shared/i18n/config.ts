@@ -1,9 +1,30 @@
+// i18n initialized BEFORE any React component renders (imported in main.tsx first — R2)
+// Translations are bundled as static imports — no HTTP backend needed.
+// This ensures translations are available synchronously on first render.
+
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// i18n initialized BEFORE any React component renders (imported in main.tsx first)
-i18n
+// ── EN ────────────────────────────────────────────────────────────────────────
+import enCommon from '../../../public/locales/en/common.json';
+import enPet from '../../../public/locales/en/pet.json';
+import enActions from '../../../public/locales/en/actions.json';
+import enWellness from '../../../public/locales/en/wellness.json';
+import enErrors from '../../../public/locales/en/errors.json';
+import enNotifications from '../../../public/locales/en/notifications.json';
+import enLegal from '../../../public/locales/en/legal.json';
+
+// ── ES ────────────────────────────────────────────────────────────────────────
+import esCommon from '../../../public/locales/es/common.json';
+import esPet from '../../../public/locales/es/pet.json';
+import esActions from '../../../public/locales/es/actions.json';
+import esWellness from '../../../public/locales/es/wellness.json';
+import esErrors from '../../../public/locales/es/errors.json';
+import esNotifications from '../../../public/locales/es/notifications.json';
+import esLegal from '../../../public/locales/es/legal.json';
+
+void i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -11,17 +32,35 @@ i18n
     supportedLngs: ['en', 'es'],
     ns: ['common', 'pet', 'actions', 'wellness', 'errors', 'notifications', 'legal'],
     defaultNS: 'common',
-    debug: import.meta.env.DEV,
+    debug: false,
     interpolation: {
       escapeValue: false, // React JSX auto-escapes — no double-escaping needed
     },
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
-      lookupLocalStorage: 'lumina_language',
+      lookupLocalStorage: 'elmyra_language',
     },
-    backend: {
-      loadPath: '/locales/{{lng}}/{{ns}}.json',
+    // Bundled resources — no async HTTP fetch, available on first render
+    resources: {
+      en: {
+        common: enCommon,
+        pet: enPet,
+        actions: enActions,
+        wellness: enWellness,
+        errors: enErrors,
+        notifications: enNotifications,
+        legal: enLegal,
+      },
+      es: {
+        common: esCommon,
+        pet: esPet,
+        actions: esActions,
+        wellness: esWellness,
+        errors: esErrors,
+        notifications: esNotifications,
+        legal: esLegal,
+      },
     },
   });
 

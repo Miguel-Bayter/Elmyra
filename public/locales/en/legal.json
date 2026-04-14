@@ -1,13 +1,13 @@
 {
   "disclaimer": {
-    "title": "Welcome to Lumina",
-    "body": "Lumina is a creative wellness companion, not a medical device. It does not replace professional therapy or crisis intervention.",
+    "title": "Welcome to Elmyra",
+    "body": "Elmyra is a creative wellness companion, not a medical device. It does not replace professional therapy or crisis intervention.",
     "crisisNote": "If you are in crisis, please reach out to a mental health professional or crisis line.",
     "accept": "I understand — meet my companion"
   },
   "privacy": {
     "title": "Your Privacy",
-    "body": "Lumina stores only your companion's name and progress on your device. No data is ever sent to any server. No accounts. No analytics. No ads.",
+    "body": "Elmyra stores only your companion's name and progress on your device. No data is ever sent to any server. No accounts. No analytics. No ads.",
     "deleteAll": "Delete all my data",
     "deleteConfirm": "This will permanently delete your companion and all progress. Are you sure?",
     "deleteConfirmButton": "Yes, delete everything",

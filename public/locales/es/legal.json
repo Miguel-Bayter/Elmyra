@@ -1,13 +1,13 @@
 {
   "disclaimer": {
-    "title": "Bienvenido a Lumina",
-    "body": "Lumina es un compañero de bienestar creativo, no un dispositivo médico. No reemplaza la terapia profesional ni la intervención en crisis.",
+    "title": "Bienvenido a Elmyra",
+    "body": "Elmyra es un compañero de bienestar creativo, no un dispositivo médico. No reemplaza la terapia profesional ni la intervención en crisis.",
     "crisisNote": "Si estás en crisis, comunícate con un profesional de salud mental o una línea de crisis.",
     "accept": "Entendido — conocer a mi compañero"
   },
   "privacy": {
     "title": "Tu Privacidad",
-    "body": "Lumina solo almacena el nombre y progreso de tu compañero en tu dispositivo. Ningún dato se envía a ningún servidor. Sin cuentas. Sin análisis. Sin anuncios.",
+    "body": "Elmyra solo almacena el nombre y progreso de tu compañero en tu dispositivo. Ningún dato se envía a ningún servidor. Sin cuentas. Sin análisis. Sin anuncios.",
     "deleteAll": "Eliminar todos mis datos",
     "deleteConfirm": "Esto eliminará permanentemente tu compañero y todo el progreso. ¿Estás seguro?",
     "deleteConfirmButton": "Sí, eliminar todo",

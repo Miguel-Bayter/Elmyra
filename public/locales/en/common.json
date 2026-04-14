@@ -1,5 +1,5 @@
 {
-  "appTitle": "Lumina",
+  "appTitle": "Elmyra",
   "appSubtitle": "Your Emotional Companion",
   "loading": "Loading...",
   "settings": "Settings",
@@ -13,5 +13,14 @@
   "themeLight": "Light",
   "themeDark": "Dark",
   "about": "About",
-  "help": "Help & Support"
+  "help": "Help & Support",
+  "crisisHelp": "Get support",
+  "companionNameLabel": "Give your companion a name",
+  "companionNamePlaceholder": "e.g. Luna, Sol, Mochi...",
+  "createCompanion": "Meet my companion",
+  "deleteAllData": "Delete all my data",
+  "deleteAllConfirm": "This will permanently delete your companion and all progress. Are you sure?",
+  "deleteAllConfirmButton": "Yes, delete everything",
+  "deleteAllCancelButton": "Keep my companion",
+  "affirmationLabel": "A thought for you"
 }

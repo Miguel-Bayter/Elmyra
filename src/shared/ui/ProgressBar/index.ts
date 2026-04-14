@@ -1,1 +1,1 @@
-// Public API — add exports here as layer is built
+export { ProgressBar, getStatColorClass } from './ui/ProgressBar';
