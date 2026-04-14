@@ -8,5 +8,6 @@
   "restModeEntered": "{{name}} está tomando un descanso restaurador. Volverá pronto.",
   "restModeExited": "¡{{name}} está despierto y sintiéndose mejor!",
   "dataDeleted": "Todos los datos han sido eliminados",
-  "longAbsence": "¡Bienvenido de vuelta! {{name}} ha estado esperándote."
+  "longAbsence": "¡Bienvenido de vuelta! {{name}} ha estado esperándote.",
+  "stageEvolved": "¡{{name}} alcanzó {{stage}}! ✨"
 }

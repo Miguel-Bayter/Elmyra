@@ -32,38 +32,46 @@
   "species": {
     "felis": {
       "name": "Felis",
-      "tagline": "Curious and brave",
-      "description": "A spirited creature that loves to explore. Grows bolder with every adventure.",
-      "evolution": "Cat → HumanCat → HumanDinosaur → Cyborg",
+      "tagline": "Bold and adventurous",
+      "description": "A fierce little spirit that never stops exploring. Grows from a curious kit into a legendary digital warrior.",
       "stages": {
         "seedling": "Kit",
-        "sprout": "Hunter",
-        "bloom": "Prowler",
-        "flourish": "Apex"
+        "sprout": "Scout",
+        "bloom": "Rebel",
+        "flourish": "Icon"
       }
     },
     "spectra": {
       "name": "Spectra",
-      "tagline": "Mysterious and wise",
-      "description": "A gentle spirit that seeks wonder. Grows through curiosity and reflection.",
-      "evolution": "Ghost → Planet → Astronaut → Digital",
+      "tagline": "Mysterious and infinite",
+      "description": "A ghost of starlight that wanders the cosmos. Grows from an ethereal wisp into an infinite digital universe.",
       "stages": {
         "seedling": "Wisp",
-        "sprout": "Specter",
-        "bloom": "Voyager",
-        "flourish": "Eternal"
+        "sprout": "Drifter",
+        "bloom": "Cosmos",
+        "flourish": "Infinite"
       }
     },
     "dolcis": {
       "name": "Dolcis",
-      "tagline": "Warm and caring",
-      "description": "A sweet soul that brings joy. Grows through kindness and connection.",
-      "evolution": "IceCream → Chocolate → Mug → Voice",
+      "tagline": "Warm and expressive",
+      "description": "A sweet soul that discovers its voice through care and warmth. Grows from a gentle treat into a voice of comfort.",
       "stages": {
         "seedling": "Sweet",
         "sprout": "Tender",
         "bloom": "Warm",
-        "flourish": "Vibrant"
+        "flourish": "Voice"
+      }
+    },
+    "lumis": {
+      "name": "Lumis",
+      "tagline": "Patient and reflective",
+      "description": "A blank page ready to be filled with experience. Grows from a humble note into a timeless relic of wisdom.",
+      "stages": {
+        "seedling": "Note",
+        "sprout": "Codex",
+        "bloom": "Atlas",
+        "flourish": "Relic"
       }
     }
   }

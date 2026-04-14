@@ -17,7 +17,11 @@ export type KawaiiCharacter =
   | 'IceCream'
   | 'Chocolate'
   | 'Mug'
-  | 'SpeechBubble';
+  | 'SpeechBubble'
+  | 'File'
+  | 'Folder'
+  | 'Backpack'
+  | 'CreditCard';
 
 export interface SpeciesStageConfig {
   readonly character: KawaiiCharacter;
@@ -29,38 +33,51 @@ export interface SpeciesConfig {
 }
 
 // ─── Felis ────────────────────────────────────────────────────────────────────
-// Adventurous creature. Nature → technology arc.
-// Palette: lavender — brand identity color, curious and bold.
+// The Bold Adventurer — a curious creature that grows into a digital legend.
+// Arc: wild nature → fused technology. Palette: soft petal → rich violet.
 const felis: SpeciesConfig = {
   stages: {
-    seedling: { character: 'Cat', color: '#b8a3d8' },
-    sprout: { character: 'HumanCat', color: '#c8b8e8' },
-    bloom: { character: 'HumanDinosaur', color: '#9b85cc' },
-    flourish: { character: 'Cyborg', color: '#7a60b8' },
+    seedling: { character: 'Cat', color: '#d4b8f0' }, // soft petal lavender
+    sprout: { character: 'HumanCat', color: '#b090d8' }, // confident lavender
+    bloom: { character: 'HumanDinosaur', color: '#8858b8' }, // bold deep purple
+    flourish: { character: 'Cyborg', color: '#6030a0' }, // legendary violet
   },
 };
 
 // ─── Spectra ──────────────────────────────────────────────────────────────────
-// Cosmic spirit. Spirit → cosmos → knowledge arc.
-// Palette: mint — calm, infinite, serene.
+// The Cosmic Wanderer — a ghost of starlight that expands into a digital cosmos.
+// Arc: ethereal spirit → explorer → world → infinite. Palette: ice → deep space.
 const spectra: SpeciesConfig = {
   stages: {
-    seedling: { character: 'Ghost', color: '#a8d8c8' },
-    sprout: { character: 'Planet', color: '#88c8b4' },
-    bloom: { character: 'Astronaut', color: '#68b898' },
-    flourish: { character: 'Browser', color: '#4ea884' },
+    seedling: { character: 'Ghost', color: '#c8e8f8' }, // pale ethereal ice
+    sprout: { character: 'Astronaut', color: '#88b4e0' }, // sky blue explorer
+    bloom: { character: 'Planet', color: '#4878c0' }, // vast cosmic blue
+    flourish: { character: 'Browser', color: '#1848a0' }, // infinite deep space
   },
 };
 
 // ─── Dolcis ───────────────────────────────────────────────────────────────────
-// Warm comfort. Sweetness → nourishment → expression arc.
-// Palette: peach — warm, cozy, welcoming.
+// The Warm Soul — a sweet treat that discovers its voice through care and warmth.
+// Arc: sweetness → comfort → nourishment → expression. Palette: vanilla → mahogany.
 const dolcis: SpeciesConfig = {
   stages: {
-    seedling: { character: 'IceCream', color: '#f5c8a0' },
-    sprout: { character: 'Chocolate', color: '#e8b080' },
-    bloom: { character: 'Mug', color: '#d89868' },
-    flourish: { character: 'SpeechBubble', color: '#c88050' },
+    seedling: { character: 'IceCream', color: '#ffe4b8' }, // vanilla cream
+    sprout: { character: 'Chocolate', color: '#f0c080' }, // warm caramel
+    bloom: { character: 'Mug', color: '#d89050' }, // coffee warmth
+    flourish: { character: 'SpeechBubble', color: '#b86830' }, // mahogany voice
+  },
+};
+
+// ─── Lumis ────────────────────────────────────────────────────────────────────
+// The Story Keeper — a blank page that fills with experience and becomes a relic.
+// Arc: blank note → growing archive → ready to explore → timeless artifact.
+// Palette: fresh parchment → weathered gold → ancient bronze.
+const lumis: SpeciesConfig = {
+  stages: {
+    seedling: { character: 'File', color: '#f8e8a8' }, // fresh parchment
+    sprout: { character: 'Folder', color: '#e8c840' }, // golden pages
+    bloom: { character: 'Backpack', color: '#c89820' }, // weathered amber
+    flourish: { character: 'CreditCard', color: '#a06808' }, // rare bronze
   },
 };
 
@@ -69,6 +86,7 @@ export const SPECIES_CONFIG: Record<CompanionSpecies, SpeciesConfig> = {
   felis,
   spectra,
   dolcis,
+  lumis,
 };
 
 /** Returns the kawaii character and color for a given species + stage. */

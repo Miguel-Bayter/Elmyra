@@ -1,4 +1,87 @@
 @import 'tailwindcss';
+@plugin "daisyui";
+
+/* ── DaisyUI theme: Elmyra light ─────────────────────────────────────────────
+   R7: error/warning use warm amber/peach — never harsh red.
+   ─────────────────────────────────────────────────────────────────────────── */
+@plugin "daisyui/theme" {
+  name: 'light';
+  default: true;
+  color-scheme: light;
+
+  --color-base-100: #faf7f2;
+  --color-base-200: #f4efe6;
+  --color-base-300: #ede6d8;
+  --color-base-content: #2d2520;
+
+  --color-primary: #b8a3d8;
+  --color-primary-content: #faf7f2;
+  --color-secondary: #93b98b;
+  --color-secondary-content: #faf7f2;
+  --color-accent: #a8d8c8;
+  --color-accent-content: #2d2520;
+  --color-neutral: #2d2520;
+  --color-neutral-content: #faf7f2;
+
+  --color-info: #e8dff5;
+  --color-info-content: #2d2520;
+  --color-success: #93b98b;
+  --color-success-content: #faf7f2;
+  --color-warning: #e8b090;
+  --color-warning-content: #2d2520;
+  --color-error: #d4905a;
+  --color-error-content: #faf7f2;
+
+  --radius-selector: 9999px;
+  --radius-field: 1rem;
+  --radius-box: 1.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+/* ── DaisyUI theme: Elmyra dark ──────────────────────────────────────────────
+   Deep warm tones — cozy, not cold. R7: success/warning/error stay warm.
+   ─────────────────────────────────────────────────────────────────────────── */
+@plugin "daisyui/theme" {
+  name: 'dark';
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: #1a1614;
+  --color-base-200: #211e1c;
+  --color-base-300: #2a2522;
+  --color-base-content: #e8e0d8;
+
+  --color-primary: #c8b8e8;
+  --color-primary-content: #1a1614;
+  --color-secondary: #a8c8a0;
+  --color-secondary-content: #1a1614;
+  --color-accent: #b8e8d8;
+  --color-accent-content: #1a1614;
+  --color-neutral: #e8e0d8;
+  --color-neutral-content: #1a1614;
+
+  --color-info: #3a2e4a;
+  --color-info-content: #e8dff5;
+  --color-success: #6a9460;
+  --color-success-content: #edf5ea;
+  --color-warning: #c08070;
+  --color-warning-content: #fbede4;
+  --color-error: #a47040;
+  --color-error-content: #fbf0e4;
+
+  --radius-selector: 9999px;
+  --radius-field: 1rem;
+  --radius-box: 1.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
 
 /*
  * Elmyra — Design tokens
@@ -12,17 +95,14 @@
  */
 @theme {
   /* ── Surfaces ─────────────────────────────────────────────── */
-  --color-parchment: #faf7f2; /* base canvas */
-  --color-parchment-warm: #f4efe6; /* slightly warmer surface */
-  --color-parchment-deep: #ede6d8; /* elevated card surface */
-
-  /* Legacy aliases kept for compatibility */
-  --color-warm-white: #faf7f2;
+  --color-parchment: #faf7f2;
+  --color-parchment-warm: #f4efe6;
+  --color-parchment-deep: #ede6d8;
 
   /* ── Brand ────────────────────────────────────────────────── */
   --color-lavender: #b8a3d8;
   --color-lavender-light: #e8dff5;
-  --color-lavender-mist: #f2eefa; /* ambient tint */
+  --color-lavender-mist: #f2eefa;
   --color-lavender-dark: #8b6fba;
 
   /* ── Growth ───────────────────────────────────────────────── */
@@ -41,23 +121,58 @@
   --color-mint-mist: #e4f5ef;
 
   /* ── Text ─────────────────────────────────────────────────── */
-  --color-ink: #2d2520; /* primary — deep warm brown, not harsh black */
-  --color-ink-secondary: #5a4e47; /* secondary text */
-  --color-ink-muted: #8a7e78; /* tertiary / metadata */
-  --color-ink-faint: #b8aea8; /* placeholder / disabled */
-
-  /* Legacy aliases */
-  --color-calm-text: #2d2520;
-  --color-calm-text-muted: #8a7e78;
-  --color-soft-gray: #c8bfb8;
+  --color-ink: #2d2520;
+  --color-ink-secondary: #5a4e47;
+  --color-ink-muted: #8a7e78;
+  --color-ink-faint: #b8aea8;
 
   /* ── Borders ──────────────────────────────────────────────── */
   --color-border-soft: rgba(45, 37, 32, 0.08);
   --color-border-medium: rgba(45, 37, 32, 0.14);
-  --color-border-emphasis: rgba(184, 163, 216, 0.5); /* lavender border */
+  --color-border-emphasis: rgba(184, 163, 216, 0.5);
+
+  /* ── Golden / Lumis ──────────────────────────────────────── */
+  --color-golden: #c89820;
+  --color-golden-light: #f0d870;
+  --color-golden-mist: #fdf8d8;
+  --color-golden-dark: #9a7210;
 
   /* ── Semantic ─────────────────────────────────────────────── */
-  --color-amber-400: #d4905a; /* warm amber — never red (R7) */
+  --color-amber-400: #d4905a;
+
+  /* Legacy aliases */
+  --color-warm-white: #faf7f2;
+  --color-calm-text: #2d2520;
+  --color-calm-text-muted: #8a7e78;
+  --color-soft-gray: #c8bfb8;
+}
+
+/* ── Dark mode overrides for custom @theme tokens ────────────────────────────
+   DaisyUI controls --color-base-* and semantic vars via its theme plugin.
+   These overrides adapt the Elmyra-specific tokens so custom classes
+   like bg-parchment, text-ink, border-card etc. also respond to dark mode.
+   ─────────────────────────────────────────────────────────────────────────── */
+[data-theme='dark'] {
+  --color-parchment: #1a1614;
+  --color-parchment-warm: #211e1c;
+  --color-parchment-deep: #2a2522;
+
+  --color-lavender-mist: #2a2438;
+  --color-sage-mist: #1e2a1e;
+  --color-peach-mist: #2a1e1a;
+  --color-mint-mist: #1a2a26;
+  --color-lavender-light: #3a2e4a;
+
+  --color-ink: #e8e0d8;
+  --color-ink-secondary: #c8bfb8;
+  --color-ink-muted: #a09890;
+  --color-ink-faint: #706860;
+
+  --color-border-soft: rgba(232, 224, 216, 0.08);
+  --color-border-medium: rgba(232, 224, 216, 0.14);
+  --color-border-emphasis: rgba(200, 184, 232, 0.3);
+
+  --color-amber-400: #c88040;
 }
 
 /* ── Base ────────────────────────────────────────────────────── */
@@ -73,14 +188,14 @@ html {
 }
 
 body {
-  background-color: var(--color-parchment);
-  color: var(--color-ink);
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
   font-family:
     'Inter',
     system-ui,
     -apple-system,
     sans-serif;
-  font-feature-settings: 'cv11', 'ss01'; /* Inter contextual alternates */
+  font-feature-settings: 'cv11', 'ss01';
 }
 
 /* ── Companion idle float — 4s, sinusoidal, no bounce (R7 — calm) ── */
@@ -150,7 +265,7 @@ body {
     );
   }
 
-  /* Frosted header */
+  /* Frosted header — light default; dark override below */
   .bg-header-frosted {
     background: rgba(250, 247, 242, 0.88);
     backdrop-filter: blur(12px);
@@ -159,16 +274,20 @@ body {
 
   /* Soft card border */
   .border-card {
-    border: 1px solid rgba(45, 37, 32, 0.08);
+    border: 1px solid var(--color-border-soft);
   }
 
   /* Lavender card border */
   .border-lavender-card {
-    border: 1px solid rgba(184, 163, 216, 0.28);
+    border: 1px solid var(--color-border-emphasis);
   }
 
   /* Header bottom separator */
   .border-b-soft {
-    border-bottom: 1px solid rgba(45, 37, 32, 0.07);
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  [data-theme='dark'] .bg-header-frosted {
+    background: rgba(26, 22, 20, 0.88);
   }
 }

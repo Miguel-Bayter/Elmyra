@@ -23,6 +23,20 @@
   "ageLabel": "Edad",
   "ageTicks": "{{count}} momento",
   "ageTicks_other": "{{count}} momentos",
+  "ageRealtime": {
+    "days": "{{days}}d {{hours}}h",
+    "hours": "{{hours}}h {{minutes}}m",
+    "minutes": "{{minutes}} min",
+    "lessThanMinute": "recién empezando",
+    "together": "juntos"
+  },
+  "ageSupport": [
+    "Cada momento que apareces importa",
+    "Creciendo juntos, día a día",
+    "Lo estás haciendo mejor de lo que crees",
+    "Tu compañero siempre está aquí para ti",
+    "Los pequeños actos de cuidado se acumulan en algo hermoso"
+  ],
   "stageLevelLabel": "Etapa",
   "moodLabel": "Estado",
   "isResting": "Tu compañero está descansando",

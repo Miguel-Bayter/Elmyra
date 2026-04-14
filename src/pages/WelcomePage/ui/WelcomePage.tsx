@@ -91,8 +91,11 @@ export function WelcomePage(): React.JSX.Element {
     }
   }, [loaded, companion, disclaimerAccepted, navigate]);
 
+  // When the form is active, collapse branding to a compact header strip
+  const showForm = disclaimerAccepted;
+
   return (
-    <div className="bg-welcome-gradient relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-12">
+    <div className="bg-welcome-gradient relative flex min-h-screen flex-col items-center overflow-hidden px-5 py-6">
       {/* Decorative blobs */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-lavender opacity-10 blur-3xl" />
@@ -100,17 +103,35 @@ export function WelcomePage(): React.JSX.Element {
         <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-peach-light opacity-15 blur-2xl" />
       </div>
 
-      <div className="animate-enter relative flex w-full max-w-2xl flex-col items-center gap-8">
-        <div className="animate-float h-36 w-36">
-          <SeedlingIllustration />
-        </div>
+      <div className="animate-enter relative flex w-full max-w-lg flex-col items-center gap-5">
+        {showForm ? (
+          /* ── Compact header when form is active ── */
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 shrink-0">
+              <SeedlingIllustration />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold tracking-tight text-ink leading-tight">
+                {t('appTitle')}
+              </h1>
+              <p className="text-xs text-ink-muted leading-tight">{t('appSubtitle')}</p>
+            </div>
+          </div>
+        ) : (
+          /* ── Full hero branding when no form ── */
+          <>
+            <div className="animate-float h-28 w-28">
+              <SeedlingIllustration />
+            </div>
+            <div className="text-center">
+              <h1 className="text-3xl font-bold tracking-tight text-ink">{t('appTitle')}</h1>
+              <p className="mt-1.5 text-base text-ink-muted">{t('appSubtitle')}</p>
+            </div>
+          </>
+        )}
 
-        <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-ink">{t('appTitle')}</h1>
-          <p className="mt-1.5 text-base text-ink-muted">{t('appSubtitle')}</p>
-        </div>
-
-        {disclaimerAccepted && (
+        {/* ── Species selection form ── */}
+        {showForm && (
           <div className="w-full animate-enter">
             <CreatePetForm />
           </div>

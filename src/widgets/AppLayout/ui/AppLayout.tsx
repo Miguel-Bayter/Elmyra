@@ -14,18 +14,20 @@ export function AppLayout({ children }: AppLayoutProps): React.JSX.Element {
   return (
     <div className="bg-game-gradient flex min-h-screen flex-col">
       {/* Header — quiet, always accessible */}
-      <header className="bg-header-frosted border-b-soft sticky top-0 z-30 flex items-center justify-between px-5 py-3">
+      <header className="navbar bg-header-frosted border-b-soft sticky top-0 z-30 px-3 py-0 min-h-[52px]">
         {/* Wordmark — small, not competing with companion */}
-        <Link to="/" className="group flex items-center gap-2 focus-visible:outline-none">
-          {/* Small lavender dot — brand signature */}
-          <span
-            className="h-2 w-2 rounded-full bg-lavender transition-transform group-hover:scale-125"
-            aria-hidden="true"
-          />
-          <span className="text-sm font-semibold tracking-tight text-ink">{t('appTitle')}</span>
-        </Link>
+        <div className="navbar-start">
+          <Link to="/" className="group btn btn-ghost btn-sm gap-2 px-2 focus-visible:outline-none">
+            {/* Small lavender dot — brand signature */}
+            <span
+              className="h-2 w-2 rounded-full bg-lavender transition-transform group-hover:scale-125"
+              aria-hidden="true"
+            />
+            <span className="text-sm font-semibold tracking-tight text-ink">{t('appTitle')}</span>
+          </Link>
+        </div>
 
-        <div className="flex items-center gap-1">
+        <div className="navbar-end gap-0.5">
           {/* Crisis link — heart icon, always visible (R7) */}
           <CrisisLink />
 
@@ -33,7 +35,7 @@ export function AppLayout({ children }: AppLayoutProps): React.JSX.Element {
           <Link
             to="/settings"
             aria-label={t('settings')}
-            className="rounded-xl p-2 text-ink-muted transition-colors hover:bg-parchment-deep hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/50"
+            className="btn btn-ghost btn-sm btn-square text-ink-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender/50"
           >
             <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
               <path

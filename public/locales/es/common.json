@@ -32,38 +32,46 @@
   "species": {
     "felis": {
       "name": "Felis",
-      "tagline": "Curioso y valiente",
-      "description": "Una criatura llena de vida que ama explorar. Se vuelve más fuerte con cada aventura.",
-      "evolution": "Gato → GatoHumano → DinosaurioHumano → Cyborg",
+      "tagline": "Audaz y aventurero",
+      "description": "Un espíritu feroz que nunca deja de explorar. Crece desde una cría curiosa hasta un guerrero digital legendario.",
       "stages": {
         "seedling": "Cría",
-        "sprout": "Cazador",
-        "bloom": "Feroz",
-        "flourish": "Cúspide"
+        "sprout": "Scout",
+        "bloom": "Rebelde",
+        "flourish": "Ícono"
       }
     },
     "spectra": {
       "name": "Spectra",
-      "tagline": "Misterioso y sabio",
-      "description": "Un espíritu gentil que busca el asombro. Crece a través de la curiosidad y la reflexión.",
-      "evolution": "Fantasma → Planeta → Astronauta → Digital",
+      "tagline": "Misterioso e infinito",
+      "description": "Un fantasma de luz estelar que vaga por el cosmos. Crece desde un destello etéreo hasta un universo digital infinito.",
       "stages": {
         "seedling": "Destello",
-        "sprout": "Espectro",
-        "bloom": "Viajero",
-        "flourish": "Eterno"
+        "sprout": "Viajero",
+        "bloom": "Cosmos",
+        "flourish": "Infinito"
       }
     },
     "dolcis": {
       "name": "Dolcis",
-      "tagline": "Cálido y cariñoso",
-      "description": "Un alma dulce que trae alegría. Crece a través de la bondad y la conexión.",
-      "evolution": "Helado → Chocolate → Taza → Voz",
+      "tagline": "Cálido y expresivo",
+      "description": "Un alma dulce que descubre su voz a través del cuidado y la calidez. Crece de un dulce gentil a una voz de consuelo.",
       "stages": {
         "seedling": "Dulzura",
         "sprout": "Tierno",
         "bloom": "Cálido",
-        "flourish": "Vibrante"
+        "flourish": "Voz"
+      }
+    },
+    "lumis": {
+      "name": "Lumis",
+      "tagline": "Paciente y reflexivo",
+      "description": "Una página en blanco lista para llenarse de experiencias. Crece desde una humilde nota hasta una reliquia atemporal de sabiduría.",
+      "stages": {
+        "seedling": "Nota",
+        "sprout": "Códice",
+        "bloom": "Atlas",
+        "flourish": "Reliquia"
       }
     }
   }

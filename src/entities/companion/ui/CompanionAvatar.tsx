@@ -16,6 +16,10 @@ import {
   Chocolate,
   Mug,
   SpeechBubble,
+  File,
+  Folder,
+  Backpack,
+  CreditCard,
 } from 'react-kawaii';
 import type { ComponentType } from 'react';
 import type { CompanionMood, CompanionSpecies, CompanionStage } from '../model/types';
@@ -54,6 +58,10 @@ const KAWAII_COMPONENTS: Record<string, ComponentType<KawaiiProps>> = {
   Chocolate,
   Mug,
   SpeechBubble,
+  File,
+  Folder,
+  Backpack,
+  CreditCard,
 };
 
 export interface CompanionAvatarProps {

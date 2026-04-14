@@ -22,7 +22,7 @@ export const companionStateSchema = z.object({
   id: z.string().uuid(),
   name: companionNameSchema,
   // .default('felis') preserves backward compat with pre-species localStorage data
-  species: z.enum(['felis', 'spectra', 'dolcis']).default('felis'),
+  species: z.enum(['felis', 'spectra', 'dolcis', 'lumis']).default('felis'),
   nourishment: statValueSchema,
   joy: statValueSchema,
   energy: statValueSchema,

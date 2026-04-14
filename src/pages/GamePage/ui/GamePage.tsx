@@ -78,7 +78,10 @@ export function GamePage(): React.JSX.Element {
     return (
       <AppLayout>
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-calm-text-muted animate-pulse">{t('loading', { ns: 'common' })}</p>
+          <span
+            className="loading loading-dots loading-md text-primary"
+            aria-label={t('loading', { ns: 'common' })}
+          />
         </div>
       </AppLayout>
     );
@@ -90,22 +93,15 @@ export function GamePage(): React.JSX.Element {
 
   return (
     <AppLayout>
-      <div className="flex w-full max-w-sm flex-col gap-4 py-4">
-        {/* Companion avatar + name + mood */}
-        <PetDisplay />
+      <div className="flex w-full max-w-sm flex-col gap-2 py-2">
+        {/* Companion avatar + name + mood + speech bubble affirmation */}
+        <PetDisplay speechBubble={currentAffirmation} />
 
         {/* Stats bars */}
         <StatsPanel />
 
         {/* Action buttons */}
         <ActionBar />
-
-        {/* Rotating affirmation — soft, supportive (R7) */}
-        {currentAffirmation && (
-          <p className="text-calm-text-muted px-4 text-center text-xs italic leading-relaxed">
-            {t('affirmationLabel', { ns: 'common' })}: &ldquo;{currentAffirmation}&rdquo;
-          </p>
-        )}
       </div>
     </AppLayout>
   );

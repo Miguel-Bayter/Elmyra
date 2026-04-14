@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { clsx } from 'clsx';
 import i18n from 'i18next';
 import { useCompanionStore } from '@entities/companion';
 import { AppLayout } from '@widgets/AppLayout';
@@ -28,6 +29,12 @@ export function SettingsPage(): React.JSX.Element {
     void i18n.changeLanguage(newLang);
   };
 
+  const handleThemeChange = (newTheme: 'light' | 'dark'): void => {
+    setTheme(newTheme);
+    // Apply data-theme to root — triggers [data-theme="dark"] CSS vars
+    document.documentElement.dataset['theme'] = newTheme;
+  };
+
   const handleDeleteConfirmed = (): void => {
     deleteAllData();
     setShowDeleteConfirm(false);
@@ -40,71 +47,95 @@ export function SettingsPage(): React.JSX.Element {
         {/* Back */}
         <Link
           to="/companion"
-          className="text-calm-text-muted hover:text-calm-text inline-flex items-center gap-1 text-sm transition-colors"
+          className="inline-flex items-center gap-1 text-sm text-ink-muted transition-colors hover:text-ink"
         >
           ← {t('back', { ns: 'common' })}
         </Link>
 
-        <h1 className="text-calm-text text-xl font-semibold">{t('settings', { ns: 'common' })}</h1>
+        <h1 className="text-xl font-semibold text-ink">{t('settings', { ns: 'common' })}</h1>
 
-        {/* Language */}
+        {/* Language — join group */}
         <section className="space-y-2">
-          <h2 className="text-calm-text-muted text-sm font-medium uppercase tracking-wide">
+          <h2 className="text-xs font-medium uppercase tracking-wide text-ink-muted">
             {t('language', { ns: 'common' })}
           </h2>
-          <div className="flex gap-2">
-            <Button
+          <div className="join">
+            <button
+              type="button"
               onClick={() => handleLanguageChange('en')}
-              label="English"
-              variant={preferences.language === 'en' ? 'primary' : 'secondary'}
-              size="sm"
-            />
-            <Button
+              className={clsx(
+                'join-item btn btn-sm',
+                preferences.language === 'en'
+                  ? 'btn-primary'
+                  : 'btn-ghost border border-[rgba(45,37,32,0.12)]',
+              )}
+            >
+              English
+            </button>
+            <button
+              type="button"
               onClick={() => handleLanguageChange('es')}
-              label="Español"
-              variant={preferences.language === 'es' ? 'primary' : 'secondary'}
-              size="sm"
-            />
+              className={clsx(
+                'join-item btn btn-sm',
+                preferences.language === 'es'
+                  ? 'btn-primary'
+                  : 'btn-ghost border border-[rgba(45,37,32,0.12)]',
+              )}
+            >
+              Español
+            </button>
           </div>
         </section>
 
-        {/* Theme */}
+        {/* Theme — join group */}
         <section className="space-y-2">
-          <h2 className="text-calm-text-muted text-sm font-medium uppercase tracking-wide">
+          <h2 className="text-xs font-medium uppercase tracking-wide text-ink-muted">
             {t('theme', { ns: 'common' })}
           </h2>
-          <div className="flex gap-2">
-            <Button
-              onClick={() => setTheme('light')}
-              label={t('themeLight', { ns: 'common' })}
-              variant={preferences.theme === 'light' ? 'primary' : 'secondary'}
-              size="sm"
-            />
-            <Button
-              onClick={() => setTheme('dark')}
-              label={t('themeDark', { ns: 'common' })}
-              variant={preferences.theme === 'dark' ? 'primary' : 'secondary'}
-              size="sm"
-            />
+          <div className="join">
+            <button
+              type="button"
+              onClick={() => handleThemeChange('light')}
+              className={clsx(
+                'join-item btn btn-sm',
+                preferences.theme === 'light'
+                  ? 'btn-primary'
+                  : 'btn-ghost border border-[rgba(45,37,32,0.12)]',
+              )}
+            >
+              {t('themeLight', { ns: 'common' })}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleThemeChange('dark')}
+              className={clsx(
+                'join-item btn btn-sm',
+                preferences.theme === 'dark'
+                  ? 'btn-primary'
+                  : 'btn-ghost border border-[rgba(45,37,32,0.12)]',
+              )}
+            >
+              {t('themeDark', { ns: 'common' })}
+            </button>
           </div>
         </section>
 
-        {/* Crisis resources */}
+        {/* Crisis resources — DaisyUI list */}
         <section className="space-y-2">
-          <h2 className="text-calm-text-muted text-sm font-medium uppercase tracking-wide">
+          <h2 className="text-xs font-medium uppercase tracking-wide text-ink-muted">
             {t('crisisResources.title', { ns: 'legal' })}
           </h2>
-          <p className="text-calm-text-muted text-xs">
-            {t('crisisResources.subtitle', { ns: 'legal' })}
-          </p>
-          <ul className="space-y-2">
+          <p className="text-xs text-ink-muted">{t('crisisResources.subtitle', { ns: 'legal' })}</p>
+          <ul className="list bg-parchment rounded-2xl border-card">
             {crisisResources.map((r) => (
-              <li key={r.name} className="border-soft-gray/30 rounded-xl border p-3 text-sm">
-                <p className="text-calm-text font-medium">{r.name}</p>
-                <p className="text-calm-text-muted text-xs">{r.description}</p>
-                <p className="mt-0.5 font-mono text-xs">
-                  {t('crisisResources.callLabel', { ns: 'legal' })}: {r.phone}
-                </p>
+              <li key={r.name} className="list-row px-4 py-3 text-sm">
+                <div>
+                  <p className="font-medium text-ink">{r.name}</p>
+                  <p className="text-xs text-ink-muted">{r.description}</p>
+                  <p className="mt-0.5 font-mono text-xs text-ink-secondary">
+                    {t('crisisResources.callLabel', { ns: 'legal' })}: {r.phone}
+                  </p>
+                </div>
               </li>
             ))}
           </ul>
@@ -112,16 +143,16 @@ export function SettingsPage(): React.JSX.Element {
 
         {/* Privacy */}
         <section className="space-y-2">
-          <h2 className="text-calm-text-muted text-sm font-medium uppercase tracking-wide">
+          <h2 className="text-xs font-medium uppercase tracking-wide text-ink-muted">
             {t('privacy.title', { ns: 'legal' })}
           </h2>
-          <p className="text-calm-text-muted text-xs leading-relaxed">
+          <p className="text-xs leading-relaxed text-ink-muted">
             {t('privacy.body', { ns: 'legal' })}
           </p>
         </section>
 
         {/* Danger zone */}
-        <section className="border-warm-peach/40 space-y-2 rounded-xl border p-4">
+        <section className="space-y-2 rounded-2xl border border-warm-peach/30 p-4">
           <Button
             onClick={() => setShowDeleteConfirm(true)}
             label={t('deleteAllData', { ns: 'common' })}

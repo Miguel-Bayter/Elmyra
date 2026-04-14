@@ -13,7 +13,7 @@ const ERROR_KEY_MAP: Record<string, 'nameRequired' | 'nameTooLong' | 'nameInvali
   'errors.nameInvalidChars': 'nameInvalidChars',
 };
 
-const SPECIES_LIST: CompanionSpecies[] = ['felis', 'spectra', 'dolcis'];
+const SPECIES_LIST: CompanionSpecies[] = ['felis', 'spectra', 'dolcis', 'lumis'];
 
 // ─── Per-species visual theme — no inline styles (R3) ────────────────────────
 interface SpeciesTheme {
@@ -50,6 +50,14 @@ const SPECIES_THEME: Record<CompanionSpecies, SpeciesTheme> = {
     descBg: 'bg-peach-mist',
     descBorder: 'border-card',
   },
+  lumis: {
+    cardBg: 'bg-golden-mist',
+    ring: 'ring-golden',
+    tagline: 'text-golden-dark',
+    checkBg: 'bg-golden',
+    descBg: 'bg-golden-mist',
+    descBorder: 'border-card',
+  },
 };
 
 // ─── Species selection card ───────────────────────────────────────────────────
@@ -67,37 +75,37 @@ function SpeciesCard({ species, isSelected, onSelect }: SpeciesCardProps): React
   const theme = SPECIES_THEME[species];
 
   return (
+    // DaisyUI card card-compact — structured hover + selection states
     <button
       type="button"
       onClick={onSelect}
       aria-pressed={isSelected}
       className={clsx(
-        // Base — always species-tinted background
-        'relative flex flex-col items-center gap-3 rounded-3xl px-4 pb-5 pt-6 text-center',
+        'card card-compact relative w-full cursor-pointer text-center',
         'transition-all duration-200',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         theme.cardBg,
         isSelected
-          ? `ring-2 ${theme.ring} ring-offset-2 shadow-lg scale-[1.03]`
-          : 'ring-1 ring-transparent shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98]',
+          ? `ring-2 ${theme.ring} ring-offset-2 shadow-md scale-[1.02]`
+          : 'ring-1 ring-transparent shadow-sm hover:shadow-md hover:scale-[1.01] active:scale-[0.98]',
         `focus-visible:${theme.ring}`,
       )}
     >
-      {/* Checkmark badge — only when selected */}
+      {/* Checkmark badge — DaisyUI badge */}
       {isSelected && (
         <span
           aria-hidden="true"
           className={clsx(
-            'absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full text-white',
+            'badge badge-sm absolute right-2 top-2 text-white border-0',
             theme.checkBg,
           )}
         >
           <svg
             viewBox="0 0 12 12"
-            className="h-3 w-3"
+            className="h-2.5 w-2.5"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
@@ -106,17 +114,21 @@ function SpeciesCard({ species, isSelected, onSelect }: SpeciesCardProps): React
         </span>
       )}
 
-      {/* Avatar — seedling stage, species color */}
-      <div aria-hidden="true">
-        <CompanionAvatar species={species} stage="seedling" mood="calm" size={100} />
-      </div>
+      <div className="card-body items-center gap-2 py-4 px-3">
+        {/* Avatar — seedling stage */}
+        <div aria-hidden="true">
+          <CompanionAvatar species={species} stage="seedling" mood="calm" size={80} />
+        </div>
 
-      {/* Name + tagline */}
-      <div className="space-y-1">
-        <p className="text-sm font-bold tracking-tight text-ink">{t(`species.${species}.name`)}</p>
-        <p className={clsx('text-xs font-semibold', theme.tagline)}>
-          {t(`species.${species}.tagline`)}
-        </p>
+        {/* Name + tagline */}
+        <div className="card-title flex-col gap-0.5 text-center">
+          <p className="text-sm font-bold tracking-tight text-ink">
+            {t(`species.${species}.name`)}
+          </p>
+          <p className={clsx('text-xs font-medium', theme.tagline)}>
+            {t(`species.${species}.tagline`)}
+          </p>
+        </div>
       </div>
     </button>
   );
@@ -134,17 +146,17 @@ function StepSpecies({ selected, onSelect, onContinue }: StepSpeciesProps): Reac
   const { t } = useTranslation('common');
 
   return (
-    <div className="flex w-full flex-col gap-5">
+    <div className="flex w-full flex-col gap-3">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
+        <h2 className="text-lg font-semibold tracking-tight text-ink">
           {t('speciesSelect.title')}
         </h2>
-        <p className="mt-1.5 text-sm text-ink-muted">{t('speciesSelect.subtitle')}</p>
+        <p className="mt-1 text-sm text-ink-muted">{t('speciesSelect.subtitle')}</p>
       </div>
 
-      {/* Cards grid */}
-      <div className="grid grid-cols-3 gap-3">
+      {/* 2×2 cards grid */}
+      <div className="grid grid-cols-2 gap-2.5">
         {SPECIES_LIST.map((sp) => (
           <SpeciesCard
             key={sp}
@@ -155,12 +167,12 @@ function StepSpecies({ selected, onSelect, onContinue }: StepSpeciesProps): Reac
         ))}
       </div>
 
-      {/* Description panel — animates in when a species is selected */}
+      {/* Description — DaisyUI alert, compact, animates in on selection */}
       {selected !== null && (
         <div
           key={selected}
           className={clsx(
-            'animate-enter rounded-2xl border px-5 py-4 text-center',
+            'alert animate-enter rounded-2xl border py-2.5 px-4 text-center',
             // Safe: selected is CompanionSpecies union value
             // eslint-disable-next-line security/detect-object-injection
             SPECIES_THEME[selected].descBg,
@@ -168,7 +180,7 @@ function StepSpecies({ selected, onSelect, onContinue }: StepSpeciesProps): Reac
             SPECIES_THEME[selected].descBorder,
           )}
         >
-          <p className="text-sm leading-relaxed text-ink-secondary">
+          <p className="text-xs leading-relaxed text-ink-secondary w-full">
             {t(`species.${selected}.description`)}
           </p>
         </div>
@@ -256,7 +268,7 @@ function StepName({
           disabled={isDisabled}
           aria-describedby={nameError ? 'name-error' : undefined}
           aria-invalid={nameError !== null}
-          className="border-card w-full rounded-2xl bg-parchment px-4 py-3 text-base text-ink placeholder:text-ink-faint transition-all focus:outline-none focus:ring-2 focus:ring-lavender/50 disabled:opacity-50"
+          className="input input-bordered w-full bg-parchment text-ink placeholder:text-ink-faint focus:outline-none focus:border-lavender disabled:opacity-50"
         />
 
         {nameError && (

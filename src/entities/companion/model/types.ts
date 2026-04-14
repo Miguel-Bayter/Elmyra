@@ -6,7 +6,7 @@
 export type CompanionStage = 'seedling' | 'sprout' | 'bloom' | 'flourish';
 
 // The companion's species — determines its visual evolution line
-export type CompanionSpecies = 'felis' | 'spectra' | 'dolcis';
+export type CompanionSpecies = 'felis' | 'spectra' | 'dolcis' | 'lumis';
 
 // Mood names chosen for wellness tone — no negative clinical terms (R7)
 export type CompanionMood =

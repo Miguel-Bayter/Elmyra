@@ -23,6 +23,20 @@
   "ageLabel": "Age",
   "ageTicks": "{{count}} tick",
   "ageTicks_other": "{{count}} ticks",
+  "ageRealtime": {
+    "days": "{{days}}d {{hours}}h",
+    "hours": "{{hours}}h {{minutes}}m",
+    "minutes": "{{minutes}} min",
+    "lessThanMinute": "just now",
+    "together": "together"
+  },
+  "ageSupport": [
+    "Every moment you show up matters",
+    "Growing together, day by day",
+    "You're doing better than you think",
+    "Your companion is always here for you",
+    "Small acts of care add up to something beautiful"
+  ],
   "stageLevelLabel": "Stage",
   "moodLabel": "Feeling",
   "isResting": "Your companion is resting",

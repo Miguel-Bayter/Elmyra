@@ -1,52 +1,56 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { clsx } from 'clsx';
+import { motion } from 'framer-motion';
 import { useNourishPet } from '@features/nourish-pet';
 import { usePlayWithPet } from '@features/play-with-pet';
 import { useRestPet } from '@features/rest-pet';
 import { useComfortPet } from '@features/comfort-pet';
 
-// Action card — more expressive than a plain button
+// ─── Compact action card for horizontal row layout ────────────────────────────
 interface ActionCardProps {
   onClick: () => void;
   label: string;
-  description: string;
   emoji: string;
   isDisabled: boolean;
   colorClass: string;
   ringClass: string;
+  ariaLabel: string;
 }
 
 function ActionCard({
   onClick,
   label,
-  description,
   emoji,
   isDisabled,
   colorClass,
   ringClass,
+  ariaLabel,
 }: ActionCardProps): React.JSX.Element {
   return (
-    <button
+    // S4-FE-03: Framer Motion press feedback
+    <motion.button
       type="button"
       onClick={onClick}
       disabled={isDisabled}
-      aria-label={description}
+      aria-label={ariaLabel}
+      whileTap={isDisabled ? {} : { scale: 0.9 }}
+      transition={{ duration: 0.1, ease: 'easeOut' }}
       className={clsx(
-        'flex flex-col items-center gap-2 rounded-3xl p-4 text-center',
-        'min-h-[100px] transition-all duration-200',
+        'flex flex-1 flex-col items-center justify-center gap-1.5',
+        'rounded-2xl py-3 px-1 text-center',
+        'transition-colors duration-200',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         colorClass,
         ringClass,
-        isDisabled ? 'cursor-not-allowed opacity-35' : 'hover:scale-[1.03] active:scale-[0.98]',
+        isDisabled ? 'cursor-not-allowed opacity-35' : 'hover:brightness-95',
       )}
     >
       <span className="text-2xl leading-none" aria-hidden="true">
         {emoji}
       </span>
-      <span className="text-sm font-semibold text-ink">{label}</span>
-      <span className="text-xs leading-snug text-ink-muted">{description}</span>
-    </button>
+      <span className="text-xs font-semibold text-ink leading-tight">{label}</span>
+    </motion.button>
   );
 }
 
@@ -59,42 +63,42 @@ export function ActionBar(): React.JSX.Element {
   const { comfort, isDisabled: comfortDisabled } = useComfortPet();
 
   return (
-    <div className="grid w-full grid-cols-2 gap-3">
+    <div className="flex w-full gap-2">
       <ActionCard
         onClick={nourish}
         label={t('nourish')}
-        description={t('nourishDescription')}
         emoji="🍃"
         isDisabled={nourishDisabled}
         colorClass="bg-sage-mist"
         ringClass="focus-visible:ring-sage"
+        ariaLabel={t('nourishDescription')}
       />
       <ActionCard
         onClick={play}
         label={t('play')}
-        description={t('playDescription')}
         emoji="✨"
         isDisabled={playDisabled}
         colorClass="bg-lavender-mist"
         ringClass="focus-visible:ring-lavender"
+        ariaLabel={t('playDescription')}
       />
       <ActionCard
         onClick={rest}
         label={t('rest')}
-        description={t('restDescription')}
         emoji="🌙"
         isDisabled={restDisabled}
         colorClass="bg-mint-mist"
         ringClass="focus-visible:ring-soft-mint"
+        ariaLabel={t('restDescription')}
       />
       <ActionCard
         onClick={comfort}
         label={t('comfort')}
-        description={t('comfortDescription')}
         emoji="💜"
         isDisabled={comfortDisabled}
         colorClass="bg-peach-mist"
         ringClass="focus-visible:ring-warm-peach"
+        ariaLabel={t('comfortDescription')}
       />
     </div>
   );
