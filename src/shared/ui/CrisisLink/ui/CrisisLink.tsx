@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { clsx } from 'clsx';
 import { Modal } from '../../Modal/ui/Modal';
-import { CRISIS_RESOURCES } from '@shared/config/crisisResources';
+import { CRISIS_COUNTRIES, defaultCountryForLang } from '@shared/config/crisisResources';
 
 export function CrisisLink(): React.JSX.Element {
   const { t, i18n } = useTranslation(['common', 'legal']);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedCode, setSelectedCode] = useState<string>(() =>
+    defaultCountryForLang(i18n.language),
+  );
 
-  const lang = i18n.language.startsWith('es') ? 'es' : 'en';
-  // eslint-disable-next-line security/detect-object-injection
-  const resources = CRISIS_RESOURCES[lang] ?? CRISIS_RESOURCES['en'] ?? [];
+  const isES = i18n.language.startsWith('es');
+
+  const selectedCountry =
+    CRISIS_COUNTRIES.find((c) => c.code === selectedCode) ?? CRISIS_COUNTRIES[0];
 
   return (
     <>
@@ -32,18 +37,88 @@ export function CrisisLink(): React.JSX.Element {
         title={t('crisisResources.title', { ns: 'legal' })}
         closeLabel={t('close', { ns: 'common' })}
       >
-        <p className="mb-4">{t('crisisResources.subtitle', { ns: 'legal' })}</p>
-        <ul className="space-y-4">
-          {resources.map((resource) => (
-            <li key={resource.name} className="rounded-xl border border-soft-gray/30 p-3">
-              <p className="text-calm-text font-semibold">{resource.name}</p>
-              <p className="text-calm-text-muted text-xs">{resource.description}</p>
-              <p className="mt-1 font-mono text-sm">
-                {t('crisisResources.callLabel', { ns: 'legal' })}: {resource.phone}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <p className="mb-4 text-sm text-ink-secondary">
+          {t('crisisResources.subtitle', { ns: 'legal' })}
+        </p>
+
+        {/* Country selector */}
+        <div className="mb-4">
+          <label
+            htmlFor="crisis-country"
+            className="mb-1.5 block text-xs font-medium text-ink-muted"
+          >
+            {isES ? 'Tu país' : 'Your country'}
+          </label>
+          <select
+            id="crisis-country"
+            value={selectedCode}
+            onChange={(e) => setSelectedCode(e.target.value)}
+            className="select select-bordered w-full bg-parchment text-ink text-sm focus:outline-none focus:border-lavender"
+          >
+            {CRISIS_COUNTRIES.map((country) => (
+              <option key={country.code} value={country.code}>
+                {country.flag} {isES ? country.nameES : country.nameEN}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Resources for selected country */}
+        {selectedCountry !== undefined && (
+          <ul className="space-y-3">
+            {selectedCountry.resources.map((resource) => (
+              <li
+                key={resource.name}
+                className="rounded-2xl border border-card bg-parchment-warm px-4 py-3"
+              >
+                <p className="font-semibold text-ink text-sm">{resource.name}</p>
+
+                <a
+                  href={resource.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={clsx(
+                    'mt-2 flex items-center gap-2 rounded-xl px-3 py-2',
+                    'text-sm font-medium transition-colors',
+                    resource.isText
+                      ? 'bg-mint-mist text-sage-dark hover:bg-soft-mint/30'
+                      : 'bg-lavender-mist text-lavender-dark hover:bg-lavender-light',
+                  )}
+                >
+                  {/* Icon: phone or message */}
+                  {resource.isText ? (
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4 shrink-0"
+                    >
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                  ) : (
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4 shrink-0"
+                    >
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.36 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z" />
+                    </svg>
+                  )}
+                  <span>{resource.phone}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
       </Modal>
     </>
   );

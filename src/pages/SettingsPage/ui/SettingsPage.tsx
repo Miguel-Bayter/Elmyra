@@ -7,7 +7,7 @@ import { useCompanionStore } from '@entities/companion';
 import { AppLayout } from '@widgets/AppLayout';
 import { Button } from '@shared/ui/Button';
 import { Modal } from '@shared/ui/Modal';
-import { CRISIS_RESOURCES } from '@shared/config/crisisResources';
+import { CRISIS_COUNTRIES, defaultCountryForLang } from '@shared/config/crisisResources';
 
 export function SettingsPage(): React.JSX.Element {
   const { t } = useTranslation(['common', 'legal']);
@@ -20,9 +20,12 @@ export function SettingsPage(): React.JSX.Element {
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const lang = preferences.language.startsWith('es') ? 'es' : 'en';
-  // eslint-disable-next-line security/detect-object-injection
-  const crisisResources = CRISIS_RESOURCES[lang] ?? CRISIS_RESOURCES['en'] ?? [];
+  const isES = preferences.language.startsWith('es');
+  const [crisisCountryCode, setCrisisCountryCode] = useState(() =>
+    defaultCountryForLang(preferences.language),
+  );
+  const crisisCountry =
+    CRISIS_COUNTRIES.find((c) => c.code === crisisCountryCode) ?? CRISIS_COUNTRIES[0];
 
   const handleLanguageChange = (newLang: 'en' | 'es'): void => {
     setLanguage(newLang);
@@ -120,25 +123,40 @@ export function SettingsPage(): React.JSX.Element {
           </div>
         </section>
 
-        {/* Crisis resources — DaisyUI list */}
+        {/* Crisis resources */}
         <section className="space-y-2">
           <h2 className="text-xs font-medium uppercase tracking-wide text-ink-muted">
             {t('crisisResources.title', { ns: 'legal' })}
           </h2>
           <p className="text-xs text-ink-muted">{t('crisisResources.subtitle', { ns: 'legal' })}</p>
-          <ul className="list bg-parchment rounded-2xl border-card">
-            {crisisResources.map((r) => (
-              <li key={r.name} className="list-row px-4 py-3 text-sm">
-                <div>
-                  <p className="font-medium text-ink">{r.name}</p>
-                  <p className="text-xs text-ink-muted">{r.description}</p>
-                  <p className="mt-0.5 font-mono text-xs text-ink-secondary">
-                    {t('crisisResources.callLabel', { ns: 'legal' })}: {r.phone}
-                  </p>
-                </div>
-              </li>
+
+          {/* Country selector */}
+          <select
+            value={crisisCountryCode}
+            onChange={(e) => setCrisisCountryCode(e.target.value)}
+            aria-label={isES ? 'Seleccionar país' : 'Select country'}
+            className="select select-bordered select-sm w-full bg-parchment text-ink focus:outline-none focus:border-lavender"
+          >
+            {CRISIS_COUNTRIES.map((country) => (
+              <option key={country.code} value={country.code}>
+                {country.flag} {isES ? country.nameES : country.nameEN}
+              </option>
             ))}
-          </ul>
+          </select>
+
+          {crisisCountry !== undefined && (
+            <ul className="space-y-2">
+              {crisisCountry.resources.map((r) => (
+                <li
+                  key={r.name}
+                  className="rounded-2xl border border-card bg-parchment-warm px-4 py-3 text-sm"
+                >
+                  <p className="font-medium text-ink">{r.name}</p>
+                  <p className="mt-1 font-mono text-xs text-ink-secondary">{r.phone}</p>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         {/* Privacy */}

@@ -55,20 +55,15 @@ export default tseslint.config(
       'react/forbid-component-props': ['error', { forbid: ['style'] }],
       'react/forbid-dom-props': ['error', { forbid: ['style'] }],
 
-      // R4 — FSD import boundaries
-      // NOTE: `element-types` is deprecated in eslint-plugin-boundaries v6 (renamed to
-      // `dependencies`), but the v6 `dependencies` rule has a breaking API change.
-      // Keeping `element-types` until we update to the new selector syntax.
-      // The "[boundaries][warning]" console lines are plugin stdout, not ESLint warnings.
-      'boundaries/element-types': ['error', {
+      // R4 — FSD import boundaries (eslint-plugin-boundaries v6 API)
+      'boundaries/dependencies': ['error', {
         default: 'disallow',
         rules: [
-          { from: 'app',      allow: ['pages', 'widgets', 'features', 'entities', 'shared'] },
-          { from: 'pages',    allow: ['widgets', 'features', 'entities', 'shared'] },
-          { from: 'widgets',  allow: ['features', 'entities', 'shared'] },
-          { from: 'features', allow: ['entities', 'shared'] },
-          { from: 'entities', allow: ['shared'] },
-          { from: 'shared',   allow: [] },
+          { from: { type: 'app' },      allow: { to: { type: ['pages', 'widgets', 'features', 'entities', 'shared'] } } },
+          { from: { type: 'pages' },    allow: { to: { type: ['widgets', 'features', 'entities', 'shared'] } } },
+          { from: { type: 'widgets' },  allow: { to: { type: ['features', 'entities', 'shared'] } } },
+          { from: { type: 'features' }, allow: { to: { type: ['entities', 'shared'] } } },
+          { from: { type: 'entities' }, allow: { to: { type: ['shared'] } } },
         ],
       }],
 
