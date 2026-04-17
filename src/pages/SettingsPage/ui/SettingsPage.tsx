@@ -17,13 +17,13 @@ export function SettingsPage(): React.JSX.Element {
   const setTheme = useCompanionStore((s) => s.setTheme);
   const setLanguage = useCompanionStore((s) => s.setLanguage);
   const deleteAllData = useCompanionStore((s) => s.deleteAllData);
+  const setCrisisCountry = useCompanionStore((s) => s.setCrisisCountry);
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const isES = preferences.language.startsWith('es');
-  const [crisisCountryCode, setCrisisCountryCode] = useState(() =>
-    defaultCountryForLang(preferences.language),
-  );
+  const crisisCountryCode =
+    preferences.crisisCountry ?? defaultCountryForLang(preferences.language);
   const crisisCountry =
     CRISIS_COUNTRIES.find((c) => c.code === crisisCountryCode) ?? CRISIS_COUNTRIES[0];
 
@@ -133,7 +133,7 @@ export function SettingsPage(): React.JSX.Element {
           {/* Country selector */}
           <select
             value={crisisCountryCode}
-            onChange={(e) => setCrisisCountryCode(e.target.value)}
+            onChange={(e) => setCrisisCountry(e.target.value)}
             aria-label={isES ? 'Seleccionar país' : 'Select country'}
             className="select select-bordered select-sm w-full bg-parchment text-ink focus:outline-none focus:border-lavender"
           >

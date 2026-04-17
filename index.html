@@ -9,7 +9,8 @@
     <script>
       try {
         var p = JSON.parse(localStorage.getItem('elmyra_preferences') || '{}');
-        if (p.theme === 'dark') document.documentElement.dataset.theme = 'dark';
+        var theme = p.theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') document.documentElement.dataset.theme = 'dark';
       } catch (_) {}
     </script>
   </head>

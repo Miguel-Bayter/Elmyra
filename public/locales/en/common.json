@@ -46,45 +46,45 @@
     "zephyr": {
       "name": "Zephyr",
       "tagline": "Breathe and release",
-      "description": "A breath of sky that teaches the rhythm of letting go. Its gentle pulse mirrors the calm of a slow, deep breath. Grows from a quiet puff into the vast, peaceful horizon.",
+      "description": "A little ice-blue penguin who teaches the rhythm of letting go. Its steady waddle mirrors the calm of a slow, deep breath. Grows from a small chick into a radiant, crown-wearing companion.",
       "stages": {
-        "seedling": "Puff",
-        "sprout": "Drift",
-        "bloom": "Cumulus",
+        "seedling": "Chick",
+        "sprout": "Waddle",
+        "bloom": "Glide",
         "flourish": "Horizon"
       }
     },
     "kova": {
       "name": "Kova",
       "tagline": "Steady and grounded",
-      "description": "A stone spirit rooted in the wisdom of the earth. Calm, stable, and always present. Grows from a smooth pebble into an ancient stone with living memory.",
+      "description": "A warm tabby cat who embodies calm presence and gentle grounding. Always cozy, always here. Grows from a soft kitten into a wise, flower-crowned companion.",
       "stages": {
-        "seedling": "Pebble",
-        "sprout": "Stone",
-        "bloom": "Monolith",
-        "flourish": "Ancient"
+        "seedling": "Kitten",
+        "sprout": "Tabby",
+        "bloom": "Purrfect",
+        "flourish": "Wise"
       }
     },
     "luma": {
       "name": "Luma",
       "tagline": "Warm and hopeful",
-      "description": "A light that refuses to go out, growing warmer with every moment of connection. Grows from a tiny ember into a brilliant aurora of warmth.",
+      "description": "A golden bear cub whose warmth grows with every moment of connection. Soft and huggable, a reminder that hope is always close. Grows from a tiny cub into a glowing, halo-blessed companion.",
       "stages": {
-        "seedling": "Ember",
-        "sprout": "Glow",
-        "bloom": "Lantern",
-        "flourish": "Aurora"
+        "seedling": "Cub",
+        "sprout": "Honey",
+        "bloom": "Bloom",
+        "flourish": "Golden"
       }
     },
     "maru": {
       "name": "Maru",
       "tagline": "Whole and at peace",
-      "description": "A ring spirit that spins quietly at the center of the storm. Its slow cycles teach that all feelings pass. Grows from a pearl into a cosmos of rings.",
+      "description": "A lavender duck who floats through life with gentle acceptance. Its unhurried pace teaches that all feelings pass in their own time. Grows from a downy duckling into a serene, ring-adorned companion.",
       "stages": {
-        "seedling": "Pearl",
-        "sprout": "Crescent",
-        "bloom": "Halo",
-        "flourish": "Cosmos"
+        "seedling": "Duckling",
+        "sprout": "Puddle",
+        "bloom": "Float",
+        "flourish": "Serene"
       }
     }
   }

@@ -25,14 +25,13 @@ const zephyr: SpeciesConfig = {
 };
 
 // ─── Kova ─────────────────────────────────────────────────────────────────────
-// Stone/earth spirit — warm stone to ancient bronze.
-// Grounding palette: neutral, stable, never stimulating.
+// Tabby cat — warm cream to deep cinnamon. Grounding, cozy, never stimulating.
 const kova: SpeciesConfig = {
   stages: {
-    seedling: { color: '#d8cec6' }, // warm pebble
-    sprout: { color: '#bcada0' }, // river stone
-    bloom: { color: '#9e8e80' }, // deep stone
-    flourish: { color: '#786858' }, // ancient bronze earth
+    seedling: { color: '#f5e0c8' }, // soft cream
+    sprout: { color: '#d4a070' }, // warm tabby
+    bloom: { color: '#b87840' }, // cinnamon
+    flourish: { color: '#8a5828' }, // deep warm brown
   },
 };
 

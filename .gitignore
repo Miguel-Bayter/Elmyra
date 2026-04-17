@@ -146,3 +146,5 @@ Docs/
 .lock-wscript
 jspm_packages/
 web_modules/
+
+.vercel

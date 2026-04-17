@@ -37,10 +37,18 @@ export type StoreNotification =
 export type NotificationHandler = (notification: StoreNotification) => void;
 
 // ─── Default preferences ─────────────────────────────────────────────────────
+const getSystemTheme = (): 'light' | 'dark' =>
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
+
 const DEFAULT_PREFERENCES: AppPreferences = {
-  theme: 'light',
+  theme: getSystemTheme(),
   language: 'en',
   disclaimerAccepted: false,
+  crisisCountry: 'us',
 };
 
 // ─── Offline threshold for "long absence" nudge ───────────────────────────────
@@ -77,6 +85,7 @@ export interface CompanionStore {
   setTheme: (theme: 'light' | 'dark') => void;
   setLanguage: (lang: 'en' | 'es') => void;
   acceptDisclaimer: () => void;
+  setCrisisCountry: (code: string) => void;
 }
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
@@ -143,7 +152,12 @@ export const useCompanionStore = create<CompanionStore>()(
       const storedMilestone = readFromStorage(STORAGE_KEYS.MILESTONE, wellnessMilestoneSchema);
       const storedPreferences = readFromStorage(STORAGE_KEYS.PREFERENCES, appPreferencesSchema);
 
-      const preferences = storedPreferences ?? DEFAULT_PREFERENCES;
+      const preferences = storedPreferences ?? { ...DEFAULT_PREFERENCES, theme: getSystemTheme() };
+
+      // Sync data-theme attribute so CSS vars match the loaded/detected preference
+      if (typeof document !== 'undefined') {
+        document.documentElement.dataset['theme'] = preferences.theme;
+      }
 
       if (!storedCompanion) {
         set({ companion: null, milestone: storedMilestone, preferences, isLoading: false });
@@ -288,6 +302,12 @@ export const useCompanionStore = create<CompanionStore>()(
 
     acceptDisclaimer: () => {
       const preferences: AppPreferences = { ...get().preferences, disclaimerAccepted: true };
+      persistPreferences(preferences);
+      set({ preferences });
+    },
+
+    setCrisisCountry: (code) => {
+      const preferences: AppPreferences = { ...get().preferences, crisisCountry: code };
       persistPreferences(preferences);
       set({ preferences });
     },

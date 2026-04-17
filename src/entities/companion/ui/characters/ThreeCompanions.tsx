@@ -1,11 +1,11 @@
-// 3D therapeutic companions — four mythological creatures for emotional wellbeing.
+// 3D therapeutic companions — four cute animals for emotional wellbeing.
 // Built with React Three Fiber using Three.js primitive geometries.
 //
 // Silhouettes are deliberately distinct at thumbnail size:
-//   Zephyr → tall ghost teardrop (vertical)
-//   Kova   → wide squat toad (horizontal)
-//   Luma   → round sphere + dramatic flame crown
-//   Maru   → round bunny with long drooping floppy ears
+//   Zephyr → Penguin: tall oval body + belly patch + side wings (vertical)
+//   Kova   → Cat: round head + triangle ears + curved tail (cozy shape)
+//   Luma   → Bear Cub: plump round form + snout + ear domes (soft sphere)
+//   Maru   → Duck: large puffball body + flat beak + wing pads (round/wide)
 //
 // All use MeshToonMaterial + DataTexture gradient maps for anime cel shading.
 // meshBasicMaterial for face features — unaffected by scene lighting.
@@ -243,17 +243,16 @@ export function Face({
   );
 }
 
-// ─── Zephyr ───────────────────────────────────────────────────────────────────
-// Cloud Ghost — tall teardrop body, two round cloud-bump antennae on top.
-// No legs — floats. Ghost-tail clusters drift at the base.
-// Silhouette: TALL vertical elongated teardrop (distinct from all others).
-// Therapeutic: the 4s breathing pulse mirrors mindfulness breath work.
+// ─── Zephyr → Penguin ─────────────────────────────────────────────────────────
+// Ice-blue penguin with cream belly, flat capsule wings, orange beak + feet.
+// Silhouette: TALL oval body with wide wing stubs (distinct vertical silhouette).
+// Therapeutic: steady rhythmic waddle mirrors calm regulated breathing.
 //
 // Evolution arc:
-//   Bruma    → bare ghost body, tiny antenna bumps
-//   Brisa    → wind swirl rings appear
-//   Cúmulo   → gossamer wing-puff clusters
-//   Horizonte → golden halo ring + sparkle dots
+//   Seedling  → small penguin, plain tummy patch
+//   Sprout    → little bow tie appears
+//   Bloom     → ice-crystal headband
+//   Flourish  → golden shimmer crown + sparkles
 
 export function ZephyrMesh({
   stage,
@@ -262,119 +261,116 @@ export function ZephyrMesh({
   reactionKey,
 }: CompanionMeshProps): React.JSX.Element {
   const { groupRef, handleClick } = useCompanionAnimation(mood, reactionKey);
+  const CREAM = '#f0f4f8';
+  const ORANGE = '#f08040';
   const GOLD = '#f0d878';
-
-  const breathRef = useRef<THREE.Group | null>(null);
-  const prefersReduced = useRef(
-    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  );
-  useFrame(({ clock }) => {
-    if (!breathRef.current || prefersReduced.current) return;
-    const s = 1 + 0.03 * Math.sin(clock.elapsedTime * (Math.PI / 2));
-    breathRef.current.scale.setScalar(s);
-  });
-
-  // Ghost tail — 4 spheres descending, getting smaller and more transparent
-  const tailGhosts: [number, number, number, number, number][] = [
-    [0, -0.68, 0, 0.22, 0.72],
-    [0.16, -0.82, 0, 0.16, 0.55],
-    [-0.12, -0.92, 0, 0.12, 0.38],
-    [0.06, -1.02, 0, 0.09, 0.22],
-  ];
-
-  // Wing puff clusters for bloom+
-  const leftPuffs: [number, number, number][] = [
-    [-0.72, 0.1, 0],
-    [-0.88, 0.26, 0],
-    [-0.8, -0.06, 0],
-  ];
-  const rightPuffs: [number, number, number][] = leftPuffs.map(([x, y, z]) => [-x, y, z]);
+  const ICE = '#d8f0ff';
 
   const sparkles: [number, number, number][] = [
-    [0.52, 0.9, 0.14],
-    [-0.54, 0.84, 0.14],
-    [0.28, 1.08, 0.08],
-    [-0.26, 1.04, 0.08],
+    [0.48, 0.88, 0.12],
+    [-0.5, 0.82, 0.12],
+    [0.26, 1.06, 0.08],
+    [-0.24, 1.02, 0.08],
   ];
 
   return (
     <group ref={groupRef} onClick={handleClick}>
-      {/* Cloud-bump antennae — two soft round bumps on top, NOT bunny ears */}
-      <mesh position={[-0.28, 0.98, 0.08]}>
-        <sphereGeometry args={[0.18, 12, 12]} />
+      {/* Main body — tall oval */}
+      <mesh scale={[0.78, 1.22, 0.85]}>
+        <sphereGeometry args={[0.52, 26, 26]} />
         <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
-      <mesh position={[0.28, 0.98, 0.08]}>
-        <sphereGeometry args={[0.18, 12, 12]} />
+
+      {/* Cream belly patch */}
+      <mesh position={[0, -0.04, 0.36]} scale={[0.54, 0.78, 0.18]}>
+        <sphereGeometry args={[0.52, 18, 18]} />
+        <meshToonMaterial gradientMap={TOON} color={CREAM} />
+      </mesh>
+
+      {/* Head */}
+      <mesh position={[0, 0.72, 0]}>
+        <sphereGeometry args={[0.36, 24, 24]} />
         <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
-      {/* Tiny inner glow on bumps */}
-      <mesh position={[-0.28, 0.98, 0.2]}>
-        <sphereGeometry args={[0.09, 8, 8]} />
-        <meshBasicMaterial color={GOLD} transparent opacity={0.35} />
+
+      {/* Face on head */}
+      <Face
+        irisColor="#1a2c6e"
+        ink="#101828"
+        mood={mood}
+        eyeSpan={0.15}
+        eyeY={0.76}
+        zOffset={1.06}
+      />
+
+      {/* Orange beak */}
+      <mesh position={[0, 0.68, 0.36]} rotation={[Math.PI / 2, 0, 0]}>
+        <coneGeometry args={[0.07, 0.18, 8]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={ORANGE} />
       </mesh>
-      <mesh position={[0.28, 0.98, 0.2]}>
-        <sphereGeometry args={[0.09, 8, 8]} />
-        <meshBasicMaterial color={GOLD} transparent opacity={0.35} />
+
+      {/* Flat capsule wings — stubby, held out at sides */}
+      <mesh position={[-0.58, 0.06, 0]} rotation={[0.2, 0, -0.55]} scale={[0.55, 1, 0.38]}>
+        <capsuleGeometry args={[0.12, 0.28, 4, 10]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      <mesh position={[0.58, 0.06, 0]} rotation={[0.2, 0, 0.55]} scale={[0.55, 1, 0.38]}>
+        <capsuleGeometry args={[0.12, 0.28, 4, 10]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
 
-      {/* Main body — TALL teardrop, not round like others */}
-      <group ref={breathRef}>
-        <mesh scale={[0.88, 1.52, 0.9]}>
-          <sphereGeometry args={[0.54, 26, 26]} />
-          <meshToonMaterial gradientMap={TOON} color={color} />
-        </mesh>
-        <Face
-          irisColor="#4a28a8"
-          ink="#2a1840"
-          mood={mood}
-          eyeSpan={0.18}
-          eyeY={0.24}
-          zOffset={0.48}
-        />
-      </group>
+      {/* Orange feet */}
+      <mesh position={[-0.14, -0.66, 0.08]} scale={[1.3, 0.44, 1.1]}>
+        <sphereGeometry args={[0.12, 10, 10]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={ORANGE} />
+      </mesh>
+      <mesh position={[0.14, -0.66, 0.08]} scale={[1.3, 0.44, 1.1]}>
+        <sphereGeometry args={[0.12, 10, 10]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={ORANGE} />
+      </mesh>
 
-      {/* Ghost tail clusters */}
-      {tailGhosts.map(([x, y, z, r, op], i) => (
-        <mesh key={i} position={[x, y, z]}>
-          <sphereGeometry args={[r, 10, 10]} />
-          <meshToonMaterial gradientMap={TOON} color={color} transparent opacity={op} />
-        </mesh>
-      ))}
-
-      {/* Sprout+: wind swirl rings */}
+      {/* Sprout+: little bow tie */}
       {(stage === 'sprout' || stage === 'bloom' || stage === 'flourish') && (
         <>
-          <mesh position={[0, 0.08, 0]} rotation={[Math.PI / 2.4, 0.3, 0]}>
-            <torusGeometry args={[0.72, 0.038, 6, 32, Math.PI * 1.6]} />
-            <meshToonMaterial gradientMap={TOON_CRISP} color={GOLD} transparent opacity={0.55} />
+          <mesh position={[-0.11, 0.38, 0.42]} rotation={[0, 0, Math.PI / 4]}>
+            <octahedronGeometry args={[0.08, 0]} />
+            <meshToonMaterial gradientMap={TOON_CRISP} color={ICE} transparent opacity={0.9} />
           </mesh>
-          <mesh position={[0, -0.04, 0]} rotation={[Math.PI / 2.2, -0.4, 0.5]}>
-            <torusGeometry args={[0.6, 0.028, 6, 28, Math.PI * 1.4]} />
-            <meshToonMaterial gradientMap={TOON_CRISP} color={GOLD} transparent opacity={0.38} />
+          <mesh position={[0.11, 0.38, 0.42]} rotation={[0, 0, -Math.PI / 4]}>
+            <octahedronGeometry args={[0.08, 0]} />
+            <meshToonMaterial gradientMap={TOON_CRISP} color={ICE} transparent opacity={0.9} />
+          </mesh>
+          <mesh position={[0, 0.38, 0.44]}>
+            <sphereGeometry args={[0.05, 8, 8]} />
+            <meshBasicMaterial color={GOLD} />
           </mesh>
         </>
       )}
 
-      {/* Bloom+: gossamer wing-puff clusters */}
-      {(stage === 'bloom' || stage === 'flourish') &&
-        [...leftPuffs, ...rightPuffs].map(([x, y, z], i) => (
-          <mesh key={i} position={[x, y, z]} scale={[1.0, 0.62, 0.44]}>
-            <sphereGeometry args={[0.24, 12, 12]} />
-            <meshToonMaterial gradientMap={TOON} color={color} transparent opacity={0.44} />
+      {/* Bloom+: ice crystal headband */}
+      {(stage === 'bloom' || stage === 'flourish') && (
+        <>
+          <mesh position={[0, 1.06, 0]} rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.3, 0.034, 6, 28]} />
+            <meshToonMaterial gradientMap={TOON_CRISP} color={ICE} transparent opacity={0.85} />
           </mesh>
-        ))}
+          <mesh position={[0, 1.06, 0.3]}>
+            <octahedronGeometry args={[0.08, 0]} />
+            <meshBasicMaterial color={ICE} />
+          </mesh>
+        </>
+      )}
 
-      {/* Flourish: golden halo + sparkles */}
+      {/* Flourish: golden crown + sparkles */}
       {stage === 'flourish' && (
         <>
-          <mesh position={[0, 1.28, 0]} rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[0.32, 0.046, 8, 36]} />
+          <mesh position={[0, 1.2, 0]} rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.28, 0.044, 8, 32]} />
             <meshToonMaterial gradientMap={TOON_CRISP} color={GOLD} />
           </mesh>
           {sparkles.map(([x, y, z], i) => (
             <mesh key={i} position={[x, y, z]}>
-              <sphereGeometry args={[0.052, 8, 8]} />
+              <sphereGeometry args={[0.05, 8, 8]} />
               <meshBasicMaterial color={GOLD} />
             </mesh>
           ))}
@@ -384,17 +380,17 @@ export function ZephyrMesh({
   );
 }
 
-// ─── Kova ─────────────────────────────────────────────────────────────────────
-// Stone Toad — extremely wide and squat, completely different from Zephyr/Maru.
-// NO ears at all. Two short round horn stubs on top. Heavy eyebrow ridge.
-// Silhouette: WIDE horizontal oval — unmistakably different from all others.
-// Therapeutic: the stable immovable form is a visual anchor for grounding.
+// ─── Kova → Cat ───────────────────────────────────────────────────────────────
+// Warm tabby cat — round head with pointy triangle ears, plump capsule body,
+// whiskers, soft cheek puffs, and a gently curved sphere-chain tail.
+// Silhouette: COMPACT round + triangle ears + curled tail arc (cozy shape).
+// Therapeutic: warm grounded presence, like a cat curled up beside you.
 //
 // Evolution arc:
-//   Guijarro → wide stone toad, horn stubs, heavy brow
-//   Roca     → crystal spikes on shoulders
-//   Monolito → chest armor plate + glowing rune
-//   Antiguo  → rune glow + moss patches
+//   Seedling → small cat, plain
+//   Sprout   → ribbon collar with small charm
+//   Bloom    → inner ear glow + second cheek blush
+//   Flourish → flower crown on head
 
 export function KovaMesh({
   stage,
@@ -403,138 +399,196 @@ export function KovaMesh({
   reactionKey,
 }: CompanionMeshProps): React.JSX.Element {
   const { groupRef, handleClick } = useCompanionAnimation(mood, reactionKey);
-  const CRYSTAL = '#a8d8d0';
-  const MOSS = '#7aaa62';
-  const RUNE = '#d4c880';
+  const INNER_EAR = '#f0b0b0';
+  const CREAM = '#f5e8d8';
+  const CHARM = '#f0d060';
+  const FLOWER = '#f0a0c0';
 
-  // Head: very wide, slightly flat
-  const HEAD_Y = 0.34;
+  const HEAD_Y = 0.36;
 
-  const crystalSpikes: [number, number, number, number][] = [
-    [-0.6, -0.12, 0.08, 0.42],
-    [0.6, -0.12, 0.08, -0.42],
-    [-0.48, -0.02, 0.06, 0.24],
-    [0.48, -0.02, 0.06, -0.24],
+  // Tail arc — 5 descending spheres curling to the right and up
+  const tailPuffs: [number, number, number, number][] = [
+    [0.42, -0.48, -0.1, 0.14],
+    [0.6, -0.32, -0.08, 0.12],
+    [0.7, -0.12, -0.06, 0.11],
+    [0.66, 0.1, -0.04, 0.09],
+    [0.58, 0.28, -0.02, 0.08],
   ];
 
-  const mossPatches: [number, number, number][] = [
-    [-0.26, HEAD_Y + 0.26, 0.3],
-    [0.22, HEAD_Y + 0.24, 0.32],
-    [0.0, HEAD_Y + 0.3, 0.24],
+  // Whisker lines on left and right cheeks
+  const whiskerL: [number, number, number, number, number][] = [
+    [-0.48, HEAD_Y - 0.04, HEAD_Y + 0.26, 0, 0.18],
+    [-0.5, HEAD_Y - 0.1, HEAD_Y + 0.26, 0, 0.12],
   ];
+  const whiskerR: [number, number, number, number, number][] = whiskerL.map(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ([x, y, z, _rx, rz]) => [-x, y, z, 0, -rz],
+  );
+
+  const flowerPetals: [number, number, number][] = Array.from(
+    { length: 5 },
+    (_, i): [number, number, number] => {
+      const a = (i / 5) * Math.PI * 2;
+      return [Math.cos(a) * 0.18, HEAD_Y + 0.52 + Math.sin(a) * 0.12, 0.32];
+    },
+  );
 
   return (
     <group ref={groupRef} onClick={handleClick}>
-      {/* Head — wide, flat squash (1.30 × 0.82) */}
-      <mesh position={[0, HEAD_Y, 0]} scale={[1.3, 0.82, 0.98]}>
+      {/* Triangle ears — pointed, on top of head */}
+      <mesh position={[-0.26, HEAD_Y + 0.38, 0.04]} rotation={[0, 0, 0.22]} scale={[1, 1.5, 0.6]}>
+        <coneGeometry args={[0.14, 0.3, 4]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      <mesh position={[0.26, HEAD_Y + 0.38, 0.04]} rotation={[0, 0, -0.22]} scale={[1, 1.5, 0.6]}>
+        <coneGeometry args={[0.14, 0.3, 4]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      {/* Pink inner ear */}
+      <mesh position={[-0.26, HEAD_Y + 0.38, 0.1]} rotation={[0, 0, 0.22]} scale={[0.6, 1.2, 0.2]}>
+        <coneGeometry args={[0.1, 0.22, 4]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={INNER_EAR} />
+      </mesh>
+      <mesh position={[0.26, HEAD_Y + 0.38, 0.1]} rotation={[0, 0, -0.22]} scale={[0.6, 1.2, 0.2]}>
+        <coneGeometry args={[0.1, 0.22, 4]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={INNER_EAR} />
+      </mesh>
+
+      {/* Round head */}
+      <mesh position={[0, HEAD_Y, 0]}>
         <sphereGeometry args={[0.42, 26, 26]} />
         <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
 
-      {/* Horn stubs — two short round nubs, NOT tall ears */}
-      <mesh position={[-0.28, HEAD_Y + 0.3, 0.08]} scale={[1, 2.0, 1]}>
-        <sphereGeometry args={[0.08, 10, 10]} />
-        <meshToonMaterial gradientMap={TOON_CRISP} color={color} />
+      {/* Cheek puffs */}
+      <mesh position={[-0.36, HEAD_Y - 0.08, 0.3]} scale={[0.9, 0.7, 0.6]}>
+        <sphereGeometry args={[0.18, 12, 12]} />
+        <meshToonMaterial gradientMap={TOON} color={CREAM} transparent opacity={0.6} />
       </mesh>
-      <mesh position={[0.28, HEAD_Y + 0.3, 0.08]} scale={[1, 2.0, 1]}>
-        <sphereGeometry args={[0.08, 10, 10]} />
-        <meshToonMaterial gradientMap={TOON_CRISP} color={color} />
-      </mesh>
-
-      {/* Eyebrow ridge — thick stone brow */}
-      <mesh position={[0, HEAD_Y + 0.1, HEAD_Y * 1.15]}>
-        <boxGeometry args={[0.58, 0.055, 0.07]} />
-        <meshToonMaterial gradientMap={TOON_CRISP} color={color} />
-      </mesh>
-
-      {/* Body — much wider than tall (1.55 × 0.70) */}
-      <mesh position={[0, -0.22, 0]} scale={[1.55, 0.7, 0.96]}>
-        <sphereGeometry args={[0.34, 22, 22]} />
-        <meshToonMaterial gradientMap={TOON} color={color} />
-      </mesh>
-
-      {/* Arms — very wide stubby nubs */}
-      <mesh position={[-0.72, -0.18, 0]} scale={[0.8, 1.2, 0.8]}>
-        <sphereGeometry args={[0.16, 14, 14]} />
-        <meshToonMaterial gradientMap={TOON} color={color} />
-      </mesh>
-      <mesh position={[0.72, -0.18, 0]} scale={[0.8, 1.2, 0.8]}>
-        <sphereGeometry args={[0.16, 14, 14]} />
-        <meshToonMaterial gradientMap={TOON} color={color} />
-      </mesh>
-
-      {/* Tiny feet — barely visible under body */}
-      <mesh position={[-0.2, -0.5, 0]}>
-        <sphereGeometry args={[0.12, 10, 10]} />
-        <meshToonMaterial gradientMap={TOON} color={color} />
-      </mesh>
-      <mesh position={[0.2, -0.5, 0]}>
-        <sphereGeometry args={[0.12, 10, 10]} />
-        <meshToonMaterial gradientMap={TOON} color={color} />
+      <mesh position={[0.36, HEAD_Y - 0.08, 0.3]} scale={[0.9, 0.7, 0.6]}>
+        <sphereGeometry args={[0.18, 12, 12]} />
+        <meshToonMaterial gradientMap={TOON} color={CREAM} transparent opacity={0.6} />
       </mesh>
 
       <Face
-        irisColor="#3a6a4a"
-        ink="#182018"
+        irisColor="#6a3820"
+        ink="#2a1408"
         mood={mood}
-        eyeSpan={0.22}
-        eyeY={HEAD_Y + 0.02}
-        zOffset={HEAD_Y + 0.4}
+        eyeSpan={0.19}
+        eyeY={HEAD_Y + 0.06}
+        zOffset={HEAD_Y + 0.42}
       />
 
-      {/* Sprout+: crystal spikes on shoulders */}
-      {(stage === 'sprout' || stage === 'bloom' || stage === 'flourish') &&
-        crystalSpikes.map(([x, y, z, rz], i) => (
-          <mesh key={i} position={[x, y, z]} rotation={[0, 0, rz]} scale={[1, 1.9, 1]}>
-            <octahedronGeometry args={[0.1, 0]} />
-            <meshToonMaterial gradientMap={TOON_CRISP} color={CRYSTAL} transparent opacity={0.8} />
-          </mesh>
-        ))}
+      {/* Whiskers */}
+      {[...whiskerL, ...whiskerR].map(([x, y, z, rx, rz], i) => (
+        <mesh key={i} position={[x, y, z]} rotation={[rx, 0, rz]}>
+          <boxGeometry args={[0.22, 0.018, 0.012]} />
+          <meshBasicMaterial color="#2d2520" transparent opacity={0.4} />
+        </mesh>
+      ))}
 
-      {/* Bloom+: chest armor plate + rune line */}
-      {(stage === 'bloom' || stage === 'flourish') && (
+      {/* Plump body — slightly wide capsule */}
+      <mesh position={[0, -0.22, 0]} scale={[1.08, 1.0, 0.96]}>
+        <capsuleGeometry args={[0.26, 0.22, 6, 18]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+
+      {/* Short arm nubs */}
+      <mesh position={[-0.44, -0.12, 0.06]} scale={[0.72, 1.1, 0.72]}>
+        <sphereGeometry args={[0.14, 12, 12]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      <mesh position={[0.44, -0.12, 0.06]} scale={[0.72, 1.1, 0.72]}>
+        <sphereGeometry args={[0.14, 12, 12]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+
+      {/* Tiny feet */}
+      <mesh position={[-0.14, -0.56, 0.06]} scale={[1.2, 0.6, 1.1]}>
+        <sphereGeometry args={[0.12, 10, 10]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      <mesh position={[0.14, -0.56, 0.06]} scale={[1.2, 0.6, 1.1]}>
+        <sphereGeometry args={[0.12, 10, 10]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+
+      {/* Tail — sphere chain curling to the right */}
+      {tailPuffs.map(([x, y, z, r], i) => (
+        <mesh key={i} position={[x, y, z]}>
+          <sphereGeometry args={[r, 10, 10]} />
+          <meshToonMaterial gradientMap={TOON} color={color} />
+        </mesh>
+      ))}
+      {/* Fluffy tail tip */}
+      <mesh position={[0.52, 0.36, -0.02]}>
+        <sphereGeometry args={[0.1, 10, 10]} />
+        <meshToonMaterial gradientMap={TOON} color={CREAM} />
+      </mesh>
+
+      {/* Sprout+: ribbon collar */}
+      {(stage === 'sprout' || stage === 'bloom' || stage === 'flourish') && (
         <>
-          <mesh position={[0, -0.14, 0.3]} scale={[1, 1, 0.16]}>
-            <sphereGeometry args={[0.3, 16, 16]} />
-            <meshToonMaterial gradientMap={TOON_CRISP} color={RUNE} transparent opacity={0.7} />
+          <mesh position={[0, 0.08, 0]} rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.32, 0.04, 6, 28]} />
+            <meshToonMaterial
+              gradientMap={TOON_CRISP}
+              color={INNER_EAR}
+              transparent
+              opacity={0.9}
+            />
           </mesh>
-          <mesh position={[0, -0.14, 0.32]}>
-            <boxGeometry args={[0.32, 0.032, 0.01]} />
-            <meshBasicMaterial color={RUNE} transparent opacity={0.58} />
+          <mesh position={[0, 0.08, 0.34]}>
+            <sphereGeometry args={[0.06, 8, 8]} />
+            <meshBasicMaterial color={CHARM} />
           </mesh>
         </>
       )}
 
-      {/* Flourish: glowing rune + moss */}
+      {/* Bloom+: cheek blush deepens + inner ear glow */}
+      {(stage === 'bloom' || stage === 'flourish') && (
+        <>
+          <mesh position={[-0.36, HEAD_Y - 0.08, 0.34]} scale={[0.7, 0.55, 0.3]}>
+            <sphereGeometry args={[0.18, 10, 10]} />
+            <meshBasicMaterial color={INNER_EAR} transparent opacity={0.45} />
+          </mesh>
+          <mesh position={[0.36, HEAD_Y - 0.08, 0.34]} scale={[0.7, 0.55, 0.3]}>
+            <sphereGeometry args={[0.18, 10, 10]} />
+            <meshBasicMaterial color={INNER_EAR} transparent opacity={0.45} />
+          </mesh>
+        </>
+      )}
+
+      {/* Flourish: flower crown */}
       {stage === 'flourish' && (
         <>
-          <mesh position={[0, -0.14, 0.34]}>
-            <boxGeometry args={[0.24, 0.032, 0.01]} />
-            <meshBasicMaterial color={RUNE} />
-          </mesh>
-          {mossPatches.map(([x, y, z], i) => (
+          {flowerPetals.map(([x, y, z], i) => (
             <mesh key={i} position={[x, y, z]}>
-              <sphereGeometry args={[0.09, 8, 8]} />
-              <meshToonMaterial gradientMap={TOON} color={MOSS} />
+              <sphereGeometry args={[0.07, 8, 8]} />
+              <meshBasicMaterial color={FLOWER} />
             </mesh>
           ))}
+          <mesh position={[0, HEAD_Y + 0.52, 0.32]}>
+            <sphereGeometry args={[0.06, 8, 8]} />
+            <meshBasicMaterial color={CHARM} />
+          </mesh>
         </>
       )}
     </group>
   );
 }
 
-// ─── Luma ─────────────────────────────────────────────────────────────────────
-// Ember Wisp — perfectly round orb with a dramatic 5-cone flame crown.
-// Body tapers into a trailing fire tail. No legs — floats.
-// Silhouette: ROUND sphere + spiky crown on top (unmistakable shape).
-// Therapeutic: luminosity grows through consistent care — hope made visible.
+// ─── Luma → Bear Cub ──────────────────────────────────────────────────────────
+// Golden bear cub — plump round body, dome ear bumps, protruding round snout,
+// cream tummy patch, and stubby little paws. Warm amber-honey palette.
+// Silhouette: PLUMP round + small ear domes + snout bump (soft warm shape).
+// Therapeutic: huggable warmth represents hope kindling through consistent care.
 //
 // Evolution arc:
-//   Ember   → round orb, animated 5-flame crown, trailing fire
-//   Fulgor  → orbital spark ring
-//   Farol   → lantern cage struts
-//   Aurora  → 8-ray corona
+//   Seedling → plain cub, cream tummy
+//   Sprout   → honey drop charm on tummy
+//   Bloom    → little flower behind ear
+//   Flourish → golden halo + honey-glow
 
 export function LumaMesh({
   stage,
@@ -543,189 +597,172 @@ export function LumaMesh({
   reactionKey,
 }: CompanionMeshProps): React.JSX.Element {
   const { groupRef, handleClick } = useCompanionAnimation(mood, reactionKey);
-  const FLAME_A = '#ff8028';
-  const FLAME_B = '#ffe060';
+  const CREAM = '#f8ead8';
+  const HONEY = '#f0a830';
+  const PINK = '#f0b0b0';
+  const GOLD = '#f8e060';
 
-  const flames = useRef<(THREE.Mesh | null)[]>([null, null, null, null, null]);
-  const ringRef = useRef<THREE.Mesh | null>(null);
-  const prefersReduced = useRef(
-    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-  );
-
-  useFrame(({ clock }) => {
-    if (prefersReduced.current) return;
-    const t = clock.elapsedTime;
-    const offsets = [0, 1.1, 2.2, 0.6, 1.8];
-    // Safe: i is bounded by flamePositions.length (5); offsets is a 5-element literal array
-    flames.current.forEach((f, i) => {
-      // eslint-disable-next-line security/detect-object-injection
-      const off = offsets[i] ?? 0;
-      if (f) f.scale.y = 0.78 + 0.38 * Math.abs(Math.sin(t * 4.0 + off));
-    });
-    if (ringRef.current) ringRef.current.rotation.y += 0.008;
-  });
-
-  // 5-cone flame crown: 1 center tall + 4 around
-  const flamePositions: [number, number, number, number, number, number][] = [
-    [0, 0.52 + 0.42, 0.06, 0, 0, 0],
-    [0.22, 0.52 + 0.32, 0.04, 0, 0, 0.32],
-    [-0.22, 0.52 + 0.32, 0.04, 0, 0, -0.32],
-    [0.12, 0.52 + 0.26, 0.04, 0, 0, 0.14],
-    [-0.12, 0.52 + 0.26, 0.04, 0, 0, -0.14],
-  ];
-  const flameSizes: [number, number][] = [
-    [0.12, 0.44],
-    [0.09, 0.32],
-    [0.09, 0.32],
-    [0.08, 0.26],
-    [0.08, 0.26],
-  ];
-  const flameColors = [FLAME_B, FLAME_A, FLAME_A, FLAME_B, FLAME_B];
-
-  const strutPositions: [number, number, number, number][] = [
-    [0, 0.52 + 0.42 + 0.08, 0, 0],
-    [0, -0.52 - 0.3, 0, 0],
-    [0.72, 0.12, 0, Math.PI / 2],
-    [-0.72, 0.12, 0, Math.PI / 2],
-  ];
-
-  const coronaRays: [number, number, number][] = Array.from(
-    { length: 8 },
-    (_, i): [number, number, number] => {
-      const a = (i / 8) * Math.PI * 2;
-      return [Math.cos(a) * 1.05, 0.12 + Math.sin(a) * 0.88, 0.12];
-    },
-  );
-
-  const baseEmissive =
-    stage === 'seedling' ? 0.22 : stage === 'sprout' ? 0.42 : stage === 'bloom' ? 0.62 : 0.88;
+  const HEAD_Y = 0.42;
 
   return (
     <group ref={groupRef} onClick={handleClick}>
-      {/* Round orb body — perfectly spherical, distinct from all others */}
-      <mesh>
-        <sphereGeometry args={[0.52, 28, 28]} />
-        <meshToonMaterial
-          gradientMap={TOON}
-          color={color}
-          emissive={color}
-          emissiveIntensity={baseEmissive * 0.55}
-        />
+      {/* Dome ear bumps — small round spheres sitting on top of head */}
+      <mesh position={[-0.3, HEAD_Y + 0.36, 0.04]}>
+        <sphereGeometry args={[0.17, 14, 14]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      <mesh position={[0.3, HEAD_Y + 0.36, 0.04]}>
+        <sphereGeometry args={[0.17, 14, 14]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      {/* Inner ear dots */}
+      <mesh position={[-0.3, HEAD_Y + 0.36, 0.18]}>
+        <sphereGeometry args={[0.08, 8, 8]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={PINK} />
+      </mesh>
+      <mesh position={[0.3, HEAD_Y + 0.36, 0.18]}>
+        <sphereGeometry args={[0.08, 8, 8]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={PINK} />
       </mesh>
 
-      {/* Outer glow halo */}
-      <mesh>
-        <sphereGeometry args={[0.62, 16, 16]} />
-        <meshToonMaterial
-          gradientMap={TOON}
-          color={color}
-          emissive={color}
-          emissiveIntensity={baseEmissive * 0.12}
-          transparent
-          opacity={0.14}
-        />
+      {/* Round head */}
+      <mesh position={[0, HEAD_Y, 0]}>
+        <sphereGeometry args={[0.44, 26, 26]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
 
-      {/* Trailing fire tail below orb */}
-      <mesh position={[0, -0.68, 0]} rotation={[Math.PI, 0, 0]}>
-        <coneGeometry args={[0.24, 0.58, 12]} />
-        <meshToonMaterial
-          gradientMap={TOON}
-          color={color}
-          emissive={color}
-          emissiveIntensity={0.28}
-          transparent
-          opacity={0.52}
-        />
+      {/* Round protruding snout */}
+      <mesh position={[0, HEAD_Y - 0.1, 0.36]} scale={[1.1, 0.8, 0.62]}>
+        <sphereGeometry args={[0.2, 16, 16]} />
+        <meshToonMaterial gradientMap={TOON} color={CREAM} />
       </mesh>
-
-      {/* Animated 5-cone flame crown */}
-      {flamePositions.map(([x, y, z, rx, ry, rz], i) => {
-        // Safe: i is bounded by flamePositions.length (5); all arrays have 5 elements
-        // eslint-disable-next-line security/detect-object-injection
-        const fSize = flameSizes[i];
-        // eslint-disable-next-line security/detect-object-injection
-        const fColor = flameColors[i] ?? FLAME_A;
-        return (
-          <mesh
-            key={i}
-            ref={(el) => {
-              // eslint-disable-next-line security/detect-object-injection
-              flames.current[i] = el;
-            }}
-            position={[x, y, z]}
-            rotation={[rx, ry, rz]}
-          >
-            <coneGeometry args={[fSize?.[0] ?? 0.1, fSize?.[1] ?? 0.3, 8]} />
-            <meshBasicMaterial color={fColor} transparent opacity={i === 0 ? 0.95 : 0.82} />
-          </mesh>
-        );
-      })}
+      {/* Tiny nose */}
+      <mesh position={[0, HEAD_Y - 0.04, 0.54]}>
+        <sphereGeometry args={[0.05, 8, 8]} />
+        <meshBasicMaterial color="#5a2010" />
+      </mesh>
 
       <Face
-        irisColor="#7a2800"
-        ink="#280e00"
+        irisColor="#6a3800"
+        ink="#2a1400"
         mood={mood}
         eyeSpan={0.18}
-        eyeY={0.06}
-        zOffset={0.52}
+        eyeY={HEAD_Y + 0.1}
+        zOffset={HEAD_Y + 0.42}
       />
 
-      {/* Sprout+: orbital spark ring */}
+      {/* Plump round body */}
+      <mesh position={[0, -0.16, 0]} scale={[1.06, 1.0, 0.98]}>
+        <sphereGeometry args={[0.42, 24, 24]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+
+      {/* Cream tummy patch */}
+      <mesh position={[0, -0.14, 0.36]} scale={[0.62, 0.72, 0.2]}>
+        <sphereGeometry args={[0.42, 16, 16]} />
+        <meshToonMaterial gradientMap={TOON} color={CREAM} />
+      </mesh>
+
+      {/* Stubby arm paws */}
+      <mesh position={[-0.52, -0.08, 0.1]} scale={[0.78, 1.1, 0.78]}>
+        <sphereGeometry args={[0.16, 14, 14]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      <mesh position={[0.52, -0.08, 0.1]} scale={[0.78, 1.1, 0.78]}>
+        <sphereGeometry args={[0.16, 14, 14]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      {/* Paw pads */}
+      <mesh position={[-0.56, -0.12, 0.22]}>
+        <sphereGeometry args={[0.08, 8, 8]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={CREAM} />
+      </mesh>
+      <mesh position={[0.56, -0.12, 0.22]}>
+        <sphereGeometry args={[0.08, 8, 8]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={CREAM} />
+      </mesh>
+
+      {/* Round feet */}
+      <mesh position={[-0.16, -0.54, 0.1]} scale={[1.3, 0.62, 1.2]}>
+        <sphereGeometry args={[0.14, 12, 12]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+      <mesh position={[0.16, -0.54, 0.1]} scale={[1.3, 0.62, 1.2]}>
+        <sphereGeometry args={[0.14, 12, 12]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
+      </mesh>
+
+      {/* Sprout+: honey drop on tummy */}
       {(stage === 'sprout' || stage === 'bloom' || stage === 'flourish') && (
-        <mesh ref={ringRef} rotation={[Math.PI / 2.6, 0, 0]}>
-          <torusGeometry args={[0.88, 0.048, 8, 32]} />
-          <meshToonMaterial
-            gradientMap={TOON_CRISP}
-            color={FLAME_B}
-            emissive={FLAME_B}
-            emissiveIntensity={0.4}
-            transparent
-            opacity={0.68}
-          />
-        </mesh>
+        <>
+          <mesh position={[0, -0.06, 0.54]} scale={[1, 1.4, 1]}>
+            <sphereGeometry args={[0.08, 10, 10]} />
+            <meshBasicMaterial color={HONEY} />
+          </mesh>
+          <mesh position={[0, -0.2, 0.53]} rotation={[Math.PI, 0, 0]}>
+            <coneGeometry args={[0.06, 0.12, 8]} />
+            <meshBasicMaterial color={HONEY} />
+          </mesh>
+        </>
       )}
 
-      {/* Bloom+: lantern struts */}
-      {(stage === 'bloom' || stage === 'flourish') &&
-        strutPositions.map(([x, y, z, rz], i) => (
-          <mesh key={i} position={[x, y, z]} rotation={[0, 0, rz]}>
-            <capsuleGeometry args={[0.04, 0.3, 4, 8]} />
+      {/* Bloom+: flower behind ear */}
+      {(stage === 'bloom' || stage === 'flourish') && (
+        <>
+          <mesh position={[-0.44, HEAD_Y + 0.44, 0.1]}>
+            <sphereGeometry args={[0.08, 8, 8]} />
+            <meshBasicMaterial color={PINK} />
+          </mesh>
+          {[0, 1, 2, 3, 4].map((i) => {
+            const a = (i / 5) * Math.PI * 2;
+            return (
+              <mesh
+                key={i}
+                position={[-0.44 + Math.cos(a) * 0.1, HEAD_Y + 0.44 + Math.sin(a) * 0.1, 0.06]}
+              >
+                <sphereGeometry args={[0.06, 8, 8]} />
+                <meshBasicMaterial color={PINK} transparent opacity={0.85} />
+              </mesh>
+            );
+          })}
+        </>
+      )}
+
+      {/* Flourish: golden halo */}
+      {stage === 'flourish' && (
+        <>
+          <mesh position={[0, HEAD_Y + 0.7, 0]} rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.3, 0.044, 8, 32]} />
+            <meshToonMaterial gradientMap={TOON_CRISP} color={GOLD} />
+          </mesh>
+          <mesh>
+            <sphereGeometry args={[0.54, 16, 16]} />
             <meshToonMaterial
-              gradientMap={TOON_CRISP}
+              gradientMap={TOON}
               color={color}
               emissive={color}
-              emissiveIntensity={0.28}
+              emissiveIntensity={0.18}
               transparent
-              opacity={0.58}
+              opacity={0.12}
             />
           </mesh>
-        ))}
-
-      {/* Flourish: 8-ray corona */}
-      {stage === 'flourish' &&
-        coronaRays.map(([x, y, z], i) => (
-          <mesh key={i} position={[x, y, z]}>
-            <capsuleGeometry args={[0.03, 0.26, 4, 8]} />
-            <meshBasicMaterial color={FLAME_B} transparent opacity={0.6} />
-          </mesh>
-        ))}
+        </>
+      )}
     </group>
   );
 }
 
-// ─── Maru ─────────────────────────────────────────────────────────────────────
-// Moon Bunny — chubby round body with LONG FLOPPY drooping ears.
-// Ears hang DOWN and out from sides (lop-rabbit style) — totally unlike Zephyr.
-// Spinning crystal rings grow with evolution. Fluffy sphere-cluster tail.
-// Silhouette: ROUND body + wide drooping ear extensions (unique shape).
-// Therapeutic: slow ring rotation teaches acceptance of natural cycles.
+// ─── Maru → Duck ──────────────────────────────────────────────────────────────
+// Lavender duck — large puffball body, small round head, wide flat orange beak,
+// little oval wing pads, orange feet, small tail feather bump behind.
+// Silhouette: VERY ROUND body + distinct flat beak + oval wing pads (pudgy).
+// Therapeutic: gentle acceptance of natural rhythms — serene and unhurried.
 //
 // Evolution arc:
-//   Perla    → chubby bunny, floppy ears, fluffy tail
-//   Creciente → equatorial crystal ring
-//   Halo     → tilted second ring + crescent forehead mark
-//   Cosmos   → three rings + star-gem octahedra crown
+//   Seedling → plain duck
+//   Sprout   → little daisy on head
+//   Bloom    → spinning bubble ring
+//   Flourish → second ring + sparkle crown
 
 export function MaruMesh({
   stage,
@@ -734,161 +771,132 @@ export function MaruMesh({
   reactionKey,
 }: CompanionMeshProps): React.JSX.Element {
   const { groupRef, handleClick } = useCompanionAnimation(mood, reactionKey);
-  const CREAM = '#f0e4d8';
-  const STAR = '#f8e890';
-  const PINK = '#f0a8c0';
+  const ORANGE = '#f08030';
+  const CREAM = '#f8f0e8';
+  const DAISY = '#f8f0a0';
+  const PINK = '#f0b8d8';
 
   const ring1Ref = useRef<THREE.Mesh | null>(null);
   const ring2Ref = useRef<THREE.Mesh | null>(null);
-  const ring3Ref = useRef<THREE.Mesh | null>(null);
+  const prefersReduced = useRef(
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
 
   useFrame((_, delta) => {
-    if (ring1Ref.current) ring1Ref.current.rotation.y += delta * 0.24;
-    if (ring2Ref.current) ring2Ref.current.rotation.x += delta * 0.16;
-    if (ring3Ref.current) ring3Ref.current.rotation.z += delta * 0.12;
+    if (prefersReduced.current) return;
+    if (ring1Ref.current) ring1Ref.current.rotation.y += delta * 0.3;
+    if (ring2Ref.current) ring2Ref.current.rotation.x += delta * 0.2;
   });
 
-  // Floppy lop ears — attached at sides of head, droop outward and down.
-  // Rotation [0.55, 0, ±1.45] makes capsule point sideways-downward.
-  const earData: [number, number, number, number, number, number][] = [
-    [-0.5, 0.38, 0.04, 0.55, 0, -1.45],
-    [0.5, 0.38, 0.04, 0.55, 0, 1.45],
-  ];
+  const HEAD_Y = 0.58;
 
-  // Fluffy tail cluster
-  const tailPuffs: [number, number, number, number][] = [
-    [0, -0.18, -0.38, 0.16],
-    [0.14, -0.12, -0.32, 0.11],
-    [-0.11, -0.12, -0.32, 0.11],
+  const sparkles: [number, number, number][] = [
+    [0.44, HEAD_Y + 0.52, 0.1],
+    [-0.46, HEAD_Y + 0.48, 0.1],
+    [0.22, HEAD_Y + 0.68, 0.06],
+    [-0.2, HEAD_Y + 0.66, 0.06],
   ];
-
-  const starCrown: [number, number, number][] = Array.from(
-    { length: 5 },
-    (_, i): [number, number, number] => {
-      const a = (i / 5) * Math.PI * 2;
-      return [Math.cos(a) * 0.62, 0.56 + Math.sin(a) * 0.08, Math.sin(a) * 0.4];
-    },
-  );
 
   return (
     <group ref={groupRef} onClick={handleClick}>
-      {/* Floppy drooping ears — lop-rabbit style, hang OUT from sides */}
-      {earData.map(([x, y, z, rx, ry, rz], i) => (
-        <group key={i} position={[x, y, z]} rotation={[rx, ry, rz]}>
-          {/* Outer ear */}
-          <mesh>
-            <capsuleGeometry args={[0.088, 0.46, 4, 10]} />
-            <meshToonMaterial gradientMap={TOON} color={color} />
-          </mesh>
-          {/* Pink inner ear */}
-          <mesh position={[0, 0, 0.05]}>
-            <capsuleGeometry args={[0.05, 0.32, 4, 10]} />
-            <meshToonMaterial gradientMap={TOON_CRISP} color={PINK} />
-          </mesh>
-        </group>
-      ))}
-
-      {/* Chubby round head — rounder than wide */}
-      <mesh position={[0, 0.38, 0]}>
-        <sphereGeometry args={[0.46, 28, 28]} />
+      {/* Large puffball body — very round, the widest shape */}
+      <mesh position={[0, -0.06, 0]} scale={[1.08, 1.0, 0.98]}>
+        <sphereGeometry args={[0.52, 28, 28]} />
         <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
 
-      {/* Plump chubby cheeks */}
-      <mesh position={[-0.42, 0.28, 0.3]} scale={[0.88, 0.72, 0.6]}>
-        <sphereGeometry args={[0.22, 12, 12]} />
-        <meshToonMaterial gradientMap={TOON} color={CREAM} transparent opacity={0.55} />
+      {/* Small oval wing pads — flat, laid against body */}
+      <mesh position={[-0.58, 0.04, 0.14]} scale={[0.62, 1.0, 0.36]} rotation={[0, 0.3, 0.4]}>
+        <sphereGeometry args={[0.26, 14, 14]} />
+        <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
-      <mesh position={[0.42, 0.28, 0.3]} scale={[0.88, 0.72, 0.6]}>
-        <sphereGeometry args={[0.22, 12, 12]} />
-        <meshToonMaterial gradientMap={TOON} color={CREAM} transparent opacity={0.55} />
-      </mesh>
-
-      {/* Body */}
-      <mesh position={[0, -0.22, 0]} scale={[1.02, 0.96, 1.0]}>
-        <sphereGeometry args={[0.32, 22, 22]} />
+      <mesh position={[0.58, 0.04, 0.14]} scale={[0.62, 1.0, 0.36]} rotation={[0, -0.3, -0.4]}>
+        <sphereGeometry args={[0.26, 14, 14]} />
         <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
 
-      {/* Arm nubs */}
-      <mesh position={[-0.42, -0.14, 0]}>
-        <sphereGeometry args={[0.14, 14, 14]} />
-        <meshToonMaterial gradientMap={TOON} color={color} />
-      </mesh>
-      <mesh position={[0.42, -0.14, 0]}>
-        <sphereGeometry args={[0.14, 14, 14]} />
+      {/* Tail feather bump — small rounded nub at back */}
+      <mesh position={[0, 0.14, -0.46]} scale={[0.7, 0.8, 0.6]}>
+        <sphereGeometry args={[0.18, 12, 12]} />
         <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
 
-      {/* Leg nubs */}
-      <mesh position={[-0.16, -0.46, 0]}>
-        <sphereGeometry args={[0.13, 12, 12]} />
-        <meshToonMaterial gradientMap={TOON} color={color} />
-      </mesh>
-      <mesh position={[0.16, -0.46, 0]}>
-        <sphereGeometry args={[0.13, 12, 12]} />
+      {/* Small round head */}
+      <mesh position={[0, HEAD_Y, 0]}>
+        <sphereGeometry args={[0.36, 24, 24]} />
         <meshToonMaterial gradientMap={TOON} color={color} />
       </mesh>
 
       <Face
-        irisColor="#4858c0"
-        ink="#181840"
+        irisColor="#4050b8"
+        ink="#181830"
         mood={mood}
-        eyeSpan={0.2}
-        eyeY={0.44}
-        zOffset={0.84}
+        eyeSpan={0.16}
+        eyeY={HEAD_Y + 0.06}
+        zOffset={HEAD_Y + 0.36}
       />
 
-      {/* Fluffy tail */}
-      {tailPuffs.map(([x, y, z, r], i) => (
-        <mesh key={i} position={[x, y, z]}>
-          <sphereGeometry args={[r, 10, 10]} />
-          <meshToonMaterial gradientMap={TOON} color={CREAM} />
-        </mesh>
-      ))}
+      {/* Wide flat orange beak */}
+      <mesh
+        position={[0, HEAD_Y - 0.04, 0.3]}
+        rotation={[Math.PI / 2.2, 0, 0]}
+        scale={[1.4, 1, 0.6]}
+      >
+        <coneGeometry args={[0.1, 0.22, 8]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={ORANGE} />
+      </mesh>
 
-      {/* Halo+: crescent forehead mark */}
-      {(stage === 'bloom' || stage === 'flourish') && (
-        <mesh position={[0, 0.68, 0.42]} rotation={[0, 0, Math.PI / 2]}>
-          <torusGeometry args={[0.1, 0.024, 6, 20, Math.PI * 1.4]} />
-          <meshBasicMaterial color={STAR} />
-        </mesh>
-      )}
+      {/* Orange feet — wide oval pads */}
+      <mesh position={[-0.16, -0.54, 0.12]} scale={[1.5, 0.5, 1.3]}>
+        <sphereGeometry args={[0.13, 10, 10]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={ORANGE} />
+      </mesh>
+      <mesh position={[0.16, -0.54, 0.12]} scale={[1.5, 0.5, 1.3]}>
+        <sphereGeometry args={[0.13, 10, 10]} />
+        <meshToonMaterial gradientMap={TOON_CRISP} color={ORANGE} />
+      </mesh>
 
-      {/* Creciente+: equatorial crystal ring */}
+      {/* Sprout+: little daisy on head */}
       {(stage === 'sprout' || stage === 'bloom' || stage === 'flourish') && (
-        <mesh ref={ring1Ref} rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[1.14, 0.05, 8, 44]} />
-          <meshToonMaterial gradientMap={TOON_CRISP} color={color} transparent opacity={0.8} />
-        </mesh>
+        <>
+          {[0, 1, 2, 3, 4, 5].map((i) => {
+            const a = (i / 6) * Math.PI * 2;
+            return (
+              <mesh
+                key={i}
+                position={[Math.cos(a) * 0.13, HEAD_Y + 0.32 + Math.sin(a) * 0.06, 0.3]}
+              >
+                <sphereGeometry args={[0.06, 8, 8]} />
+                <meshBasicMaterial color={CREAM} />
+              </mesh>
+            );
+          })}
+          <mesh position={[0, HEAD_Y + 0.32, 0.34]}>
+            <sphereGeometry args={[0.07, 8, 8]} />
+            <meshBasicMaterial color={DAISY} />
+          </mesh>
+        </>
       )}
 
-      {/* Halo+: tilted second ring */}
+      {/* Bloom+: spinning bubble ring */}
       {(stage === 'bloom' || stage === 'flourish') && (
-        <mesh ref={ring2Ref} rotation={[Math.PI / 2 + 0.68, 0.38, 0]}>
-          <torusGeometry args={[1.04, 0.04, 8, 44]} />
-          <meshToonMaterial gradientMap={TOON_CRISP} color={color} transparent opacity={0.68} />
+        <mesh ref={ring1Ref} rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[1.06, 0.046, 8, 40]} />
+          <meshToonMaterial gradientMap={TOON_CRISP} color={color} transparent opacity={0.75} />
         </mesh>
       )}
 
-      {/* Cosmos: third ring + star crown */}
+      {/* Flourish: second ring + sparkle crown */}
       {stage === 'flourish' && (
         <>
-          <mesh ref={ring3Ref} rotation={[0.3, Math.PI / 4, Math.PI / 3]}>
-            <torusGeometry args={[0.92, 0.034, 8, 44]} />
-            <meshToonMaterial
-              gradientMap={TOON_CRISP}
-              color={color}
-              emissive={color}
-              emissiveIntensity={0.2}
-              transparent
-              opacity={0.58}
-            />
+          <mesh ref={ring2Ref} rotation={[Math.PI / 2 + 0.6, 0.4, 0]}>
+            <torusGeometry args={[0.94, 0.038, 8, 40]} />
+            <meshToonMaterial gradientMap={TOON_CRISP} color={PINK} transparent opacity={0.62} />
           </mesh>
-          {starCrown.map(([x, y, z], i) => (
-            <mesh key={i} position={[x, y, z]} scale={[1, 1.6, 1]}>
-              <octahedronGeometry args={[0.08, 0]} />
-              <meshBasicMaterial color={STAR} />
+          {sparkles.map(([x, y, z], i) => (
+            <mesh key={i} position={[x, y, z]}>
+              <sphereGeometry args={[0.05, 8, 8]} />
+              <meshBasicMaterial color={DAISY} />
             </mesh>
           ))}
         </>

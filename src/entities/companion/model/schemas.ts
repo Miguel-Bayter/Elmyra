@@ -70,6 +70,7 @@ export const appPreferencesSchema = z.object({
   theme: z.enum(['light', 'dark']).default('light'),
   language: z.enum(['en', 'es']).default('en'),
   disclaimerAccepted: z.boolean().default(false),
+  crisisCountry: z.string().default('us'),
 });
 
 // ─── Inferred TypeScript types (single source of truth) ──────────────────────
