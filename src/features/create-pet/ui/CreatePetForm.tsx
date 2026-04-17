@@ -13,7 +13,7 @@ const ERROR_KEY_MAP: Record<string, 'nameRequired' | 'nameTooLong' | 'nameInvali
   'errors.nameInvalidChars': 'nameInvalidChars',
 };
 
-const SPECIES_LIST: CompanionSpecies[] = ['felis', 'spectra', 'dolcis', 'lumis'];
+const SPECIES_LIST: CompanionSpecies[] = ['zephyr', 'kova', 'luma', 'maru'];
 
 // ─── Per-species visual theme — no inline styles (R3) ────────────────────────
 interface SpeciesTheme {
@@ -26,15 +26,7 @@ interface SpeciesTheme {
 }
 
 const SPECIES_THEME: Record<CompanionSpecies, SpeciesTheme> = {
-  felis: {
-    cardBg: 'bg-lavender-mist',
-    ring: 'ring-lavender',
-    tagline: 'text-lavender-dark',
-    checkBg: 'bg-lavender',
-    descBg: 'bg-lavender-mist',
-    descBorder: 'border-lavender-card',
-  },
-  spectra: {
+  zephyr: {
     cardBg: 'bg-mint-mist',
     ring: 'ring-soft-mint',
     tagline: 'text-sage-dark',
@@ -42,21 +34,29 @@ const SPECIES_THEME: Record<CompanionSpecies, SpeciesTheme> = {
     descBg: 'bg-mint-mist',
     descBorder: 'border-card',
   },
-  dolcis: {
-    cardBg: 'bg-peach-mist',
+  kova: {
+    cardBg: 'bg-parchment-deep',
     ring: 'ring-warm-peach',
-    tagline: 'text-warm-peach',
+    tagline: 'text-ink-secondary',
     checkBg: 'bg-warm-peach',
-    descBg: 'bg-peach-mist',
+    descBg: 'bg-parchment-deep',
     descBorder: 'border-card',
   },
-  lumis: {
+  luma: {
     cardBg: 'bg-golden-mist',
     ring: 'ring-golden',
     tagline: 'text-golden-dark',
     checkBg: 'bg-golden',
     descBg: 'bg-golden-mist',
     descBorder: 'border-card',
+  },
+  maru: {
+    cardBg: 'bg-lavender-mist',
+    ring: 'ring-lavender',
+    tagline: 'text-lavender-dark',
+    checkBg: 'bg-lavender',
+    descBg: 'bg-lavender-mist',
+    descBorder: 'border-lavender-card',
   },
 };
 

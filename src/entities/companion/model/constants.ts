@@ -1,4 +1,4 @@
-import type { ActionType, CompanionStage, CompanionStats } from './types';
+import type { ActionType, CompanionSpecies, CompanionStage, CompanionStats } from './types';
 
 // ─── Storage keys ─────────────────────────────────────────────────────────────
 // All prefixed 'elmyra_' — enables bulk deletion for right-to-erasure (R6)
@@ -47,6 +47,21 @@ export const STAGE_THRESHOLDS: Readonly<Record<CompanionStage, number>> = {
   sprout: 90,
   bloom: 540,
   flourish: 2160,
+};
+
+// ─── Interaction-driven evolution ────────────────────────────────────────────
+// New species have a "signature action" — each time it's performed, the companion
+// gains INTERACTION_BOOST_WEIGHT extra effective age ticks toward the next stage.
+// This lets attentive players unlock stages faster by caring in the right way.
+export const INTERACTION_BOOST_WEIGHT = 4;
+
+// Maps each species to its signature action — performing it grants INTERACTION_BOOST_WEIGHT
+// extra effective age ticks, letting attentive players unlock stages faster.
+export const SPECIES_PRIMARY_ACTION: Partial<Record<CompanionSpecies, ActionType>> = {
+  zephyr: 'rest', // Breathing/rest feeds Zephyr's cloud
+  kova: 'nourish', // Tending and feeding grounds Kova
+  luma: 'comfort', // Emotional warmth grows Luma's light
+  maru: 'play', // Joy sets Maru's rings spinning
 };
 
 // ─── Offline decay cap ───────────────────────────────────────────────────────

@@ -6,15 +6,9 @@ import { clsx } from 'clsx';
 import { useCompanionStore, CRITICAL_THRESHOLD } from '@entities/companion';
 import { getStatColorClass } from '@shared/ui/ProgressBar';
 
-// S4-FE-06: Gentle opacity pulse for critical stats (R7 — never flashing)
-const criticalTransition: Transition = {
-  repeat: Infinity,
-  duration: 2.5,
-  ease: 'easeInOut',
-};
-const criticalAnimate = { opacity: [1, 0.55, 1] };
+const criticalTransition: Transition = { repeat: Infinity, duration: 2.5, ease: 'easeInOut' };
+const criticalAnimate = { opacity: [1, 0.5, 1] };
 
-// ─── Stat config — emoji + translation key ────────────────────────────────────
 const STAT_CONFIG = [
   { key: 'nourishment', emoji: '🍃' },
   { key: 'joy', emoji: '✨' },
@@ -22,53 +16,8 @@ const STAT_CONFIG = [
   { key: 'vitality', emoji: '💎' },
 ] as const;
 
-// ─── Mini stat card ────────────────────────────────────────────────────────────
-interface StatCardProps {
-  emoji: string;
-  label: string;
-  value: number;
-  isCritical: boolean;
-}
-
-function StatCard({ emoji, label, value, isCritical }: StatCardProps): React.JSX.Element {
-  const clamped = Math.min(100, Math.max(0, Math.round(value)));
-  const colorClass = getStatColorClass(value);
-
-  return (
-    <motion.div
-      className="flex flex-col gap-1.5 rounded-2xl bg-parchment-warm px-3 py-2.5"
-      animate={isCritical ? criticalAnimate : {}}
-      transition={isCritical ? criticalTransition : {}}
-    >
-      {/* Top row: emoji + label + value */}
-      <div className="flex items-center gap-1.5">
-        <span className="text-base leading-none" aria-hidden="true">
-          {emoji}
-        </span>
-        <span
-          className={clsx(
-            'flex-1 text-xs font-medium truncate transition-colors duration-300',
-            isCritical ? 'text-amber-400' : 'text-ink-secondary',
-          )}
-        >
-          {label}
-        </span>
-        <span className="text-xs tabular-nums font-semibold text-ink-muted">{clamped}</span>
-      </div>
-
-      {/* Progress bar — thin, native <progress> (R3: no inline style) */}
-      <progress
-        className={clsx('progress h-1.5 w-full', colorClass)}
-        value={clamped}
-        max={100}
-        aria-label={label}
-        aria-valuenow={clamped}
-      />
-    </motion.div>
-  );
-}
-
-// ─── StatsPanel ───────────────────────────────────────────────────────────────
+// ─── StatsPanel — compact 4-column single row ─────────────────────────────────
+// Each cell: emoji + number + thin bar. Fits in ~52px total height.
 export function StatsPanel(): React.JSX.Element | null {
   const { t } = useTranslation('pet');
 
@@ -83,19 +32,46 @@ export function StatsPanel(): React.JSX.Element | null {
   const values: Record<string, number> = { nourishment, joy, energy, vitality };
 
   return (
-    <div className="grid w-full grid-cols-2 gap-2">
+    <div className="flex w-full gap-1.5 rounded-2xl bg-parchment-warm px-3 py-2.5">
       {STAT_CONFIG.map(({ key, emoji }) => {
         // Safe: key is a typed const from STAT_CONFIG — never user-supplied
         // eslint-disable-next-line security/detect-object-injection
         const value = values[key] ?? 0;
+        const clamped = Math.min(100, Math.max(0, Math.round(value)));
+        const isCritical = value < CRITICAL_THRESHOLD;
+        const colorClass = getStatColorClass(value);
+        const label = t(`stats.${key}`);
+
         return (
-          <StatCard
+          <motion.div
             key={key}
-            emoji={emoji}
-            label={t(`stats.${key}`)}
-            value={value}
-            isCritical={value < CRITICAL_THRESHOLD}
-          />
+            className="flex flex-1 flex-col items-center gap-1"
+            animate={isCritical ? criticalAnimate : {}}
+            transition={isCritical ? criticalTransition : {}}
+            aria-label={`${label}: ${clamped}`}
+          >
+            {/* Emoji + number */}
+            <div className="flex items-baseline gap-1">
+              <span className="text-sm leading-none" aria-hidden="true">
+                {emoji}
+              </span>
+              <span
+                className={clsx(
+                  'text-xs font-bold tabular-nums',
+                  isCritical ? 'text-amber-400' : 'text-ink-secondary',
+                )}
+              >
+                {clamped}
+              </span>
+            </div>
+            {/* Thin progress bar */}
+            <progress
+              className={clsx('progress h-1 w-full', colorClass)}
+              value={clamped}
+              max={100}
+              aria-hidden="true"
+            />
+          </motion.div>
         );
       })}
     </div>

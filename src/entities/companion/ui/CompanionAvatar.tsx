@@ -1,67 +1,21 @@
-// react-kawaii companions — driven by species + stage config from entity model.
-// SPECIES_CONFIG maps each (species, stage) pair to a character + palette color.
-// Adding a new species only requires updating species.ts — no changes here.
+// 3D companion renderer — wraps each species mesh in an R3F Canvas.
+// The Canvas fills its parent container; size the parent div to control display size.
+// Transparency (alpha: true) lets the ambient glow ring in PetDisplay show through.
 
-import React from 'react';
-import {
-  Cat,
-  HumanCat,
-  HumanDinosaur,
-  Cyborg,
-  Ghost,
-  Planet,
-  Astronaut,
-  Browser,
-  IceCream,
-  Chocolate,
-  Mug,
-  SpeechBubble,
-  File,
-  Folder,
-  Backpack,
-  CreditCard,
-} from 'react-kawaii';
-import type { ComponentType } from 'react';
+import React, { Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
 import type { CompanionMood, CompanionSpecies, CompanionStage } from '../model/types';
 import { getSpeciesStageConfig } from '../model/species';
+import type { CompanionMeshProps } from './characters/ThreeCompanions';
+import { ZephyrMesh, KovaMesh, LumaMesh, MaruMesh } from './characters/ThreeCompanions';
 
-// react-kawaii mood type (not exported from the package — defined inline)
-type KawaiiMood = 'sad' | 'shocked' | 'happy' | 'blissful' | 'lovestruck';
+type MeshComponent = (props: CompanionMeshProps) => React.JSX.Element;
 
-interface KawaiiProps {
-  size: number;
-  mood: KawaiiMood;
-  color: string;
-}
-
-// Companion mood → kawaii mood mapping
-const MOOD_MAP: Record<CompanionMood, KawaiiMood> = {
-  radiant: 'blissful',
-  calm: 'happy',
-  restless: 'shocked',
-  weary: 'sad',
-  fragile: 'sad',
-  resting: 'lovestruck',
-};
-
-// Character name → kawaii component (all react-kawaii chars used by any species)
-const KAWAII_COMPONENTS: Record<string, ComponentType<KawaiiProps>> = {
-  Cat,
-  HumanCat,
-  HumanDinosaur,
-  Cyborg,
-  Ghost,
-  Planet,
-  Astronaut,
-  Browser,
-  IceCream,
-  Chocolate,
-  Mug,
-  SpeechBubble,
-  File,
-  Folder,
-  Backpack,
-  CreditCard,
+const SPECIES_MESH: Record<CompanionSpecies, MeshComponent> = {
+  zephyr: ZephyrMesh,
+  kova: KovaMesh,
+  luma: LumaMesh,
+  maru: MaruMesh,
 };
 
 export interface CompanionAvatarProps {
@@ -69,6 +23,15 @@ export interface CompanionAvatarProps {
   stage: CompanionStage;
   mood: CompanionMood;
   size?: number;
+  /** Increments on each user action — triggers companion bounce reaction */
+  reactionKey?: number;
+}
+
+// Maps numeric size to Tailwind dimension classes — no inline styles (R3).
+function sizeToClass(size: number): string {
+  if (size <= 80) return 'h-20 w-20';
+  if (size <= 120) return 'h-[120px] w-[120px]';
+  return 'h-40 w-40';
 }
 
 export function CompanionAvatar({
@@ -76,19 +39,28 @@ export function CompanionAvatar({
   stage,
   mood,
   size = 160,
+  reactionKey,
 }: CompanionAvatarProps): React.JSX.Element {
-  const { character, color } = getSpeciesStageConfig(species, stage);
-  // Safe: MOOD_MAP keys are the full CompanionMood union — not user input
+  const { color } = getSpeciesStageConfig(species, stage);
+  // Safe: species is a typed union value, never user-supplied input
   // eslint-disable-next-line security/detect-object-injection
-  const kawaiiMood = MOOD_MAP[mood];
-  // Safe: character values come from KawaiiCharacter union defined in species.ts
-  // eslint-disable-next-line security/detect-object-injection
-  const KawaiiComponent = KAWAII_COMPONENTS[character];
+  const ThreeMesh = SPECIES_MESH[species];
 
-  if (!KawaiiComponent) {
-    // Fallback: only reachable if species.ts and KAWAII_COMPONENTS fall out of sync
-    return <Cat size={size} mood="happy" color={color} />;
-  }
-
-  return <KawaiiComponent size={size} mood={kawaiiMood} color={color} />;
+  return (
+    <div className={sizeToClass(size)}>
+      <Canvas camera={{ position: [0, 0, 3.5], fov: 45 }} gl={{ alpha: true, antialias: true }}>
+        <ambientLight intensity={0.65} />
+        <directionalLight position={[2, 3, 3]} intensity={1.1} />
+        <pointLight position={[-2, -1, 2]} intensity={0.35} color="#e8dff5" />
+        <Suspense fallback={null}>
+          <ThreeMesh
+            stage={stage}
+            mood={mood}
+            color={color}
+            {...(reactionKey !== undefined && { reactionKey })}
+          />
+        </Suspense>
+      </Canvas>
+    </div>
+  );
 }

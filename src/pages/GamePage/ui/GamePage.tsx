@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useCompanionStore } from '@entities/companion';
+import type { ActionType } from '@entities/companion';
 import { useGameLoop } from '@features/game-loop';
 import { useWellnessNudge } from '@features/game-loop';
 import type { NudgeKey } from '@features/game-loop';
@@ -10,6 +11,7 @@ import { AppLayout } from '@widgets/AppLayout';
 import { PetDisplay } from '@widgets/PetDisplay';
 import { StatsPanel } from '@widgets/StatsPanel';
 import { ActionBar } from '@widgets/ActionBar';
+import { EvolutionPanel } from '@widgets/EvolutionPanel';
 
 // Affirmations rotate every 60 seconds
 const AFFIRMATION_ROTATE_MS = 60_000;
@@ -74,6 +76,16 @@ export function GamePage(): React.JSX.Element {
     return () => window.clearInterval(id);
   }, [affirmations.length]);
 
+  // Reaction state — increments key so AnimatePresence re-fires on repeat taps
+  const reactionKeyRef = useRef(0);
+  const [lastReaction, setLastReaction] = useState<{ action: ActionType; key: number } | null>(
+    null,
+  );
+  const handleAction = useCallback((action: ActionType) => {
+    reactionKeyRef.current += 1;
+    setLastReaction({ action, key: reactionKeyRef.current });
+  }, []);
+
   if (isLoading || !companion) {
     return (
       <AppLayout>
@@ -93,15 +105,19 @@ export function GamePage(): React.JSX.Element {
 
   return (
     <AppLayout>
-      <div className="flex w-full max-w-sm flex-col gap-2 py-2">
-        {/* Companion avatar + name + mood + speech bubble affirmation */}
-        <PetDisplay speechBubble={currentAffirmation} />
+      {/* Viewport-fit: fills exactly the space below the 52px navbar — no page scroll */}
+      <div className="flex h-[calc(100dvh-52px)] w-full max-w-sm flex-col overflow-hidden">
+        {/* ── Companion zone — fills all remaining space ── */}
+        <div className="flex flex-1 min-h-0 flex-col items-center justify-center gap-2 overflow-hidden px-3 pt-2">
+          <PetDisplay speechBubble={currentAffirmation} reaction={lastReaction} compact />
+          <EvolutionPanel />
+        </div>
 
-        {/* Stats bars */}
-        <StatsPanel />
-
-        {/* Action buttons */}
-        <ActionBar />
+        {/* ── Bottom dock — always visible, never scrolled past ── */}
+        <div className="flex flex-shrink-0 flex-col gap-2 px-3 pb-4 pt-1">
+          <StatsPanel />
+          <ActionBar onAction={handleAction} />
+        </div>
       </div>
     </AppLayout>
   );

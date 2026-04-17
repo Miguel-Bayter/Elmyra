@@ -8,9 +8,11 @@ export type {
   CompanionState as CompanionStateInterface,
   WellnessMilestone as WellnessMilestoneInterface,
   AppPreferences as AppPreferencesInterface,
+  InteractionCounts,
+  EvolutionAffinity,
 } from './model/types';
 
-export type { KawaiiCharacter, SpeciesStageConfig, SpeciesConfig } from './model/species';
+export type { SpeciesStageConfig, SpeciesConfig } from './model/species';
 export { SPECIES_CONFIG, getSpeciesStageConfig } from './model/species';
 
 export type { CompanionAvatarProps } from './ui/CompanionAvatar';
@@ -33,6 +35,8 @@ export {
   VITALITY_DAMAGE_PER_TICK,
   ACTION_EFFECTS,
   STAGE_THRESHOLDS,
+  INTERACTION_BOOST_WEIGHT,
+  SPECIES_PRIMARY_ACTION,
   MAX_OFFLINE_TICKS,
   ACTION_DEBOUNCE_MS,
   INITIAL_COMPANION_STATS,
@@ -51,6 +55,8 @@ export {
   clampStats,
   calculateMood,
   calculateStage,
+  calculateStageForSpecies,
+  getEvolutionAffinity,
   applyStatDecay,
   applyVitalityDamage,
   applyAction,

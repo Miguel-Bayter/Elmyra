@@ -17,12 +17,31 @@ export const companionNameSchema = z
 // What it allows: letters (any language), digits, spaces, apostrophes, hyphens
 // What it blocks: <script>, HTML tags, JS injection, SQL operators, emoji
 
+// ─── Interaction counts ───────────────────────────────────────────────────────
+// Tracks cumulative action counts since companion creation.
+// z.preprocess fills in missing field from old localStorage saves (backward compat)
+// without making the TypeScript type optional.
+const ZERO_COUNTS = { nourish: 0, play: 0, rest: 0, comfort: 0 } as const;
+
+export const interactionCountsSchema = z.object({
+  nourish: z.number().int().min(0),
+  play: z.number().int().min(0),
+  rest: z.number().int().min(0),
+  comfort: z.number().int().min(0),
+});
+
+// Used as a field schema: replaces absent/null with zeros so old saves stay valid.
+const interactionCountsField = z.preprocess(
+  (val) => (val == null ? ZERO_COUNTS : val),
+  interactionCountsSchema,
+);
+
 // ─── Companion state ──────────────────────────────────────────────────────────
 export const companionStateSchema = z.object({
   id: z.string().uuid(),
   name: companionNameSchema,
-  // .default('felis') preserves backward compat with pre-species localStorage data
-  species: z.enum(['felis', 'spectra', 'dolcis', 'lumis']).default('felis'),
+  // .default('zephyr') preserves backward compat with pre-species localStorage data
+  species: z.enum(['zephyr', 'kova', 'luma', 'maru']).default('zephyr'),
   nourishment: statValueSchema,
   joy: statValueSchema,
   energy: statValueSchema,
@@ -35,6 +54,8 @@ export const companionStateSchema = z.object({
   isInRestMode: z.boolean(),
   createdAt: z.string().datetime(),
   lastUpdatedAt: z.string().datetime(),
+  // Backward compat: absent in old saves → preprocessed to zeros
+  interactionCounts: interactionCountsField,
 });
 
 // ─── Wellness milestone ───────────────────────────────────────────────────────

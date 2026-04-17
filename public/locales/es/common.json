@@ -29,49 +29,62 @@
     "continue": "Continuar",
     "backToSpecies": "← Elegir otro compañero"
   },
+  "evolutionPanel": {
+    "title": "Camino",
+    "actionGerund": {
+      "nourish": "nutriendo",
+      "play": "jugando",
+      "rest": "descansando",
+      "comfort": "consolando"
+    },
+    "hintClose": "~{{count}} veces {{action}} hacia {{stage}}",
+    "hintFar": "{{action}} acelera el camino de {{name}}",
+    "hintNoSignature": "Sigue cuidando a {{name}}",
+    "complete": "El camino de {{name}} está completo"
+  },
   "species": {
-    "felis": {
-      "name": "Felis",
-      "tagline": "Audaz y aventurero",
-      "description": "Un espíritu feroz que nunca deja de explorar. Crece desde una cría curiosa hasta un guerrero digital legendario.",
+    "zephyr": {
+      "name": "Zephyr",
+      "tagline": "Respira y suelta",
+      "description": "Un soplo de cielo que enseña el ritmo de soltar. Su pulso gentil refleja la calma de una respiración profunda. Crece desde una suave bruma hasta el vasto y pacífico horizonte.",
       "stages": {
-        "seedling": "Cría",
-        "sprout": "Scout",
-        "bloom": "Rebelde",
-        "flourish": "Ícono"
+        "seedling": "Bruma",
+        "sprout": "Brisa",
+        "bloom": "Cúmulo",
+        "flourish": "Horizonte"
       }
     },
-    "spectra": {
-      "name": "Spectra",
-      "tagline": "Misterioso e infinito",
-      "description": "Un fantasma de luz estelar que vaga por el cosmos. Crece desde un destello etéreo hasta un universo digital infinito.",
+    "kova": {
+      "name": "Kova",
+      "tagline": "Firme y arraigado",
+      "description": "Un espíritu de piedra arraigado en la sabiduría de la tierra. Calmo, estable y siempre presente. Crece desde un suave guijarro hasta una antigua piedra con memoria viva.",
       "stages": {
-        "seedling": "Destello",
-        "sprout": "Viajero",
-        "bloom": "Cosmos",
-        "flourish": "Infinito"
+        "seedling": "Guijarro",
+        "sprout": "Piedra",
+        "bloom": "Monolito",
+        "flourish": "Antiguo"
       }
     },
-    "dolcis": {
-      "name": "Dolcis",
-      "tagline": "Cálido y expresivo",
-      "description": "Un alma dulce que descubre su voz a través del cuidado y la calidez. Crece de un dulce gentil a una voz de consuelo.",
+    "luma": {
+      "name": "Luma",
+      "tagline": "Cálido y esperanzador",
+      "description": "Una luz que se niega a apagarse, creciendo más cálida con cada momento de conexión. Crece desde una pequeña brasa hasta una brillante aurora de calidez.",
       "stages": {
-        "seedling": "Dulzura",
-        "sprout": "Tierno",
-        "bloom": "Cálido",
-        "flourish": "Voz"
+        "seedling": "Brasa",
+        "sprout": "Fulgor",
+        "bloom": "Farol",
+        "flourish": "Aurora"
       }
     },
-    "lumis": {
-      "name": "Lumis",
-      "tagline": "Paciente y reflexivo",
-      "description": "Una página en blanco lista para llenarse de experiencias. Crece desde una humilde nota hasta una reliquia atemporal de sabiduría.",
+    "maru": {
+      "name": "Maru",
+      "tagline": "Completo y en paz",
+      "description": "Un espíritu de anillos que gira en silencio en el centro de la tormenta. Sus ciclos lentos enseñan que todos los sentimientos pasan. Crece desde una perla hasta un cosmos de anillos.",
       "stages": {
-        "seedling": "Nota",
-        "sprout": "Códice",
-        "bloom": "Atlas",
-        "flourish": "Reliquia"
+        "seedling": "Perla",
+        "sprout": "Creciente",
+        "bloom": "Halo",
+        "flourish": "Cosmos"
       }
     }
   }

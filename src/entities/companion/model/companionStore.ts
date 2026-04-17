@@ -16,7 +16,6 @@ import {
   applyVitalityDamage,
   calculateMood,
   calculateOfflineDecay,
-  calculateStage,
   checkRestMode,
   clampStats,
   createFreshCompanion,
@@ -204,7 +203,7 @@ export const useCompanionStore = create<CompanionStore>()(
           vitality: 0,
           isInRestMode: true,
           mood: 'resting',
-          stage: calculateStage(next.age),
+          // stage already set correctly by applyStatDecay (calculateStageForSpecies)
         };
         persistCompanion(next);
         const updatedMilestone = updateMilestone(milestone, next);
@@ -214,10 +213,10 @@ export const useCompanionStore = create<CompanionStore>()(
       }
 
       // Step 4: update derived fields
+      // stage is already correct from applyStatDecay (uses calculateStageForSpecies)
       next = {
         ...next,
         mood: calculateMood(next),
-        stage: calculateStage(next.age),
       };
       next = clampStats(next);
 

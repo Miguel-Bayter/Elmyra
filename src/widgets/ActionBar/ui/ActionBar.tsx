@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
+import type { ActionType } from '@entities/companion';
 import { useNourishPet } from '@features/nourish-pet';
 import { usePlayWithPet } from '@features/play-with-pet';
 import { useRestPet } from '@features/rest-pet';
@@ -54,7 +55,12 @@ function ActionCard({
   );
 }
 
-export function ActionBar(): React.JSX.Element {
+interface ActionBarProps {
+  /** Called with the action type immediately after a successful action tap */
+  onAction?: (action: ActionType) => void;
+}
+
+export function ActionBar({ onAction }: ActionBarProps): React.JSX.Element {
   const { t } = useTranslation('actions');
 
   const { nourish, isDisabled: nourishDisabled } = useNourishPet();
@@ -65,7 +71,10 @@ export function ActionBar(): React.JSX.Element {
   return (
     <div className="flex w-full gap-2">
       <ActionCard
-        onClick={nourish}
+        onClick={() => {
+          nourish();
+          onAction?.('nourish');
+        }}
         label={t('nourish')}
         emoji="🍃"
         isDisabled={nourishDisabled}
@@ -74,7 +83,10 @@ export function ActionBar(): React.JSX.Element {
         ariaLabel={t('nourishDescription')}
       />
       <ActionCard
-        onClick={play}
+        onClick={() => {
+          play();
+          onAction?.('play');
+        }}
         label={t('play')}
         emoji="✨"
         isDisabled={playDisabled}
@@ -83,7 +95,10 @@ export function ActionBar(): React.JSX.Element {
         ariaLabel={t('playDescription')}
       />
       <ActionCard
-        onClick={rest}
+        onClick={() => {
+          rest();
+          onAction?.('rest');
+        }}
         label={t('rest')}
         emoji="🌙"
         isDisabled={restDisabled}
@@ -92,7 +107,10 @@ export function ActionBar(): React.JSX.Element {
         ariaLabel={t('restDescription')}
       />
       <ActionCard
-        onClick={comfort}
+        onClick={() => {
+          comfort();
+          onAction?.('comfort');
+        }}
         label={t('comfort')}
         emoji="💜"
         isDisabled={comfortDisabled}

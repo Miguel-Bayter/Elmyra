@@ -33,7 +33,7 @@ describe('initializeCompanion', () => {
   });
 
   it('creates companion with correct initial stats and unique ID', () => {
-    useCompanionStore.getState().initializeCompanion('Luna', 'felis');
+    useCompanionStore.getState().initializeCompanion('Luna', 'zephyr');
     const companion = getCompanion();
 
     expect(companion).not.toBeNull();
@@ -51,7 +51,7 @@ describe('initializeCompanion', () => {
   });
 
   it('persists companion to localStorage immediately after creation', () => {
-    useCompanionStore.getState().initializeCompanion('Sol', 'felis');
+    useCompanionStore.getState().initializeCompanion('Sol', 'zephyr');
     const stored = localStorage.getItem(STORAGE_KEYS.COMPANION);
 
     expect(stored).not.toBeNull();
@@ -60,24 +60,24 @@ describe('initializeCompanion', () => {
   });
 
   it('does nothing if name fails schema validation (XSS attempt)', () => {
-    useCompanionStore.getState().initializeCompanion('<script>alert(1)</script>', 'felis');
+    useCompanionStore.getState().initializeCompanion('<script>alert(1)</script>', 'zephyr');
     expect(getCompanion()).toBeNull();
   });
 
   it('does nothing if name is empty string', () => {
-    useCompanionStore.getState().initializeCompanion('', 'felis');
+    useCompanionStore.getState().initializeCompanion('', 'zephyr');
     expect(getCompanion()).toBeNull();
   });
 
   it('does nothing if name exceeds max length (> 24 chars)', () => {
-    useCompanionStore.getState().initializeCompanion('A'.repeat(25), 'felis');
+    useCompanionStore.getState().initializeCompanion('A'.repeat(25), 'zephyr');
     expect(getCompanion()).toBeNull();
   });
 
   it('fires notification handler with companionCreated event', () => {
     const handler = vi.fn();
     useCompanionStore.getState().setNotificationHandler(handler);
-    useCompanionStore.getState().initializeCompanion('Nova', 'felis');
+    useCompanionStore.getState().initializeCompanion('Nova', 'zephyr');
 
     expect(handler).toHaveBeenCalledOnce();
     expect(handler).toHaveBeenCalledWith({ type: 'companionCreated', name: 'Nova' });
@@ -94,7 +94,7 @@ describe('loadFromStorage', () => {
 
   it('loads a valid stored companion', () => {
     // Pre-populate by creating a companion first
-    useCompanionStore.getState().initializeCompanion('Milo', 'felis');
+    useCompanionStore.getState().initializeCompanion('Milo', 'zephyr');
     const created = getCompanion();
     resetStore(); // Clear in-memory state, keep localStorage
 
@@ -128,7 +128,7 @@ describe('loadFromStorage', () => {
   });
 
   it('applies offline decay based on lastUpdatedAt', () => {
-    useCompanionStore.getState().initializeCompanion('Aria', 'felis');
+    useCompanionStore.getState().initializeCompanion('Aria', 'zephyr');
     const created = getCompanion();
     expect(created).not.toBeNull();
 
@@ -147,7 +147,7 @@ describe('loadFromStorage', () => {
 
   it('fires longAbsence notification when offline > 5 minutes', () => {
     const handler = vi.fn();
-    useCompanionStore.getState().initializeCompanion('Rex', 'felis');
+    useCompanionStore.getState().initializeCompanion('Rex', 'zephyr');
     const created = getCompanion();
 
     const sixMinutesAgo = new Date(Date.now() - 6 * 60 * 1000).toISOString();
@@ -173,7 +173,7 @@ describe('tickGameLoop', () => {
   });
 
   it('decreases stats and increments age on each tick', () => {
-    useCompanionStore.getState().initializeCompanion('Kira', 'felis');
+    useCompanionStore.getState().initializeCompanion('Kira', 'zephyr');
     const before = getCompanion();
 
     useCompanionStore.getState().tickGameLoop();
@@ -186,7 +186,7 @@ describe('tickGameLoop', () => {
   });
 
   it('saves to localStorage on every tick', () => {
-    useCompanionStore.getState().initializeCompanion('Zen', 'felis');
+    useCompanionStore.getState().initializeCompanion('Zen', 'zephyr');
     const beforeStored = localStorage.getItem(STORAGE_KEYS.COMPANION);
 
     useCompanionStore.getState().tickGameLoop();
@@ -204,7 +204,7 @@ describe('tickGameLoop', () => {
   });
 
   it('does NOT tick when isResting = true', () => {
-    useCompanionStore.getState().initializeCompanion('Paz', 'felis');
+    useCompanionStore.getState().initializeCompanion('Paz', 'zephyr');
     const comp = getCompanion();
     if (!comp) throw new Error('companion should exist after initializeCompanion');
 
@@ -219,7 +219,7 @@ describe('tickGameLoop', () => {
   });
 
   it('does NOT tick when isInRestMode = true', () => {
-    useCompanionStore.getState().initializeCompanion('Sereno', 'felis');
+    useCompanionStore.getState().initializeCompanion('Sereno', 'zephyr');
     const comp = getCompanion();
     if (!comp) throw new Error('companion should exist after initializeCompanion');
 
@@ -236,7 +236,7 @@ describe('tickGameLoop', () => {
   it('triggers rest mode and fires notification when vitality reaches 0', () => {
     const handler = vi.fn();
     useCompanionStore.getState().setNotificationHandler(handler);
-    useCompanionStore.getState().initializeCompanion('Edge', 'felis');
+    useCompanionStore.getState().initializeCompanion('Edge', 'zephyr');
     const comp = getCompanion();
     if (!comp) throw new Error('companion should exist after initializeCompanion');
 
@@ -269,7 +269,7 @@ describe('performAction', () => {
   });
 
   it('nourish increases nourishment', () => {
-    useCompanionStore.getState().initializeCompanion('Mika', 'felis');
+    useCompanionStore.getState().initializeCompanion('Mika', 'zephyr');
     const comp = getCompanion();
     if (!comp) throw new Error('companion should exist after initializeCompanion');
     useCompanionStore.setState({ companion: { ...comp, nourishment: 50 } });
@@ -280,7 +280,7 @@ describe('performAction', () => {
   });
 
   it('does nothing when isInRestMode = true', () => {
-    useCompanionStore.getState().initializeCompanion('Lux', 'felis');
+    useCompanionStore.getState().initializeCompanion('Lux', 'zephyr');
     const comp = getCompanion();
     if (!comp) throw new Error('companion should exist after initializeCompanion');
     useCompanionStore.setState({ companion: { ...comp, isInRestMode: true, mood: 'resting' } });
@@ -301,7 +301,7 @@ describe('deleteAllData', () => {
   });
 
   it('removes all elmyra_* keys from localStorage', () => {
-    useCompanionStore.getState().initializeCompanion('Bye', 'felis');
+    useCompanionStore.getState().initializeCompanion('Bye', 'zephyr');
     useCompanionStore.getState().acceptDisclaimer();
 
     // Verify keys exist before deletion
@@ -316,7 +316,7 @@ describe('deleteAllData', () => {
   });
 
   it('resets store companion to null', () => {
-    useCompanionStore.getState().initializeCompanion('Bye', 'felis');
+    useCompanionStore.getState().initializeCompanion('Bye', 'zephyr');
     expect(getCompanion()).not.toBeNull();
 
     useCompanionStore.getState().deleteAllData();

@@ -94,6 +94,17 @@ export default tseslint.config(
     },
   },
 
+  // 4b. React Three Fiber files — disable react/no-unknown-property.
+  // R3F extends the JSX namespace with Three.js element types (mesh, sphereGeometry, etc.)
+  // and their props (position, args, roughness, emissive, …). The React ESLint plugin has
+  // no knowledge of these custom elements, so the rule produces only false positives here.
+  {
+    files: ['src/**/ThreeCompanions.tsx', 'src/**/CompanionAvatar.tsx'],
+    rules: {
+      'react/no-unknown-property': 'off',
+    },
+  },
+
   // 5. Prettier LAST — disables formatting conflicts
   prettierConfig,
 

@@ -5,8 +5,28 @@
 
 export type CompanionStage = 'seedling' | 'sprout' | 'bloom' | 'flourish';
 
-// The companion's species — determines its visual evolution line
-export type CompanionSpecies = 'felis' | 'spectra' | 'dolcis' | 'lumis';
+// The companion's species — determines its visual evolution line.
+// Four therapeutic companions, each designed to support emotional wellbeing.
+export type CompanionSpecies =
+  | 'zephyr' // Cloud/breath — releases anxiety through breathing
+  | 'kova' // Stone/earth — grounds through stability
+  | 'luma' // Glow/light  — nurtures hope against depression
+  | 'maru'; // Ring/moon   — embodies wholeness and acceptance
+
+// ─── Interaction tracking ─────────────────────────────────────────────────────
+// Counts how many times each action has been performed since the companion was created.
+// Used to boost evolution speed for new species and to derive EvolutionAffinity.
+export interface InteractionCounts {
+  readonly nourish: number;
+  readonly play: number;
+  readonly rest: number;
+  readonly comfort: number;
+}
+
+// ─── Evolution affinity ────────────────────────────────────────────────────────
+// The dominant care pattern — drives visual variations in the new 3D species.
+// 'balanced' when no action type is clearly dominant (< 40 % share).
+export type EvolutionAffinity = 'nourish' | 'play' | 'rest' | 'comfort' | 'balanced';
 
 // Mood names chosen for wellness tone — no negative clinical terms (R7)
 export type CompanionMood =

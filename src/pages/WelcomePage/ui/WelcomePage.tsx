@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useCompanionStore } from '@entities/companion';
 import { Button } from '@shared/ui/Button';
@@ -72,7 +72,6 @@ function DisclaimerOverlay({ onAccept }: DisclaimerOverlayProps): React.JSX.Elem
 
 export function WelcomePage(): React.JSX.Element {
   const { t } = useTranslation('common');
-  const navigate = useNavigate();
 
   const companion = useCompanionStore((s) => s.companion);
   const disclaimerAccepted = useCompanionStore((s) => s.preferences.disclaimerAccepted);
@@ -85,11 +84,11 @@ export function WelcomePage(): React.JSX.Element {
     setLoaded(true);
   }, [loadFromStorage]);
 
-  useEffect(() => {
-    if (loaded && companion && disclaimerAccepted) {
-      void navigate('/companion');
-    }
-  }, [loaded, companion, disclaimerAccepted, navigate]);
+  // Redirect synchronously during render — avoids useEffect timing race where
+  // the companion is in the store but navigate() fires after a paint cycle.
+  if (loaded && companion && disclaimerAccepted) {
+    return <Navigate to="/companion" replace />;
+  }
 
   // When the form is active, collapse branding to a compact header strip
   const showForm = disclaimerAccepted;

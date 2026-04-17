@@ -1,95 +1,74 @@
 // Species configuration — pure data, no UI/React imports.
-// Defines the visual evolution line for each companion species.
-// Widget layer (CompanionAvatar) maps these to actual kawaii components.
+// Defines the color palette per stage for each companion species.
+// The character layer (ThreeCompanions.tsx) maps these to 3D mesh components.
 
 import type { CompanionSpecies, CompanionStage } from './types';
 
-// Kawaii component names exported by react-kawaii (string identifiers only here)
-export type KawaiiCharacter =
-  | 'Cat'
-  | 'HumanCat'
-  | 'HumanDinosaur'
-  | 'Cyborg'
-  | 'Ghost'
-  | 'Planet'
-  | 'Astronaut'
-  | 'Browser'
-  | 'IceCream'
-  | 'Chocolate'
-  | 'Mug'
-  | 'SpeechBubble'
-  | 'File'
-  | 'Folder'
-  | 'Backpack'
-  | 'CreditCard';
-
 export interface SpeciesStageConfig {
-  readonly character: KawaiiCharacter;
-  readonly color: string; // hex — matches design palette
+  readonly color: string; // hex — used by the 3D mesh as its primary material color
 }
 
 export interface SpeciesConfig {
   readonly stages: Record<CompanionStage, SpeciesStageConfig>;
 }
 
-// ─── Felis ────────────────────────────────────────────────────────────────────
-// The Bold Adventurer — a curious creature that grows into a digital legend.
-// Arc: wild nature → fused technology. Palette: soft petal → rich violet.
-const felis: SpeciesConfig = {
+// ─── Zephyr ───────────────────────────────────────────────────────────────────
+// Cloud/breath spirit — pale mist to open sky.
+// Each shade is lighter than a storm, never alarming.
+const zephyr: SpeciesConfig = {
   stages: {
-    seedling: { character: 'Cat', color: '#d4b8f0' }, // soft petal lavender
-    sprout: { character: 'HumanCat', color: '#b090d8' }, // confident lavender
-    bloom: { character: 'HumanDinosaur', color: '#8858b8' }, // bold deep purple
-    flourish: { character: 'Cyborg', color: '#6030a0' }, // legendary violet
+    seedling: { color: '#eef2f7' }, // pale morning mist
+    sprout: { color: '#c8ddf0' }, // soft sky blue
+    bloom: { color: '#a0bcd8' }, // open sky
+    flourish: { color: '#d8eaf6' }, // clear horizon silver
   },
 };
 
-// ─── Spectra ──────────────────────────────────────────────────────────────────
-// The Cosmic Wanderer — a ghost of starlight that expands into a digital cosmos.
-// Arc: ethereal spirit → explorer → world → infinite. Palette: ice → deep space.
-const spectra: SpeciesConfig = {
+// ─── Kova ─────────────────────────────────────────────────────────────────────
+// Stone/earth spirit — warm stone to ancient bronze.
+// Grounding palette: neutral, stable, never stimulating.
+const kova: SpeciesConfig = {
   stages: {
-    seedling: { character: 'Ghost', color: '#c8e8f8' }, // pale ethereal ice
-    sprout: { character: 'Astronaut', color: '#88b4e0' }, // sky blue explorer
-    bloom: { character: 'Planet', color: '#4878c0' }, // vast cosmic blue
-    flourish: { character: 'Browser', color: '#1848a0' }, // infinite deep space
+    seedling: { color: '#d8cec6' }, // warm pebble
+    sprout: { color: '#bcada0' }, // river stone
+    bloom: { color: '#9e8e80' }, // deep stone
+    flourish: { color: '#786858' }, // ancient bronze earth
   },
 };
 
-// ─── Dolcis ───────────────────────────────────────────────────────────────────
-// The Warm Soul — a sweet treat that discovers its voice through care and warmth.
-// Arc: sweetness → comfort → nourishment → expression. Palette: vanilla → mahogany.
-const dolcis: SpeciesConfig = {
+// ─── Luma ─────────────────────────────────────────────────────────────────────
+// Glow/light spirit — dim amber to pale aurora gold.
+// The light grows with care — represents hope rekindling.
+const luma: SpeciesConfig = {
   stages: {
-    seedling: { character: 'IceCream', color: '#ffe4b8' }, // vanilla cream
-    sprout: { character: 'Chocolate', color: '#f0c080' }, // warm caramel
-    bloom: { character: 'Mug', color: '#d89050' }, // coffee warmth
-    flourish: { character: 'SpeechBubble', color: '#b86830' }, // mahogany voice
+    seedling: { color: '#f4d090' }, // dim warm amber
+    sprout: { color: '#f0c050' }, // warm golden glow
+    bloom: { color: '#f8e060' }, // bright lantern gold
+    flourish: { color: '#fff8c0' }, // pale aurora shimmer
   },
 };
 
-// ─── Lumis ────────────────────────────────────────────────────────────────────
-// The Story Keeper — a blank page that fills with experience and becomes a relic.
-// Arc: blank note → growing archive → ready to explore → timeless artifact.
-// Palette: fresh parchment → weathered gold → ancient bronze.
-const lumis: SpeciesConfig = {
+// ─── Maru ─────────────────────────────────────────────────────────────────────
+// Ring/moon spirit — lavender pearl to deep violet cosmos.
+// Softly saturated — calming without being cold.
+const maru: SpeciesConfig = {
   stages: {
-    seedling: { character: 'File', color: '#f8e8a8' }, // fresh parchment
-    sprout: { character: 'Folder', color: '#e8c840' }, // golden pages
-    bloom: { character: 'Backpack', color: '#c89820' }, // weathered amber
-    flourish: { character: 'CreditCard', color: '#a06808' }, // rare bronze
+    seedling: { color: '#e8d8f0' }, // pale pearl lavender
+    sprout: { color: '#d0b8e8' }, // soft crescent purple
+    bloom: { color: '#b898d8' }, // full halo lavender
+    flourish: { color: '#9878c0' }, // deep violet cosmos
   },
 };
 
 // ─── Registry ─────────────────────────────────────────────────────────────────
 export const SPECIES_CONFIG: Record<CompanionSpecies, SpeciesConfig> = {
-  felis,
-  spectra,
-  dolcis,
-  lumis,
+  zephyr,
+  kova,
+  luma,
+  maru,
 };
 
-/** Returns the kawaii character and color for a given species + stage. */
+/** Returns the color config for a given species + stage. */
 export const getSpeciesStageConfig = (
   species: CompanionSpecies,
   stage: CompanionStage,

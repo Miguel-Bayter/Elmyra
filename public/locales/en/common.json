@@ -29,49 +29,62 @@
     "continue": "Continue",
     "backToSpecies": "← Choose a different companion"
   },
+  "evolutionPanel": {
+    "title": "Journey",
+    "actionGerund": {
+      "nourish": "Nourish",
+      "play": "Play",
+      "rest": "Rest",
+      "comfort": "Comfort"
+    },
+    "hintClose": "~{{count}} more {{action}}s toward {{stage}}",
+    "hintFar": "{{action}} speeds up {{name}}'s journey",
+    "hintNoSignature": "Keep caring for {{name}}",
+    "complete": "{{name}}'s journey is complete"
+  },
   "species": {
-    "felis": {
-      "name": "Felis",
-      "tagline": "Bold and adventurous",
-      "description": "A fierce little spirit that never stops exploring. Grows from a curious kit into a legendary digital warrior.",
+    "zephyr": {
+      "name": "Zephyr",
+      "tagline": "Breathe and release",
+      "description": "A breath of sky that teaches the rhythm of letting go. Its gentle pulse mirrors the calm of a slow, deep breath. Grows from a quiet puff into the vast, peaceful horizon.",
       "stages": {
-        "seedling": "Kit",
-        "sprout": "Scout",
-        "bloom": "Rebel",
-        "flourish": "Icon"
+        "seedling": "Puff",
+        "sprout": "Drift",
+        "bloom": "Cumulus",
+        "flourish": "Horizon"
       }
     },
-    "spectra": {
-      "name": "Spectra",
-      "tagline": "Mysterious and infinite",
-      "description": "A ghost of starlight that wanders the cosmos. Grows from an ethereal wisp into an infinite digital universe.",
+    "kova": {
+      "name": "Kova",
+      "tagline": "Steady and grounded",
+      "description": "A stone spirit rooted in the wisdom of the earth. Calm, stable, and always present. Grows from a smooth pebble into an ancient stone with living memory.",
       "stages": {
-        "seedling": "Wisp",
-        "sprout": "Drifter",
-        "bloom": "Cosmos",
-        "flourish": "Infinite"
+        "seedling": "Pebble",
+        "sprout": "Stone",
+        "bloom": "Monolith",
+        "flourish": "Ancient"
       }
     },
-    "dolcis": {
-      "name": "Dolcis",
-      "tagline": "Warm and expressive",
-      "description": "A sweet soul that discovers its voice through care and warmth. Grows from a gentle treat into a voice of comfort.",
+    "luma": {
+      "name": "Luma",
+      "tagline": "Warm and hopeful",
+      "description": "A light that refuses to go out, growing warmer with every moment of connection. Grows from a tiny ember into a brilliant aurora of warmth.",
       "stages": {
-        "seedling": "Sweet",
-        "sprout": "Tender",
-        "bloom": "Warm",
-        "flourish": "Voice"
+        "seedling": "Ember",
+        "sprout": "Glow",
+        "bloom": "Lantern",
+        "flourish": "Aurora"
       }
     },
-    "lumis": {
-      "name": "Lumis",
-      "tagline": "Patient and reflective",
-      "description": "A blank page ready to be filled with experience. Grows from a humble note into a timeless relic of wisdom.",
+    "maru": {
+      "name": "Maru",
+      "tagline": "Whole and at peace",
+      "description": "A ring spirit that spins quietly at the center of the storm. Its slow cycles teach that all feelings pass. Grows from a pearl into a cosmos of rings.",
       "stages": {
-        "seedling": "Note",
-        "sprout": "Codex",
-        "bloom": "Atlas",
-        "flourish": "Relic"
+        "seedling": "Pearl",
+        "sprout": "Crescent",
+        "bloom": "Halo",
+        "flourish": "Cosmos"
       }
     }
   }

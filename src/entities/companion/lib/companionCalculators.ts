@@ -1,15 +1,24 @@
 // Pure domain functions — NO side effects, NO React imports, NO browser APIs.
 // All functions return new objects (immutable). Safe to call in tests without mocks.
 
-import type { ActionType, CompanionMood, CompanionSpecies, CompanionStage } from '../model/types';
+import type {
+  ActionType,
+  CompanionMood,
+  CompanionSpecies,
+  CompanionStage,
+  EvolutionAffinity,
+  InteractionCounts,
+} from '../model/types';
 import type { CompanionState } from '../model/schemas';
 import {
   ACTION_EFFECTS,
   CRITICAL_THRESHOLD,
   GAME_TICK_MS,
   INITIAL_COMPANION_STATS,
+  INTERACTION_BOOST_WEIGHT,
   MAX_OFFLINE_TICKS,
   MOOD_THRESHOLDS,
+  SPECIES_PRIMARY_ACTION,
   STAGE_THRESHOLDS,
   STAT_DECAY_PER_TICK,
   VITALITY_DAMAGE_PER_TICK,
@@ -73,6 +82,47 @@ export const calculateStage = (ageTicks: number): CompanionStage => {
   return 'seedling';
 };
 
+/**
+ * Stage calculation for species with a signature action (pyxi, verdant, krystal, dracyn).
+ * Each signature action performed adds INTERACTION_BOOST_WEIGHT effective ticks.
+ * Original species fall back to age-only calculation.
+ */
+export const calculateStageForSpecies = (
+  species: CompanionSpecies,
+  age: number,
+  counts: InteractionCounts,
+): CompanionStage => {
+  // Safe: SPECIES_PRIMARY_ACTION keys are typed union values, not user input
+  // eslint-disable-next-line security/detect-object-injection
+  const primaryAction = SPECIES_PRIMARY_ACTION[species];
+  if (!primaryAction) return calculateStage(age);
+
+  // Safe: primaryAction is a typed ActionType union, not user input
+  // eslint-disable-next-line security/detect-object-injection
+  const boostCount = counts[primaryAction];
+  return calculateStage(age + boostCount * INTERACTION_BOOST_WEIGHT);
+};
+
+// ─── Evolution affinity ───────────────────────────────────────────────────────
+
+/**
+ * Derives the dominant care pattern from cumulative interaction counts.
+ * Returns 'balanced' when fewer than 5 total actions or no action exceeds 40% share.
+ */
+export const getEvolutionAffinity = (counts: InteractionCounts): EvolutionAffinity => {
+  const total = counts.nourish + counts.play + counts.rest + counts.comfort;
+  if (total < 5) return 'balanced';
+
+  const max = Math.max(counts.nourish, counts.play, counts.rest, counts.comfort);
+  const threshold = total * 0.4;
+  if (max < threshold) return 'balanced';
+
+  if (counts.nourish === max) return 'nourish';
+  if (counts.play === max) return 'play';
+  if (counts.rest === max) return 'rest';
+  return 'comfort';
+};
+
 // ─── Stat decay ───────────────────────────────────────────────────────────────
 
 /**
@@ -83,19 +133,19 @@ export const calculateStage = (ageTicks: number): CompanionStage => {
  */
 export const applyStatDecay = (state: CompanionState): CompanionState => {
   const now = new Date().toISOString();
+  const nextAge = state.age + 1;
   const decayed: CompanionState = {
     ...state,
     nourishment: clampStat(state.nourishment + STAT_DECAY_PER_TICK.nourishment),
     joy: clampStat(state.joy + STAT_DECAY_PER_TICK.joy),
     energy: clampStat(state.energy + STAT_DECAY_PER_TICK.energy),
     // vitality: decay handled separately by applyVitalityDamage
-    age: state.age + 1,
+    age: nextAge,
+    // New species use interaction-boosted stage calc; originals use age-only
+    stage: calculateStageForSpecies(state.species, nextAge, state.interactionCounts),
     lastUpdatedAt: now,
   };
-  return {
-    ...decayed,
-    stage: calculateStage(decayed.age),
-  };
+  return decayed;
 };
 
 // ─── Vitality damage ──────────────────────────────────────────────────────────
@@ -130,12 +180,31 @@ export const applyAction = (state: CompanionState, action: ActionType): Companio
   // Safe: `action` is a typed union ('nourish'|'play'|'rest'|'comfort'), not user input.
   // eslint-disable-next-line security/detect-object-injection
   const effects = ACTION_EFFECTS[action];
+
+  // Increment interaction counter for this action type.
+  // Safe: action is a typed union, not user input.
+  const prevCount =
+    action === 'nourish'
+      ? state.interactionCounts.nourish
+      : action === 'play'
+        ? state.interactionCounts.play
+        : action === 'rest'
+          ? state.interactionCounts.rest
+          : state.interactionCounts.comfort;
+  const updatedCounts: InteractionCounts = {
+    ...state.interactionCounts,
+    [action]: prevCount + 1,
+  };
+
   const updated: CompanionState = {
     ...state,
     nourishment: clampStat(state.nourishment + (effects.nourishment ?? 0)),
     joy: clampStat(state.joy + (effects.joy ?? 0)),
     energy: clampStat(state.energy + (effects.energy ?? 0)),
     vitality: clampStat(state.vitality + (effects.vitality ?? 0)),
+    interactionCounts: updatedCounts,
+    // Recalculate stage: new species evolve faster when signature action is used
+    stage: calculateStageForSpecies(state.species, state.age, updatedCounts),
     lastUpdatedAt: new Date().toISOString(),
   };
   return {
@@ -218,6 +287,7 @@ export const createFreshCompanion = (name: string, species: CompanionSpecies): C
     mood: 'radiant',
     isResting: false,
     isInRestMode: false,
+    interactionCounts: { nourish: 0, play: 0, rest: 0, comfort: 0 },
     createdAt: now,
     lastUpdatedAt: now,
   };

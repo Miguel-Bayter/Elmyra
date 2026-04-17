@@ -5,14 +5,33 @@ import { AnimatePresence, motion } from 'framer-motion';
 import type { TargetAndTransition } from 'framer-motion';
 import { useCompanionStore } from '@entities/companion';
 import { useToastStore } from '@shared/ui/Toast';
-import type { CompanionMood, CompanionSpecies, CompanionStage } from '@entities/companion';
+import type {
+  ActionType,
+  CompanionMood,
+  CompanionSpecies,
+  CompanionStage,
+} from '@entities/companion';
 import { CompanionAvatar } from './CompanionAvatar';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 interface Props {
   /** Current affirmation text — renders as a speech bubble above the companion */
   speechBubble?: string;
+  /** Last user action — triggers floating emoji burst from companion */
+  reaction?: { action: ActionType; key: number } | null;
+  /** Hides the age/support message to save vertical space */
+  compact?: boolean;
 }
+
+// ─── Reaction emoji particles ─────────────────────────────────────────────────
+const ACTION_EMOJI: Record<ActionType, string> = {
+  nourish: '🍃',
+  play: '✨',
+  rest: '🌙',
+  comfort: '💜',
+};
+
+const PARTICLE_X_OFFSETS = [-30, 2, 28] as const;
 
 // ─── Mood → ambient glow ring ─────────────────────────────────────────────────
 const MOOD_RING: Record<CompanionMood, string> = {
@@ -80,13 +99,13 @@ interface ChipTheme {
 }
 
 const SPECIES_CHIP: Record<CompanionSpecies, ChipTheme> = {
-  felis: { bg: 'bg-lavender-light', text: 'text-lavender-dark', level: 'text-lavender' },
-  spectra: { bg: 'bg-mint-mist', text: 'text-sage-dark', level: 'text-sage' },
-  dolcis: { bg: 'bg-peach-mist', text: 'text-warm-peach', level: 'text-warm-peach' },
-  lumis: { bg: 'bg-golden-mist', text: 'text-golden-dark', level: 'text-golden' },
+  zephyr: { bg: 'bg-mint-mist', text: 'text-sage-dark', level: 'text-soft-mint' },
+  kova: { bg: 'bg-parchment-deep', text: 'text-ink-secondary', level: 'text-ink-muted' },
+  luma: { bg: 'bg-golden-mist', text: 'text-golden-dark', level: 'text-golden' },
+  maru: { bg: 'bg-lavender-light', text: 'text-lavender-dark', level: 'text-lavender' },
 };
 
-export function PetDisplay({ speechBubble }: Props): React.JSX.Element | null {
+export function PetDisplay({ speechBubble, reaction, compact }: Props): React.JSX.Element | null {
   const { t } = useTranslation(['pet', 'common', 'notifications']);
   const showToast = useToastStore((s) => s.showToast);
 
@@ -176,7 +195,7 @@ export function PetDisplay({ speechBubble }: Props): React.JSX.Element | null {
         )}
       </AnimatePresence>
 
-      {/* ── Companion with ambient glow ring ───────────────────────────── */}
+      {/* ── Companion with ambient glow ring + reaction particles ────────── */}
       <div className="relative mt-1">
         <div
           className={`absolute inset-0 -m-4 rounded-full ${ringClass} blur-xl opacity-70`}
@@ -187,8 +206,35 @@ export function PetDisplay({ speechBubble }: Props): React.JSX.Element | null {
           animate={moodAnimation}
           aria-label={`${name}, ${t(`moods.${mood}`, { ns: 'pet' })}`}
         >
-          <CompanionAvatar species={species} stage={stage} mood={mood} />
+          <CompanionAvatar
+            species={species}
+            stage={stage}
+            mood={mood}
+            {...(reaction != null && { reactionKey: reaction.key })}
+          />
         </motion.div>
+
+        {/* Floating emoji particles — burst upward on each action */}
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          aria-hidden="true"
+        >
+          <AnimatePresence>
+            {reaction &&
+              PARTICLE_X_OFFSETS.map((xOff, i) => (
+                <motion.span
+                  key={`${reaction.key}-${i}`}
+                  className="absolute bottom-1/2 text-xl"
+                  initial={{ y: 0, x: xOff, opacity: 1, scale: 0.7 }}
+                  animate={{ y: -80, opacity: 0, scale: 1.3 }}
+                  exit={{}}
+                  transition={{ duration: 0.85, delay: i * 0.09, ease: 'easeOut' }}
+                >
+                  {ACTION_EMOJI[reaction.action]}
+                </motion.span>
+              ))}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* ── Name ─────────────────────────────────────────────────────────── */}
@@ -220,12 +266,14 @@ export function PetDisplay({ speechBubble }: Props): React.JSX.Element | null {
       </div>
 
       {/* ── Real-time age + support message ──────────────────────────────── */}
-      <div className="flex flex-col items-center text-center">
-        <p className="text-xs font-medium text-ink-muted">
-          {duration} {t('ageRealtime.together', { ns: 'pet' })}
-        </p>
-        <p className="text-xs text-ink-faint italic">{supportMsg}</p>
-      </div>
+      {!compact && (
+        <div className="flex flex-col items-center text-center">
+          <p className="text-xs font-medium text-ink-muted">
+            {duration} {t('ageRealtime.together', { ns: 'pet' })}
+          </p>
+          <p className="text-xs text-ink-faint italic">{supportMsg}</p>
+        </div>
+      )}
 
       {/* ── Resting indicator ─────────────────────────────────────────────── */}
       {isResting && (
