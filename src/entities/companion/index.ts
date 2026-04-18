@@ -17,15 +17,23 @@ export { SPECIES_CONFIG, getSpeciesStageConfig } from './model/species';
 
 export type { CompanionAvatarProps } from './ui/CompanionAvatar';
 export { CompanionAvatar } from './ui/CompanionAvatar';
+export type { KawaiiAvatarProps } from './ui/KawaiiAvatar';
+export { KawaiiAvatar } from './ui/KawaiiAvatar';
 
 export {
   companionNameSchema,
   companionStateSchema,
   wellnessMilestoneSchema,
   appPreferencesSchema,
+  streakSchema,
   statValueSchema,
 } from './model/schemas';
-export type { CompanionState, WellnessMilestone, AppPreferences } from './model/schemas';
+export type {
+  CompanionState,
+  WellnessMilestone,
+  AppPreferences,
+  StreakData,
+} from './model/schemas';
 
 export {
   STORAGE_KEYS,
@@ -37,10 +45,12 @@ export {
   STAGE_THRESHOLDS,
   INTERACTION_BOOST_WEIGHT,
   SPECIES_PRIMARY_ACTION,
+  KAWAII_SPECIES,
   MAX_OFFLINE_TICKS,
   ACTION_DEBOUNCE_MS,
   INITIAL_COMPANION_STATS,
   MOOD_THRESHOLDS,
+  STREAK_MILESTONES,
 } from './model/constants';
 
 export type {

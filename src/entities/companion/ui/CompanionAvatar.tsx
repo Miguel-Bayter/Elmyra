@@ -1,17 +1,21 @@
-// 3D companion renderer — wraps each species mesh in an R3F Canvas.
-// The Canvas fills its parent container; size the parent div to control display size.
-// Transparency (alpha: true) lets the ambient glow ring in PetDisplay show through.
+// Companion avatar — selects renderer based on species family.
+// 3D species (zephyr/kova/luma/maru): React Three Fiber canvas.
+// 2D species (nimbus/boba/mochi/nuri): react-kawaii flat illustration.
+// No store read — the species itself encodes the rendering mode.
+// R3: no style={{}}. Size is controlled by Tailwind classes on the wrapper div.
 
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { KAWAII_SPECIES } from '../model/constants';
 import type { CompanionMood, CompanionSpecies, CompanionStage } from '../model/types';
 import { getSpeciesStageConfig } from '../model/species';
 import type { CompanionMeshProps } from './characters/ThreeCompanions';
 import { ZephyrMesh, KovaMesh, LumaMesh, MaruMesh } from './characters/ThreeCompanions';
+import { KawaiiAvatar } from './KawaiiAvatar';
 
 type MeshComponent = (props: CompanionMeshProps) => React.JSX.Element;
 
-const SPECIES_MESH: Record<CompanionSpecies, MeshComponent> = {
+const SPECIES_MESH: Partial<Record<CompanionSpecies, MeshComponent>> = {
   zephyr: ZephyrMesh,
   kova: KovaMesh,
   luma: LumaMesh,
@@ -23,13 +27,14 @@ export interface CompanionAvatarProps {
   stage: CompanionStage;
   mood: CompanionMood;
   size?: number;
-  /** Increments on each user action — triggers companion bounce reaction */
+  /** Increments on each user action — triggers companion bounce reaction (3D only) */
   reactionKey?: number;
 }
 
 // Maps numeric size to Tailwind dimension classes — no inline styles (R3).
 function sizeToClass(size: number): string {
   if (size <= 80) return 'h-20 w-20';
+  if (size <= 112) return 'h-28 w-28';
   if (size <= 120) return 'h-[120px] w-[120px]';
   return 'h-40 w-40';
 }
@@ -41,10 +46,20 @@ export function CompanionAvatar({
   size = 160,
   reactionKey,
 }: CompanionAvatarProps): React.JSX.Element {
+  // 2D kawaii species — render flat illustration
+  if (KAWAII_SPECIES.has(species)) {
+    return (
+      <div className={sizeToClass(size)}>
+        <KawaiiAvatar species={species} stage={stage} mood={mood} size={size} />
+      </div>
+    );
+  }
+
+  // 3D species — render R3F canvas
   const { color } = getSpeciesStageConfig(species, stage);
-  // Safe: species is a typed union value, never user-supplied input
   // eslint-disable-next-line security/detect-object-injection
   const ThreeMesh = SPECIES_MESH[species];
+  if (!ThreeMesh) return <div className={sizeToClass(size)} />;
 
   return (
     <div className={sizeToClass(size)}>

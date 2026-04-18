@@ -41,7 +41,10 @@ export const companionStateSchema = z.object({
   id: z.string().uuid(),
   name: companionNameSchema,
   // .default('zephyr') preserves backward compat with pre-species localStorage data
-  species: z.enum(['zephyr', 'kova', 'luma', 'maru']).default('zephyr'),
+  // 3D: zephyr, kova, luma, maru — 2D kawaii: nimbus, boba, mochi, nuri
+  species: z
+    .enum(['zephyr', 'kova', 'luma', 'maru', 'nimbus', 'boba', 'mochi', 'nuri'])
+    .default('zephyr'),
   nourishment: statValueSchema,
   joy: statValueSchema,
   energy: statValueSchema,
@@ -65,12 +68,21 @@ export const wellnessMilestoneSchema = z.object({
   achievedAt: z.string().datetime(),
 });
 
+// ─── Daily streak ─────────────────────────────────────────────────────────────
+// Tracks consecutive days of engagement — persisted separately from companion.
+export const streakSchema = z.object({
+  count: z.number().int().min(0).default(0),
+  lastActiveDate: z.string().default(''), // YYYY-MM-DD
+});
+
 // ─── App preferences ──────────────────────────────────────────────────────────
 export const appPreferencesSchema = z.object({
   theme: z.enum(['light', 'dark']).default('light'),
   language: z.enum(['en', 'es']).default('en'),
   disclaimerAccepted: z.boolean().default(false),
   crisisCountry: z.string().default('us'),
+  // Onboarding step — 0/1/2 = in progress, 'done' = completed
+  onboardingStep: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal('done')]).default(0),
 });
 
 // ─── Inferred TypeScript types (single source of truth) ──────────────────────
@@ -78,3 +90,4 @@ export const appPreferencesSchema = z.object({
 export type CompanionState = z.infer<typeof companionStateSchema>;
 export type WellnessMilestone = z.infer<typeof wellnessMilestoneSchema>;
 export type AppPreferences = z.infer<typeof appPreferencesSchema>;
+export type StreakData = z.infer<typeof streakSchema>;

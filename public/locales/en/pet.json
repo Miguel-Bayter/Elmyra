@@ -30,6 +30,17 @@
     "lessThanMinute": "just now",
     "together": "together"
   },
+  "ageBadgeMessage": {
+    "justNow": "Here's where it begins.",
+    "minutes": "Thank you for being here.",
+    "hours": "Little by little is enough.",
+    "oneDay": "One day at a time.",
+    "days": "You keep showing up. That matters.",
+    "weeks": "Every return counts.",
+    "months": "Here, without judgment.",
+    "manyMonths": "You're doing it.",
+    "year": "A year together. That's real."
+  },
   "ageSupport": [
     "Every moment you show up matters",
     "Growing together, day by day",
@@ -37,6 +48,10 @@
     "Your companion is always here for you",
     "Small acts of care add up to something beautiful"
   ],
+  "streak": {
+    "badge": "{{count}} day streak",
+    "badge_other": "{{count}} day streak"
+  },
   "stageLevelLabel": "Stage",
   "moodLabel": "Feeling",
   "isResting": "Your companion is resting",

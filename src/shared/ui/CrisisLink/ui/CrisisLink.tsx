@@ -3,13 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { clsx } from 'clsx';
 import { Modal } from '../../Modal/ui/Modal';
 import { CRISIS_COUNTRIES, defaultCountryForLang } from '@shared/config/crisisResources';
+import { useCompanionStore } from '@entities/companion';
 
 export function CrisisLink(): React.JSX.Element {
   const { t, i18n } = useTranslation(['common', 'legal']);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCode, setSelectedCode] = useState<string>(() =>
-    defaultCountryForLang(i18n.language),
-  );
+
+  const preferences = useCompanionStore((s) => s.preferences);
+  const setCrisisCountry = useCompanionStore((s) => s.setCrisisCountry);
+
+  const selectedCode = preferences.crisisCountry ?? defaultCountryForLang(i18n.language);
 
   const isES = i18n.language.startsWith('es');
 
@@ -52,7 +55,7 @@ export function CrisisLink(): React.JSX.Element {
           <select
             id="crisis-country"
             value={selectedCode}
-            onChange={(e) => setSelectedCode(e.target.value)}
+            onChange={(e) => setCrisisCountry(e.target.value)}
             className="select select-bordered w-full bg-parchment text-ink text-sm focus:outline-none focus:border-lavender"
           >
             {CRISIS_COUNTRIES.map((country) => (

@@ -12,6 +12,14 @@
   "theme": "Tema",
   "themeLight": "Claro",
   "themeDark": "Oscuro",
+  "styleSelect": {
+    "title": "Elige el estilo de tu compañero",
+    "subtitle": "Cada estilo tiene sus propios compañeros únicos y líneas evolutivas",
+    "3d": "Compañeros 3D",
+    "2d": "2D Kawaii",
+    "3dDesc": "Animales 3D inmersivos con profundidad y sombra",
+    "2dDesc": "Ilustraciones kawaii planas — suaves y encantadoras"
+  },
   "about": "Acerca de",
   "help": "Ayuda y Soporte",
   "crisisHelp": "Obtener apoyo",
@@ -23,6 +31,12 @@
   "deleteAllConfirmButton": "Sí, borrar todo",
   "deleteAllCancelButton": "Conservar mi compañero",
   "affirmationLabel": "Un pensamiento para ti",
+  "onboarding": {
+    "welcome": "¡Hola! {{name}} está feliz de que estés aquí. Empieza cuidándolo 🌱",
+    "step0": "Empieza nutriéndolo",
+    "step1": "¡Ahora intenta jugar!",
+    "step2": "El descanso también ayuda"
+  },
   "speciesSelect": {
     "title": "¿Quién te acompañará?",
     "subtitle": "Cada compañero sigue un camino único de crecimiento",
@@ -30,17 +44,17 @@
     "backToSpecies": "← Elegir otro compañero"
   },
   "evolutionPanel": {
-    "title": "Camino",
+    "title": "Tu camino",
     "actionGerund": {
       "nourish": "nutriendo",
       "play": "jugando",
       "rest": "descansando",
       "comfort": "consolando"
     },
-    "hintClose": "~{{count}} veces {{action}} hacia {{stage}}",
-    "hintFar": "{{action}} acelera el camino de {{name}}",
-    "hintNoSignature": "Sigue cuidando a {{name}}",
-    "complete": "El camino de {{name}} está completo"
+    "hintClose": "¡Casi en {{stage}}! {{count}} veces más {{action}} 🌱",
+    "hintFar": "{{action}} ayuda a {{name}} a crecer, poco a poco",
+    "hintNoSignature": "Cada pequeño acto de cuidado cuenta",
+    "complete": "{{name}} ha florecido ✨ Lo lograron juntos"
   },
   "species": {
     "zephyr": {
@@ -85,6 +99,50 @@
         "sprout": "Charquito",
         "bloom": "Flotador",
         "flourish": "Sereno"
+      }
+    },
+    "nimbus": {
+      "name": "Nimbus",
+      "tagline": "Suave e ingrávido",
+      "description": "Un suave espíritu de ensueño que te enseña a flotar sobre las preocupaciones. Etéreo y gentil, crece desde un pequeño destello hasta un radiante guardián de sueños. Descansa con Nimbus y deja que lo pesado se desvanezca.",
+      "stages": {
+        "seedling": "Susurro",
+        "sprout": "Deriva",
+        "bloom": "Flotante",
+        "flourish": "Sueño"
+      }
+    },
+    "boba": {
+      "name": "Boba",
+      "tagline": "Calmo e infinito",
+      "description": "Un pequeño orbe cósmico que guarda la serenidad del espacio profundo. Su brillo tranquilo crece con cada momento de juego, recordándote que eres parte de algo vasto y hermoso.",
+      "stages": {
+        "seedling": "Mota",
+        "sprout": "Orbe",
+        "bloom": "Brillo",
+        "flourish": "Nova"
+      }
+    },
+    "mochi": {
+      "name": "Mochi",
+      "tagline": "Cálido y dulce",
+      "description": "Un acogedor compañero redondo que irradia calidez como un abrazo suave. Dulce y tranquilo, te recuerda que el consuelo siempre está cerca. Crece desde una masa suave hasta un radiante compañero de bienestar.",
+      "stages": {
+        "seedling": "Suave",
+        "sprout": "Redondo",
+        "bloom": "Cálido",
+        "flourish": "Dicha"
+      }
+    },
+    "nuri": {
+      "name": "Nuri",
+      "tagline": "Juguetón y presente",
+      "description": "Un vivaz gato verde lleno de curiosidad gentil. Su presencia te anima a notar las pequeñas maravillas de cada día. Crece desde una chispa curiosa hasta un alegre explorador lleno de deleite tranquilo.",
+      "stages": {
+        "seedling": "Chispa",
+        "sprout": "Salto",
+        "bloom": "Florecer",
+        "flourish": "Caminar"
       }
     }
   }

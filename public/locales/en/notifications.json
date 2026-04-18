@@ -9,5 +9,6 @@
   "restModeExited": "{{name}} is awake and feeling better!",
   "dataDeleted": "All data has been deleted",
   "longAbsence": "Welcome back! {{name}} has been waiting for you.",
-  "stageEvolved": "{{name}} reached {{stage}}! ✨"
+  "stageEvolved": "{{name}} reached {{stage}}! ✨",
+  "streakMilestone": "🔥 {{count}} days in a row — you keep showing up!"
 }

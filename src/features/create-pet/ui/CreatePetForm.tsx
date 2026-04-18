@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { clsx } from 'clsx';
 import { Button } from '@shared/ui/Button';
 import type { CompanionSpecies } from '@entities/companion';
-import { CompanionAvatar } from '@entities/companion';
+import { CompanionAvatar, KawaiiAvatar } from '@entities/companion';
 import { useCreateCompanion } from '../model/useCreateCompanion';
 
 // ─── Maps Zod error keys → i18n error namespace keys ─────────────────────────
@@ -13,19 +13,21 @@ const ERROR_KEY_MAP: Record<string, 'nameRequired' | 'nameTooLong' | 'nameInvali
   'errors.nameInvalidChars': 'nameInvalidChars',
 };
 
-const SPECIES_LIST: CompanionSpecies[] = ['zephyr', 'kova', 'luma', 'maru'];
+const SPECIES_3D: CompanionSpecies[] = ['zephyr', 'kova', 'luma', 'maru'];
+const SPECIES_2D: CompanionSpecies[] = ['nimbus', 'boba', 'mochi', 'nuri'];
 
 // ─── Per-species visual theme — no inline styles (R3) ────────────────────────
 interface SpeciesTheme {
-  cardBg: string; // card background — always tinted
-  ring: string; // selection ring color class
-  tagline: string; // tagline text color class
-  checkBg: string; // checkmark badge background
-  descBg: string; // description panel background
-  descBorder: string; // description panel border
+  cardBg: string;
+  ring: string;
+  tagline: string;
+  checkBg: string;
+  descBg: string;
+  descBorder: string;
 }
 
 const SPECIES_THEME: Record<CompanionSpecies, SpeciesTheme> = {
+  // 3D species
   zephyr: {
     cardBg: 'bg-mint-mist',
     ring: 'ring-soft-mint',
@@ -58,7 +60,122 @@ const SPECIES_THEME: Record<CompanionSpecies, SpeciesTheme> = {
     descBg: 'bg-lavender-mist',
     descBorder: 'border-lavender-card',
   },
+  // 2D kawaii species
+  nimbus: {
+    cardBg: 'bg-lavender-mist',
+    ring: 'ring-lavender',
+    tagline: 'text-lavender-dark',
+    checkBg: 'bg-lavender',
+    descBg: 'bg-lavender-mist',
+    descBorder: 'border-lavender-card',
+  },
+  boba: {
+    cardBg: 'bg-mint-mist',
+    ring: 'ring-soft-mint',
+    tagline: 'text-sage-dark',
+    checkBg: 'bg-soft-mint',
+    descBg: 'bg-mint-mist',
+    descBorder: 'border-card',
+  },
+  mochi: {
+    cardBg: 'bg-peach-mist',
+    ring: 'ring-warm-peach',
+    tagline: 'text-ink-secondary',
+    checkBg: 'bg-warm-peach',
+    descBg: 'bg-peach-mist',
+    descBorder: 'border-card',
+  },
+  nuri: {
+    cardBg: 'bg-sage-mist',
+    ring: 'ring-sage',
+    tagline: 'text-sage-dark',
+    checkBg: 'bg-sage',
+    descBg: 'bg-sage-mist',
+    descBorder: 'border-card',
+  },
 };
+
+// ─── Step 0: style selection (3D vs 2D) ──────────────────────────────────────
+
+type AvatarStyle = '3d' | '2d';
+
+interface StyleCardProps {
+  kind: AvatarStyle;
+  isSelected: boolean;
+  onSelect: () => void;
+}
+
+function StyleCard({ kind, isSelected, onSelect }: StyleCardProps): React.JSX.Element {
+  const { t } = useTranslation('common');
+  const is3D = kind === '3d';
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={isSelected}
+      className={clsx(
+        'flex flex-col items-center gap-3 rounded-2xl p-4 text-center',
+        'transition-all duration-200 cursor-pointer',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2',
+        is3D ? 'bg-parchment-deep' : 'bg-lavender-mist',
+        isSelected
+          ? 'ring-2 ring-lavender ring-offset-2 shadow-md scale-[1.02]'
+          : 'ring-1 ring-transparent shadow-sm hover:shadow-md hover:scale-[1.01]',
+      )}
+    >
+      {/* Preview avatar */}
+      <div className="h-20 w-20 flex items-center justify-center" aria-hidden="true">
+        {is3D ? (
+          <CompanionAvatar species="zephyr" stage="seedling" mood="calm" size={80} />
+        ) : (
+          <KawaiiAvatar species="nimbus" stage="seedling" mood="calm" size={80} />
+        )}
+      </div>
+
+      <div className="space-y-0.5">
+        <p className="text-sm font-bold text-ink">{t(`styleSelect.${kind}`)}</p>
+        <p className="text-xs text-ink-muted leading-snug">{t(`styleSelect.${kind}Desc`)}</p>
+      </div>
+
+      {isSelected && (
+        <span className="badge badge-sm bg-lavender text-white border-0 font-semibold">✓</span>
+      )}
+    </button>
+  );
+}
+
+interface StepStyleProps {
+  selected: AvatarStyle | null;
+  onSelect: (s: AvatarStyle) => void;
+  onContinue: () => void;
+}
+
+function StepStyle({ selected, onSelect, onContinue }: StepStyleProps): React.JSX.Element {
+  const { t } = useTranslation('common');
+
+  return (
+    <div className="flex w-full flex-col gap-4">
+      <div className="text-center">
+        <h2 className="text-lg font-semibold tracking-tight text-ink">{t('styleSelect.title')}</h2>
+        <p className="mt-1 text-sm text-ink-muted">{t('styleSelect.subtitle')}</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <StyleCard kind="3d" isSelected={selected === '3d'} onSelect={() => onSelect('3d')} />
+        <StyleCard kind="2d" isSelected={selected === '2d'} onSelect={() => onSelect('2d')} />
+      </div>
+
+      <Button
+        onClick={onContinue}
+        label={t('speciesSelect.continue')}
+        isDisabled={selected === null}
+        variant="primary"
+        size="lg"
+      />
+    </div>
+  );
+}
 
 // ─── Species selection card ───────────────────────────────────────────────────
 
@@ -70,12 +187,10 @@ interface SpeciesCardProps {
 
 function SpeciesCard({ species, isSelected, onSelect }: SpeciesCardProps): React.JSX.Element {
   const { t } = useTranslation('common');
-  // Safe: species is a typed union, never user input
   // eslint-disable-next-line security/detect-object-injection
   const theme = SPECIES_THEME[species];
 
   return (
-    // DaisyUI card card-compact — structured hover + selection states
     <button
       type="button"
       onClick={onSelect}
@@ -91,7 +206,6 @@ function SpeciesCard({ species, isSelected, onSelect }: SpeciesCardProps): React
         `focus-visible:${theme.ring}`,
       )}
     >
-      {/* Checkmark badge — DaisyUI badge */}
       {isSelected && (
         <span
           aria-hidden="true"
@@ -115,12 +229,10 @@ function SpeciesCard({ species, isSelected, onSelect }: SpeciesCardProps): React
       )}
 
       <div className="card-body items-center gap-2 py-4 px-3">
-        {/* Avatar — seedling stage */}
         <div aria-hidden="true">
           <CompanionAvatar species={species} stage="seedling" mood="calm" size={80} />
         </div>
 
-        {/* Name + tagline */}
         <div className="card-title flex-col gap-0.5 text-center">
           <p className="text-sm font-bold tracking-tight text-ink">
             {t(`species.${species}.name`)}
@@ -137,17 +249,24 @@ function SpeciesCard({ species, isSelected, onSelect }: SpeciesCardProps): React
 // ─── Step 1: species selection ────────────────────────────────────────────────
 
 interface StepSpeciesProps {
+  speciesList: CompanionSpecies[];
   selected: CompanionSpecies | null;
   onSelect: (s: CompanionSpecies) => void;
   onContinue: () => void;
+  onBack: () => void;
 }
 
-function StepSpecies({ selected, onSelect, onContinue }: StepSpeciesProps): React.JSX.Element {
+function StepSpecies({
+  speciesList,
+  selected,
+  onSelect,
+  onContinue,
+  onBack,
+}: StepSpeciesProps): React.JSX.Element {
   const { t } = useTranslation('common');
 
   return (
     <div className="flex w-full flex-col gap-3">
-      {/* Header */}
       <div className="text-center">
         <h2 className="text-lg font-semibold tracking-tight text-ink">
           {t('speciesSelect.title')}
@@ -155,9 +274,8 @@ function StepSpecies({ selected, onSelect, onContinue }: StepSpeciesProps): Reac
         <p className="mt-1 text-sm text-ink-muted">{t('speciesSelect.subtitle')}</p>
       </div>
 
-      {/* 2×2 cards grid */}
       <div className="grid grid-cols-2 gap-2.5">
-        {SPECIES_LIST.map((sp) => (
+        {speciesList.map((sp) => (
           <SpeciesCard
             key={sp}
             species={sp}
@@ -167,13 +285,11 @@ function StepSpecies({ selected, onSelect, onContinue }: StepSpeciesProps): Reac
         ))}
       </div>
 
-      {/* Description — DaisyUI alert, compact, animates in on selection */}
       {selected !== null && (
         <div
           key={selected}
           className={clsx(
             'alert animate-enter rounded-2xl border py-2.5 px-4 text-center',
-            // Safe: selected is CompanionSpecies union value
             // eslint-disable-next-line security/detect-object-injection
             SPECIES_THEME[selected].descBg,
             // eslint-disable-next-line security/detect-object-injection
@@ -186,7 +302,6 @@ function StepSpecies({ selected, onSelect, onContinue }: StepSpeciesProps): Reac
         </div>
       )}
 
-      {/* Continue button */}
       <Button
         onClick={onContinue}
         label={t('speciesSelect.continue')}
@@ -194,6 +309,14 @@ function StepSpecies({ selected, onSelect, onContinue }: StepSpeciesProps): Reac
         variant="primary"
         size="lg"
       />
+
+      <button
+        type="button"
+        onClick={onBack}
+        className="text-center text-sm text-ink-muted underline-offset-2 hover:text-ink hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-lavender"
+      >
+        ← {t('styleSelect.title')}
+      </button>
     </div>
   );
 }
@@ -220,13 +343,11 @@ function StepName({
   onBack,
 }: StepNameProps): React.JSX.Element {
   const { t } = useTranslation(['common', 'errors']);
-  // Safe: species is a typed union, never user input
   // eslint-disable-next-line security/detect-object-injection
   const theme = SPECIES_THEME[species];
 
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col gap-5">
-      {/* Chosen companion card — species-tinted, centered */}
       <div
         className={clsx(
           'flex flex-col items-center gap-3 rounded-3xl px-6 pb-6 pt-7',
@@ -246,7 +367,6 @@ function StepName({
         </div>
       </div>
 
-      {/* Name input */}
       <div>
         <label
           htmlFor="companion-name"
@@ -273,7 +393,6 @@ function StepName({
 
         {nameError && (
           <p id="name-error" role="alert" className="mt-2 text-sm text-warm-peach">
-            {/* Safe: nameError values come from a closed set in schemas.ts */}
             {/* eslint-disable-next-line security/detect-object-injection */}
             {t(ERROR_KEY_MAP[nameError] ?? 'nameInvalidChars', { ns: 'errors' })}
           </p>
@@ -302,17 +421,32 @@ function StepName({
 // ─── Exported form — manages step state ──────────────────────────────────────
 
 export function CreatePetForm(): React.JSX.Element {
-  const [step, setStep] = useState<'species' | 'name'>('species');
+  const [step, setStep] = useState<'style' | 'species' | 'name'>('style');
+  const [avatarStyle, setAvatarStyle] = useState<AvatarStyle | null>(null);
 
   const { selectedSpecies, selectSpecies, nameInput, nameError, setNameInput, create, isDisabled } =
     useCreateCompanion();
 
+  const speciesList = avatarStyle === '2d' ? SPECIES_2D : SPECIES_3D;
+
+  if (step === 'style') {
+    return (
+      <StepStyle
+        selected={avatarStyle}
+        onSelect={setAvatarStyle}
+        onContinue={() => setStep('species')}
+      />
+    );
+  }
+
   if (step === 'species') {
     return (
       <StepSpecies
+        speciesList={speciesList}
         selected={selectedSpecies}
         onSelect={selectSpecies}
         onContinue={() => setStep('name')}
+        onBack={() => setStep('style')}
       />
     );
   }

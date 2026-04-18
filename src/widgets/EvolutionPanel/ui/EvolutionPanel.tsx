@@ -32,54 +32,112 @@ const ACTION_EMOJI: Record<ActionType, string> = {
 
 interface EvolutionTheme {
   nodeFilled: string;
-  nodeGlow: string;
   connectorFilled: string;
+  connectorEmpty: string;
   panelBg: string;
+  panelBorder: string;
   accentText: string;
   hintText: string;
+  progress: string;
 }
 
 const EVOLUTION_THEME: Record<CompanionSpecies, EvolutionTheme> = {
   zephyr: {
     nodeFilled: 'bg-soft-mint',
-    nodeGlow: 'ring-soft-mint',
     connectorFilled: 'bg-soft-mint',
+    connectorEmpty: 'bg-soft-mint/20',
     panelBg: 'bg-mint-mist',
+    panelBorder: 'border border-soft-mint/25',
     accentText: 'text-sage-dark',
-    hintText: 'text-sage',
+    hintText: 'text-ink-secondary',
+    progress: 'progress-accent',
   },
   kova: {
     nodeFilled: 'bg-warm-peach',
-    nodeGlow: 'ring-warm-peach',
     connectorFilled: 'bg-warm-peach',
-    panelBg: 'bg-parchment-deep',
+    connectorEmpty: 'bg-warm-peach/20',
+    panelBg: 'bg-peach-mist',
+    panelBorder: 'border border-warm-peach/25',
     accentText: 'text-ink-secondary',
-    hintText: 'text-ink-muted',
+    hintText: 'text-ink-secondary',
+    progress: 'progress-warning',
   },
   luma: {
     nodeFilled: 'bg-golden',
-    nodeGlow: 'ring-golden',
     connectorFilled: 'bg-golden',
+    connectorEmpty: 'bg-golden/20',
     panelBg: 'bg-golden-mist',
+    panelBorder: 'border border-golden/25',
     accentText: 'text-golden-dark',
-    hintText: 'text-golden-dark',
+    hintText: 'text-ink-secondary',
+    progress: 'progress-warning',
   },
   maru: {
     nodeFilled: 'bg-lavender',
-    nodeGlow: 'ring-lavender',
     connectorFilled: 'bg-lavender',
+    connectorEmpty: 'bg-lavender/20',
     panelBg: 'bg-lavender-mist',
+    panelBorder: 'border border-lavender/25',
     accentText: 'text-lavender-dark',
-    hintText: 'text-lavender-dark',
+    hintText: 'text-ink-secondary',
+    progress: 'progress-primary',
+  },
+  // 2D kawaii species
+  nimbus: {
+    nodeFilled: 'bg-lavender',
+    connectorFilled: 'bg-lavender',
+    connectorEmpty: 'bg-lavender/20',
+    panelBg: 'bg-lavender-mist',
+    panelBorder: 'border border-lavender/20',
+    accentText: 'text-lavender-dark',
+    hintText: 'text-ink-secondary',
+    progress: 'progress-primary',
+  },
+  boba: {
+    nodeFilled: 'bg-soft-mint',
+    connectorFilled: 'bg-soft-mint',
+    connectorEmpty: 'bg-soft-mint/20',
+    panelBg: 'bg-mint-mist',
+    panelBorder: 'border border-soft-mint/20',
+    accentText: 'text-sage-dark',
+    hintText: 'text-ink-secondary',
+    progress: 'progress-accent',
+  },
+  mochi: {
+    nodeFilled: 'bg-warm-peach',
+    connectorFilled: 'bg-warm-peach',
+    connectorEmpty: 'bg-warm-peach/20',
+    panelBg: 'bg-peach-mist',
+    panelBorder: 'border border-warm-peach/20',
+    accentText: 'text-ink-secondary',
+    hintText: 'text-ink-secondary',
+    progress: 'progress-warning',
+  },
+  nuri: {
+    nodeFilled: 'bg-sage',
+    connectorFilled: 'bg-sage',
+    connectorEmpty: 'bg-sage/20',
+    panelBg: 'bg-sage-mist',
+    panelBorder: 'border border-sage/20',
+    accentText: 'text-sage-dark',
+    hintText: 'text-ink-secondary',
+    progress: 'progress-success',
   },
 };
+
+interface EvolutionResult {
+  nextStage: CompanionStage | null;
+  boostsToNext: number;
+  signatureAction: ActionType | null;
+  progressPct: number;
+}
 
 function computeEvolutionProgress(
   age: number,
   counts: InteractionCounts,
   species: CompanionSpecies,
   currentStage: CompanionStage,
-): { nextStage: CompanionStage | null; boostsToNext: number; signatureAction: ActionType | null } {
+): EvolutionResult {
   // eslint-disable-next-line security/detect-object-injection
   const signatureAction = SPECIES_PRIMARY_ACTION[species] ?? null;
   // eslint-disable-next-line security/detect-object-injection
@@ -88,22 +146,27 @@ function computeEvolutionProgress(
   // eslint-disable-next-line security/detect-object-injection
   const currentIdx = STAGE_INDEX[currentStage];
 
-  if (currentIdx >= 3) return { nextStage: null, boostsToNext: 0, signatureAction };
+  if (currentIdx >= 3)
+    return { nextStage: null, boostsToNext: 0, signatureAction, progressPct: 100 };
 
   const nextStage = STAGES[currentIdx + 1] ?? null;
-  if (!nextStage) return { nextStage: null, boostsToNext: 0, signatureAction };
+  if (!nextStage) return { nextStage: null, boostsToNext: 0, signatureAction, progressPct: 100 };
 
   // eslint-disable-next-line security/detect-object-injection
+  const currentThreshold = STAGE_THRESHOLDS[currentStage];
+  // eslint-disable-next-line security/detect-object-injection
   const nextThreshold = STAGE_THRESHOLDS[nextStage];
+  const span = nextThreshold - currentThreshold;
+  const done = effectiveAge - currentThreshold;
+  const progressPct = span > 0 ? Math.min(100, Math.max(0, Math.round((done / span) * 100))) : 0;
   const remainingEffective = Math.max(0, nextThreshold - effectiveAge);
   const boostsToNext = signatureAction
     ? Math.ceil(remainingEffective / INTERACTION_BOOST_WEIGHT)
     : 0;
-  return { nextStage, boostsToNext, signatureAction };
+
+  return { nextStage, boostsToNext, signatureAction, progressPct };
 }
 
-// ─── EvolutionPanel — compact always-visible strip ────────────────────────────
-// Fits in ~72px total height — no accordion, no scrolling required.
 export function EvolutionPanel(): React.JSX.Element | null {
   const { t } = useTranslation('common');
 
@@ -123,14 +186,13 @@ export function EvolutionPanel(): React.JSX.Element | null {
   // eslint-disable-next-line security/detect-object-injection
   const currentIdx = STAGE_INDEX[stage];
 
-  const { nextStage, boostsToNext, signatureAction } = computeEvolutionProgress(
+  const { nextStage, boostsToNext, signatureAction, progressPct } = computeEvolutionProgress(
     age,
     interactionCounts,
     species,
     stage,
   );
 
-  // ── Hint text ──────────────────────────────────────────────────────────────
   let hint: string;
   if (!nextStage) {
     hint = t('evolutionPanel.complete', { name });
@@ -155,85 +217,104 @@ export function EvolutionPanel(): React.JSX.Element | null {
 
   return (
     <div
-      className={clsx('w-full rounded-2xl px-4 py-3', theme.panelBg)}
+      className={clsx('w-full rounded-xl px-3 py-2.5', theme.panelBg, theme.panelBorder)}
       role="region"
       aria-label={t('evolutionPanel.title')}
     >
-      {/* ── Top row: label + hint ── */}
-      <div className="mb-2 flex items-baseline gap-2">
+      {/* ── Row 1: title + hint on same line ── */}
+      <div className="mb-2 flex items-center gap-2">
         <span
           className={clsx(
-            'shrink-0 text-[10px] font-bold uppercase tracking-widest',
+            'shrink-0 text-[9px] font-bold uppercase tracking-widest',
             theme.accentText,
           )}
         >
           {t('evolutionPanel.title')}
         </span>
-        <span
-          className={clsx('flex-1 truncate text-right text-[10px] leading-snug', theme.hintText)}
-        >
+        <span className={clsx('flex-1 truncate text-[10px] leading-none', theme.hintText)}>
           {hint}
         </span>
+        {nextStage && (
+          <span className={clsx('shrink-0 text-[9px] font-bold tabular-nums', theme.accentText)}>
+            {progressPct}%
+          </span>
+        )}
       </div>
 
-      {/* ── Stage progress strip ── */}
+      {/* ── Progress bar ── */}
+      {nextStage && (
+        <progress
+          className={clsx('progress mb-2 h-1 w-full', theme.progress)}
+          value={progressPct}
+          max={100}
+          aria-label={`${progressPct}% hacia ${t(`species.${species}.stages.${nextStage}`)}`}
+        />
+      )}
+
+      {/* ── Stage nodes + connectors ── */}
       <div className="flex w-full items-start" role="list">
         {STAGES.map((stageKey, idx) => {
           const isPast = idx < currentIdx;
           const isCurrent = idx === currentIdx;
           const isFuture = idx > currentIdx;
 
-          const connectorStatus =
-            idx < currentIdx ? 'completed' : idx === currentIdx ? 'in-progress' : 'future';
-
           return (
             <React.Fragment key={stageKey}>
-              {/* Node + label */}
               <div role="listitem" className="flex flex-col items-center gap-1">
                 {isCurrent ? (
                   <motion.div
                     animate={{ scale: [1, 1.25, 1] }}
-                    transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
-                    className={clsx(
-                      'h-3.5 w-3.5 rounded-full ring-2 ring-offset-1',
-                      theme.nodeFilled,
-                      theme.nodeGlow,
-                    )}
+                    transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
+                    className={clsx('h-3 w-3 rounded-full shadow-sm', theme.nodeFilled)}
                     aria-hidden="true"
                   />
                 ) : isPast ? (
                   <div
-                    className={clsx('h-3 w-3 rounded-full', theme.nodeFilled)}
+                    className={clsx(
+                      'flex h-3 w-3 items-center justify-center rounded-full',
+                      theme.nodeFilled,
+                    )}
                     aria-hidden="true"
-                  />
+                  >
+                    <svg viewBox="0 0 8 8" fill="none" className="h-2 w-2">
+                      <path
+                        d="M1.5 4L3.5 6L6.5 2"
+                        stroke="white"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
                 ) : (
                   <div
-                    className="h-3 w-3 rounded-full border-2 border-border-soft opacity-35"
+                    className={clsx(
+                      'h-3 w-3 rounded-full border-2 border-current',
+                      theme.connectorEmpty,
+                    )}
                     aria-hidden="true"
                   />
                 )}
                 <span
                   className={clsx(
-                    'w-[48px] truncate text-center text-[9px] leading-none',
-                    isCurrent && `font-semibold ${theme.accentText}`,
-                    isPast && `font-medium ${theme.accentText} opacity-65`,
-                    isFuture && 'font-normal text-ink-faint opacity-40',
+                    'w-[44px] text-center text-[9px] leading-tight',
+                    isCurrent && `font-bold ${theme.accentText}`,
+                    isPast && 'font-medium text-ink-muted',
+                    isFuture && 'text-ink-muted opacity-50',
                   )}
                 >
                   {t(`species.${species}.stages.${stageKey}`)}
                 </span>
               </div>
 
-              {/* Connector */}
               {idx < 3 && (
-                <div className="mb-[3px] mt-[6px] flex-1 self-start">
-                  {connectorStatus === 'completed' ? (
-                    <div className={clsx('h-0.5 w-full rounded-full', theme.connectorFilled)} />
-                  ) : connectorStatus === 'in-progress' ? (
-                    <div className="h-0 w-full border-t-2 border-dashed border-ink-faint/55" />
-                  ) : (
-                    <div className="h-0.5 w-full rounded-full bg-border-soft opacity-25" />
-                  )}
+                <div className="mb-[3px] mt-[5px] flex-1 self-start">
+                  <div
+                    className={clsx(
+                      'h-0.5 w-full rounded-full',
+                      idx < currentIdx ? theme.connectorFilled : theme.connectorEmpty,
+                    )}
+                  />
                 </div>
               )}
             </React.Fragment>

@@ -7,7 +7,11 @@ export const STORAGE_KEYS = {
   MILESTONE: 'elmyra_milestone',
   PREFERENCES: 'elmyra_preferences',
   DISCLAIMER_V: 'elmyra_disclaimer_v1',
+  STREAK: 'elmyra_streak',
 } as const;
+
+// Days at which a streak milestone toast fires
+export const STREAK_MILESTONES = [7, 14, 30, 60, 90] as const;
 
 // ─── Game loop timing ─────────────────────────────────────────────────────────
 // 6s per tick — slightly slower than original Tamagotchi (4s)
@@ -58,11 +62,26 @@ export const INTERACTION_BOOST_WEIGHT = 4;
 // Maps each species to its signature action — performing it grants INTERACTION_BOOST_WEIGHT
 // extra effective age ticks, letting attentive players unlock stages faster.
 export const SPECIES_PRIMARY_ACTION: Partial<Record<CompanionSpecies, ActionType>> = {
+  // 3D species
   zephyr: 'rest', // Breathing/rest feeds Zephyr's cloud
   kova: 'nourish', // Tending and feeding grounds Kova
   luma: 'comfort', // Emotional warmth grows Luma's light
   maru: 'play', // Joy sets Maru's rings spinning
+  // 2D kawaii species
+  nimbus: 'rest', // Dreaming needs rest — float through worry
+  boba: 'play', // Cosmic curiosity through joyful play
+  mochi: 'nourish', // Warmth grows through nurturing care
+  nuri: 'comfort', // Gentle presence through comforting connection
 };
+
+// The set of species rendered as 2D kawaii illustrations (react-kawaii).
+// All other species use the 3D React Three Fiber renderer.
+export const KAWAII_SPECIES: ReadonlySet<CompanionSpecies> = new Set([
+  'nimbus',
+  'boba',
+  'mochi',
+  'nuri',
+] as CompanionSpecies[]);
 
 // ─── Offline decay cap ───────────────────────────────────────────────────────
 // Max ticks simulated when user returns after absence.

@@ -6,10 +6,15 @@ import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
 import type { ActionType, CompanionSpecies } from './types';
-import type { AppPreferences, CompanionState, WellnessMilestone } from './schemas';
-import { appPreferencesSchema, companionStateSchema, wellnessMilestoneSchema } from './schemas';
+import type { AppPreferences, CompanionState, StreakData, WellnessMilestone } from './schemas';
+import {
+  appPreferencesSchema,
+  companionStateSchema,
+  streakSchema,
+  wellnessMilestoneSchema,
+} from './schemas';
 import { companionNameSchema } from './schemas';
-import { STORAGE_KEYS } from './constants';
+import { STORAGE_KEYS, STREAK_MILESTONES } from './constants';
 import {
   applyAction,
   applyStatDecay,
@@ -32,7 +37,8 @@ export type StoreNotification =
   | { type: 'restModeExited'; name: string }
   | { type: 'longAbsence'; name: string }
   | { type: 'dataDeleted' }
-  | { type: 'actionSuccess'; action: ActionType; name: string };
+  | { type: 'actionSuccess'; action: ActionType; name: string }
+  | { type: 'streakMilestone'; count: number };
 
 export type NotificationHandler = (notification: StoreNotification) => void;
 
@@ -44,11 +50,26 @@ const getSystemTheme = (): 'light' | 'dark' =>
     ? 'dark'
     : 'light';
 
+// Detect browser language on first install — falls back to 'en'.
+const getSystemLanguage = (): 'en' | 'es' => {
+  if (typeof navigator === 'undefined') return 'en';
+  const lang = navigator.language ?? navigator.languages?.[0] ?? '';
+  return lang.startsWith('es') ? 'es' : 'en';
+};
+
+// Infer a sensible default crisis country from browser locale — mirrors defaultCountryForLang.
+const getSystemCrisisCountry = (): string => {
+  if (typeof navigator === 'undefined') return 'US';
+  const lang = navigator.language ?? navigator.languages?.[0] ?? '';
+  return lang.startsWith('es') ? 'MX' : 'US';
+};
+
 const DEFAULT_PREFERENCES: AppPreferences = {
   theme: getSystemTheme(),
-  language: 'en',
+  language: getSystemLanguage(),
   disclaimerAccepted: false,
-  crisisCountry: 'us',
+  crisisCountry: getSystemCrisisCountry(),
+  onboardingStep: 0,
 };
 
 // ─── Offline threshold for "long absence" nudge ───────────────────────────────
@@ -60,6 +81,7 @@ const LONG_ABSENCE_MS = 5 * 60 * 1000;
 export interface CompanionStore {
   companion: CompanionState | null;
   milestone: WellnessMilestone | null;
+  streak: StreakData;
   preferences: AppPreferences;
   isLoading: boolean;
 
@@ -84,6 +106,7 @@ export interface CompanionStore {
   // ── Preferences ──────────────────────────────────────────────────────────
   setTheme: (theme: 'light' | 'dark') => void;
   setLanguage: (lang: 'en' | 'es') => void;
+  advanceOnboarding: () => void;
   acceptDisclaimer: () => void;
   setCrisisCountry: (code: string) => void;
 }
@@ -117,12 +140,35 @@ const updateMilestone = (
   return current;
 };
 
+/** Returns today's date as YYYY-MM-DD in local time. */
+const todayString = (): string => {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+
+/** Computes new streak from stored data and today's date. Returns updated StreakData. */
+const computeStreak = (stored: StreakData): StreakData => {
+  const today = todayString();
+  if (stored.lastActiveDate === today) return stored; // already counted today
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+
+  const newCount = stored.lastActiveDate === yStr ? stored.count + 1 : 1;
+  return { count: newCount, lastActiveDate: today };
+};
+
 // ─── Store ────────────────────────────────────────────────────────────────────
 
 export const useCompanionStore = create<CompanionStore>()(
   subscribeWithSelector((set, get) => ({
     companion: null,
     milestone: null,
+    streak: { count: 0, lastActiveDate: '' },
     preferences: DEFAULT_PREFERENCES,
     isLoading: false,
     _notificationHandler: null,
@@ -159,8 +205,26 @@ export const useCompanionStore = create<CompanionStore>()(
         document.documentElement.dataset['theme'] = preferences.theme;
       }
 
+      // ── Streak computation ──────────────────────────────────────────────
+      const storedStreak = readFromStorage(STORAGE_KEYS.STREAK, streakSchema);
+      const prevStreak = storedStreak ?? { count: 0, lastActiveDate: '' };
+      const newStreak = computeStreak(prevStreak);
+      if (newStreak.lastActiveDate !== prevStreak.lastActiveDate) {
+        writeToStorage(STORAGE_KEYS.STREAK, newStreak);
+        // Fire milestone toast if count hits a milestone day
+        if ((STREAK_MILESTONES as readonly number[]).includes(newStreak.count)) {
+          get()._notificationHandler?.({ type: 'streakMilestone', count: newStreak.count });
+        }
+      }
+
       if (!storedCompanion) {
-        set({ companion: null, milestone: storedMilestone, preferences, isLoading: false });
+        set({
+          companion: null,
+          milestone: storedMilestone,
+          streak: newStreak,
+          preferences,
+          isLoading: false,
+        });
         return;
       }
 
@@ -174,7 +238,13 @@ export const useCompanionStore = create<CompanionStore>()(
 
       const milestone = updateMilestone(storedMilestone, decayedCompanion);
 
-      set({ companion: decayedCompanion, milestone, preferences, isLoading: false });
+      set({
+        companion: decayedCompanion,
+        milestone,
+        streak: newStreak,
+        preferences,
+        isLoading: false,
+      });
 
       // Gentle return greeting if user was away a while (R7 — no guilt, just warmth)
       if (offlineMs >= LONG_ABSENCE_MS) {
@@ -310,6 +380,16 @@ export const useCompanionStore = create<CompanionStore>()(
       const preferences: AppPreferences = { ...get().preferences, crisisCountry: code };
       persistPreferences(preferences);
       set({ preferences });
+    },
+
+    advanceOnboarding: () => {
+      const { preferences } = get();
+      const current = preferences.onboardingStep;
+      if (current === 'done') return;
+      const next = current < 2 ? ((current + 1) as 0 | 1 | 2) : 'done';
+      const updated: AppPreferences = { ...preferences, onboardingStep: next };
+      persistPreferences(updated);
+      set({ preferences: updated });
     },
   })),
 );

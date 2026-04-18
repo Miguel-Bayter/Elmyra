@@ -59,12 +59,62 @@ const maru: SpeciesConfig = {
   },
 };
 
+// ─── 2D kawaii species ────────────────────────────────────────────────────────
+
+// ─── Nimbus ───────────────────────────────────────────────────────────────────
+// Dream wisp — pale lavender pearl to radiant violet mist.
+const nimbus: SpeciesConfig = {
+  stages: {
+    seedling: { color: '#f4f0fa' }, // pale pearl whisper
+    sprout: { color: '#ddd0f4' }, // soft lavender drift
+    bloom: { color: '#c4a8ec' }, // floating violet
+    flourish: { color: '#ede4fc' }, // luminous dream shimmer
+  },
+};
+
+// ─── Boba ─────────────────────────────────────────────────────────────────────
+// Cosmic orb — sea teal calm to radiant ocean glow.
+const boba: SpeciesConfig = {
+  stages: {
+    seedling: { color: '#e4f8f4' }, // pale seafoam
+    sprout: { color: '#b0e4dc' }, // teal calm
+    bloom: { color: '#7eccc0' }, // ocean glow
+    flourish: { color: '#d4f4ee' }, // aurora seafoam
+  },
+};
+
+// ─── Mochi ────────────────────────────────────────────────────────────────────
+// Soft comfort — warm cream to gentle rosy bliss.
+const mochi: SpeciesConfig = {
+  stages: {
+    seedling: { color: '#faf4ec' }, // cream whisper
+    sprout: { color: '#f4d8bc' }, // soft peach warmth
+    bloom: { color: '#ecb898' }, // warm rose cream
+    flourish: { color: '#fce8d8' }, // blush glow
+  },
+};
+
+// ─── Nuri ─────────────────────────────────────────────────────────────────────
+// Curious cat — fresh sage to vibrant living green.
+const nuri: SpeciesConfig = {
+  stages: {
+    seedling: { color: '#ecf4e8' }, // pale sage whisper
+    sprout: { color: '#c8e4c0' }, // fresh leaf
+    bloom: { color: '#a0cc98' }, // vibrant sage
+    flourish: { color: '#daecd4' }, // luminous mint glow
+  },
+};
+
 // ─── Registry ─────────────────────────────────────────────────────────────────
 export const SPECIES_CONFIG: Record<CompanionSpecies, SpeciesConfig> = {
   zephyr,
   kova,
   luma,
   maru,
+  nimbus,
+  boba,
+  mochi,
+  nuri,
 };
 
 /** Returns the color config for a given species + stage. */

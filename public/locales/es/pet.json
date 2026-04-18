@@ -30,6 +30,17 @@
     "lessThanMinute": "recién empezando",
     "together": "juntos"
   },
+  "ageBadgeMessage": {
+    "justNow": "Aquí empieza todo.",
+    "minutes": "Gracias por estar aquí.",
+    "hours": "Poco a poco es suficiente.",
+    "oneDay": "Un día a la vez.",
+    "days": "Sigues apareciendo. Eso importa.",
+    "weeks": "Cada regreso cuenta.",
+    "months": "Aquí, sin juzgarte.",
+    "manyMonths": "Lo estás logrando.",
+    "year": "Un año juntos. Eso es real."
+  },
   "ageSupport": [
     "Cada momento que apareces importa",
     "Creciendo juntos, día a día",
@@ -37,6 +48,10 @@
     "Tu compañero siempre está aquí para ti",
     "Los pequeños actos de cuidado se acumulan en algo hermoso"
   ],
+  "streak": {
+    "badge": "{{count}} día seguido",
+    "badge_other": "{{count}} días seguidos"
+  },
   "stageLevelLabel": "Etapa",
   "moodLabel": "Estado",
   "isResting": "Tu compañero está descansando",

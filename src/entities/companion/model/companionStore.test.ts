@@ -12,7 +12,13 @@ const resetStore = () => {
   useCompanionStore.setState({
     companion: null,
     milestone: null,
-    preferences: { theme: 'light', language: 'en', disclaimerAccepted: false, crisisCountry: 'us' },
+    preferences: {
+      theme: 'light',
+      language: 'en',
+      disclaimerAccepted: false,
+      crisisCountry: 'us',
+      onboardingStep: 0,
+    },
     isLoading: false,
     _notificationHandler: null,
   });

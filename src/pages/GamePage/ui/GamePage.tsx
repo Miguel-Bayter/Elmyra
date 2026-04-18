@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useCompanionStore } from '@entities/companion';
 import type { ActionType } from '@entities/companion';
 import { useGameLoop } from '@features/game-loop';
@@ -16,18 +17,27 @@ import { EvolutionPanel } from '@widgets/EvolutionPanel';
 // Affirmations rotate every 60 seconds
 const AFFIRMATION_ROTATE_MS = 60_000;
 
+// Which action each onboarding step highlights
+const ONBOARDING_ACTION: Record<0 | 1 | 2, ActionType> = {
+  0: 'nourish',
+  1: 'play',
+  2: 'rest',
+};
+
 export function GamePage(): React.JSX.Element {
-  const { t } = useTranslation(['common', 'wellness']);
+  const { t } = useTranslation(['common', 'wellness', 'notifications']);
   const navigate = useNavigate();
 
   const companion = useCompanionStore((s) => s.companion);
   const isLoading = useCompanionStore((s) => s.isLoading);
   const loadFromStorage = useCompanionStore((s) => s.loadFromStorage);
   const setNotificationHandler = useCompanionStore((s) => s.setNotificationHandler);
+  const onboardingStep = useCompanionStore((s) => s.preferences.onboardingStep);
+  const advanceOnboarding = useCompanionStore((s) => s.advanceOnboarding);
 
   const showToast = useToastStore((s) => s.showToast);
 
-  // Load state on mount
+  // Load state on mount (StoreInitializer in AppProviders also calls this — idempotent)
   useEffect(() => {
     loadFromStorage();
   }, [loadFromStorage]);
@@ -39,8 +49,11 @@ export function GamePage(): React.JSX.Element {
         showToast(t('restModeEntered', { name: notification.name, ns: 'notifications' }), 'info');
       } else if (notification.type === 'longAbsence') {
         showToast(t('longAbsence', { name: notification.name, ns: 'notifications' }), 'nudge');
-      } else if (notification.type === 'actionSuccess') {
-        // Subtle celebration for actions — not shown as toast (would be too frequent)
+      } else if (notification.type === 'streakMilestone') {
+        showToast(
+          t('streakMilestone', { count: notification.count, ns: 'notifications' }),
+          'celebration',
+        );
       }
     });
   }, [setNotificationHandler, showToast, t]);
@@ -81,10 +94,20 @@ export function GamePage(): React.JSX.Element {
   const [lastReaction, setLastReaction] = useState<{ action: ActionType; key: number } | null>(
     null,
   );
-  const handleAction = useCallback((action: ActionType) => {
-    reactionKeyRef.current += 1;
-    setLastReaction({ action, key: reactionKeyRef.current });
-  }, []);
+
+  const handleAction = useCallback(
+    (action: ActionType) => {
+      reactionKeyRef.current += 1;
+      setLastReaction({ action, key: reactionKeyRef.current });
+
+      // Advance onboarding if user just performed the highlighted action
+      // eslint-disable-next-line security/detect-object-injection
+      if (onboardingStep !== 'done' && ONBOARDING_ACTION[onboardingStep] === action) {
+        advanceOnboarding();
+      }
+    },
+    [onboardingStep, advanceOnboarding],
+  );
 
   if (isLoading || !companion) {
     return (
@@ -103,20 +126,46 @@ export function GamePage(): React.JSX.Element {
   // eslint-disable-next-line security/detect-object-injection
   const currentAffirmation = affirmations[affirmationIdx] ?? affirmations[0] ?? '';
 
+  // eslint-disable-next-line security/detect-object-injection
+  const activeHighlight = onboardingStep !== 'done' ? ONBOARDING_ACTION[onboardingStep] : null;
+  const onboardingHint = activeHighlight
+    ? t(`onboarding.step${onboardingStep as 0 | 1 | 2}`, { ns: 'common' })
+    : undefined;
+
   return (
     <AppLayout>
       {/* Viewport-fit: fills exactly the space below the 52px navbar — no page scroll */}
       <div className="flex h-[calc(100dvh-52px)] w-full max-w-sm flex-col overflow-hidden">
         {/* ── Companion zone — fills all remaining space ── */}
-        <div className="flex flex-1 min-h-0 flex-col items-center justify-center gap-2 overflow-hidden px-3 pt-2">
+        <div className="flex flex-1 min-h-0 flex-col items-center justify-center overflow-hidden px-3 pt-2">
           <PetDisplay speechBubble={currentAffirmation} reaction={lastReaction} compact />
-          <EvolutionPanel />
         </div>
 
         {/* ── Bottom dock — always visible, never scrolled past ── */}
         <div className="flex flex-shrink-0 flex-col gap-2 px-3 pb-4 pt-1">
+          {/* Onboarding welcome message — step 0 only */}
+          <AnimatePresence>
+            {onboardingStep === 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                className="rounded-xl border border-lavender/20 bg-lavender-mist px-3 py-2 text-center"
+              >
+                <p className="text-xs text-ink-secondary">
+                  {t('onboarding.welcome', { ns: 'common', name: companion.name })}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <EvolutionPanel />
           <StatsPanel />
-          <ActionBar onAction={handleAction} />
+          <ActionBar
+            onAction={handleAction}
+            highlightAction={activeHighlight}
+            highlightLabel={onboardingHint}
+          />
         </div>
       </div>
     </AppLayout>

@@ -15,7 +15,8 @@ export function AppLayout({ children }: AppLayoutProps): React.JSX.Element {
 
   const handleSettingsClick = (): void => {
     if (location.pathname === '/settings') {
-      navigate(-1);
+      // Always go to /companion when closing settings — never to / (welcome page)
+      void navigate('/companion');
     } else {
       void navigate('/settings');
     }

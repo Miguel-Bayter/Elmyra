@@ -12,6 +12,14 @@
   "theme": "Theme",
   "themeLight": "Light",
   "themeDark": "Dark",
+  "styleSelect": {
+    "title": "Choose your companion style",
+    "subtitle": "Each style has its own unique companions and evolutionary lines",
+    "3d": "3D Companions",
+    "2d": "2D Kawaii",
+    "3dDesc": "Immersive 3D animals with depth and shadow",
+    "2dDesc": "Flat kawaii illustrations — soft and charming"
+  },
   "about": "About",
   "help": "Help & Support",
   "crisisHelp": "Get support",
@@ -23,6 +31,12 @@
   "deleteAllConfirmButton": "Yes, delete everything",
   "deleteAllCancelButton": "Keep my companion",
   "affirmationLabel": "A thought for you",
+  "onboarding": {
+    "welcome": "Hi! {{name}} is happy you're here. Start by taking care of them 🌱",
+    "step0": "Try nourishing first",
+    "step1": "Now try playing!",
+    "step2": "Rest helps too"
+  },
   "speciesSelect": {
     "title": "Who will join you?",
     "subtitle": "Each companion follows a unique path of growth",
@@ -30,17 +44,17 @@
     "backToSpecies": "← Choose a different companion"
   },
   "evolutionPanel": {
-    "title": "Journey",
+    "title": "Your journey",
     "actionGerund": {
-      "nourish": "Nourish",
-      "play": "Play",
-      "rest": "Rest",
-      "comfort": "Comfort"
+      "nourish": "nourishing",
+      "play": "playing",
+      "rest": "resting",
+      "comfort": "comforting"
     },
-    "hintClose": "~{{count}} more {{action}}s toward {{stage}}",
-    "hintFar": "{{action}} speeds up {{name}}'s journey",
-    "hintNoSignature": "Keep caring for {{name}}",
-    "complete": "{{name}}'s journey is complete"
+    "hintClose": "Almost {{stage}} — {{count}} more {{action}} 🌱",
+    "hintFar": "{{action}} helps {{name}} grow, little by little",
+    "hintNoSignature": "Every small act of care counts",
+    "complete": "{{name}} has blossomed ✨ You did this together"
   },
   "species": {
     "zephyr": {
@@ -85,6 +99,50 @@
         "sprout": "Puddle",
         "bloom": "Float",
         "flourish": "Serene"
+      }
+    },
+    "nimbus": {
+      "name": "Nimbus",
+      "tagline": "Soft and weightless",
+      "description": "A dreamy wisp who teaches you to float above worries. Gentle and ethereal, it grows from a tiny shimmer into a radiant dream guardian. Rest with Nimbus and let heaviness fade away.",
+      "stages": {
+        "seedling": "Whisper",
+        "sprout": "Drift",
+        "bloom": "Float",
+        "flourish": "Dream"
+      }
+    },
+    "boba": {
+      "name": "Boba",
+      "tagline": "Calm and infinite",
+      "description": "A small cosmic orb that holds the serenity of deep space. Its quiet glow grows with every playful moment, reminding you that you are part of something vast and beautiful.",
+      "stages": {
+        "seedling": "Speck",
+        "sprout": "Orb",
+        "bloom": "Glow",
+        "flourish": "Nova"
+      }
+    },
+    "mochi": {
+      "name": "Mochi",
+      "tagline": "Warm and sweet",
+      "description": "A cozy round companion that radiates warmth like a soft hug. Sweet and unhurried, it reminds you that comfort is always within reach. Grows from a small dough into a glowing bliss companion.",
+      "stages": {
+        "seedling": "Soft",
+        "sprout": "Round",
+        "bloom": "Warm",
+        "flourish": "Bliss"
+      }
+    },
+    "nuri": {
+      "name": "Nuri",
+      "tagline": "Playful and present",
+      "description": "A lively green cat full of gentle curiosity. Its presence encourages you to notice small wonders in each day. Grows from a curious spark into a joyful wanderer full of quiet delight.",
+      "stages": {
+        "seedling": "Spark",
+        "sprout": "Dash",
+        "bloom": "Bloom",
+        "flourish": "Roam"
       }
     }
   }

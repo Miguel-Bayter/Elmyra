@@ -6,12 +6,17 @@
 export type CompanionStage = 'seedling' | 'sprout' | 'bloom' | 'flourish';
 
 // The companion's species — determines its visual evolution line.
-// Four therapeutic companions, each designed to support emotional wellbeing.
+// 3D species (React Three Fiber): zephyr, kova, luma, maru
+// 2D species (react-kawaii flat): nimbus, boba, mochi, nuri
 export type CompanionSpecies =
-  | 'zephyr' // Cloud/breath — releases anxiety through breathing
-  | 'kova' // Stone/earth — grounds through stability
-  | 'luma' // Glow/light  — nurtures hope against depression
-  | 'maru'; // Ring/moon   — embodies wholeness and acceptance
+  | 'zephyr' // Cloud/breath — releases anxiety through breathing (3D)
+  | 'kova' // Stone/earth  — grounds through stability (3D)
+  | 'luma' // Glow/light   — nurtures hope against depression (3D)
+  | 'maru' // Ring/moon    — embodies wholeness and acceptance (3D)
+  | 'nimbus' // Dream/wisp   — teaches lightness and flow (2D)
+  | 'boba' // Cosmic orb   — calm and infinite perspective (2D)
+  | 'mochi' // Soft warmth  — gentle comfort and sweetness (2D)
+  | 'nuri'; // Curious cat  — playful presence, joy in small things (2D)
 
 // ─── Interaction tracking ─────────────────────────────────────────────────────
 // Counts how many times each action has been performed since the companion was created.
