@@ -11,6 +11,11 @@ import { useToastStore } from '@shared/ui/Toast';
 import { Modal } from '@shared/ui/Modal';
 import { BreathingModal, BreathingButton } from '@features/rest-pet';
 import { useJournal, MoodCheckIn } from '@features/mood-journal';
+import {
+  useAchievements,
+  incrementBreathingCount,
+  getBreathingCount,
+} from '@features/achievements';
 import { AppLayout } from '@widgets/AppLayout';
 import { PetDisplay } from '@widgets/PetDisplay';
 import { StatsPanel } from '@widgets/StatsPanel';
@@ -104,15 +109,37 @@ export function GamePage(): React.JSX.Element {
   }, [affirmations.length]);
 
   // Mood journal state
-  const { addEntry, hasTodayEntry } = useJournal();
+  const { entries: journalEntries, addEntry, hasTodayEntry } = useJournal();
   const [showCheckIn, setShowCheckIn] = useState(false);
 
-  // Breathing modal state
+  // Breathing state — count tracked in localStorage for achievements
+  const [breathingCount, setBreathingCount] = useState(getBreathingCount);
   const [showBreathing, setShowBreathing] = useState(false);
   const performAction = useCompanionStore((s) => s.performAction);
 
+  // Achievements — check on every relevant state change, fire toasts for new unlocks
+  const streak = useCompanionStore((s) => s.streak);
+  const { t: tAchievements } = useTranslation('achievements');
+  const { newlyUnlocked, clearNewlyUnlocked } = useAchievements({
+    companion,
+    streak,
+    journalEntries,
+    breathingCount,
+  });
+  useEffect(() => {
+    if (newlyUnlocked.length === 0) return;
+    newlyUnlocked.forEach((id) => {
+      showToast(
+        tAchievements('unlocked', { name: tAchievements(`badges.${id}.name` as never) }),
+        'celebration',
+      );
+    });
+    clearNewlyUnlocked();
+  }, [newlyUnlocked, clearNewlyUnlocked, showToast, tAchievements]);
+
   const handleBreathingComplete = useCallback(() => {
     performAction('rest');
+    setBreathingCount(incrementBreathingCount());
     showToast(t('breathing.done', { ns: 'actions' }), 'celebration');
   }, [performAction, showToast, t]);
 
@@ -220,8 +247,8 @@ export function GamePage(): React.JSX.Element {
             highlightLabel={onboardingHint}
           />
 
-          {/* Wellness row — breathing + mood check-in */}
-          <div className="flex gap-2">
+          {/* Wellness row — breathing + mood check-in + achievements */}
+          <div className="flex gap-1.5">
             <div className="flex-1">
               <BreathingButton onClick={() => setShowBreathing(true)} />
             </div>
@@ -236,6 +263,19 @@ export function GamePage(): React.JSX.Element {
               </span>
               <span className="text-nano font-normal">
                 {t(hasTodayEntry ? 'journalView' : 'journalCheckIn', { ns: 'common' })}
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => void navigate('/achievements')}
+              className="btn btn-sm rounded-xl border border-base-300 bg-base-200 text-base-content/60 hover:bg-base-300 flex flex-col items-center gap-0.5 h-auto py-2 px-3"
+              aria-label={t('achievementsBtn', { ns: 'common' })}
+            >
+              <span className="text-base leading-none" aria-hidden="true">
+                🏅
+              </span>
+              <span className="text-nano font-normal">
+                {t('achievementsBtn', { ns: 'common' })}
               </span>
             </button>
           </div>

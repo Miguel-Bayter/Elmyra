@@ -44,6 +44,7 @@
     "backToSpecies": "← Choose a different companion"
   },
   "journalBtn": "Mood journal",
+  "achievementsBtn": "Badges",
   "journalCheckIn": "Mood",
   "journalView": "Journal",
   "sessionSummary": {
@@ -64,7 +65,10 @@
     "hintClose": "Almost {{stage}} — {{count}} more {{action}} 🌱",
     "hintFar": "{{action}} helps {{name}} grow, little by little",
     "hintNoSignature": "Every small act of care counts",
-    "complete": "{{name}} has blossomed ✨ You did this together"
+    "complete": "{{name}} has blossomed ✨ You did this together",
+    "tipSignature": "{{name}} evolves faster with {{action}}. Every action counts, but this one is their favorite.",
+    "tipNoSignature": "Care for {{name}} regularly — every action helps them grow.",
+    "tipComplete": "{{name}} has reached their final form. You did this together ✨"
   },
   "species": {
     "zephyr": {

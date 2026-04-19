@@ -15,6 +15,7 @@ import enErrors from '../../../public/locales/en/errors.json';
 import enNotifications from '../../../public/locales/en/notifications.json';
 import enLegal from '../../../public/locales/en/legal.json';
 import enJournal from '../../../public/locales/en/journal.json';
+import enAchievements from '../../../public/locales/en/achievements.json';
 
 // ── ES ────────────────────────────────────────────────────────────────────────
 import esCommon from '../../../public/locales/es/common.json';
@@ -25,6 +26,7 @@ import esErrors from '../../../public/locales/es/errors.json';
 import esNotifications from '../../../public/locales/es/notifications.json';
 import esLegal from '../../../public/locales/es/legal.json';
 import esJournal from '../../../public/locales/es/journal.json';
+import esAchievements from '../../../public/locales/es/achievements.json';
 
 void i18n
   .use(LanguageDetector)
@@ -32,7 +34,17 @@ void i18n
   .init({
     fallbackLng: 'en',
     supportedLngs: ['en', 'es'],
-    ns: ['common', 'pet', 'actions', 'wellness', 'errors', 'notifications', 'legal', 'journal'],
+    ns: [
+      'common',
+      'pet',
+      'actions',
+      'wellness',
+      'errors',
+      'notifications',
+      'legal',
+      'journal',
+      'achievements',
+    ],
     defaultNS: 'common',
     debug: false,
     interpolation: {
@@ -54,6 +66,7 @@ void i18n
         notifications: enNotifications,
         legal: enLegal,
         journal: enJournal,
+        achievements: enAchievements,
       },
       es: {
         common: esCommon,
@@ -64,6 +77,7 @@ void i18n
         notifications: esNotifications,
         legal: esLegal,
         journal: esJournal,
+        achievements: esAchievements,
       },
     },
   });

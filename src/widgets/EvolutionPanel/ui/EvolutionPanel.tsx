@@ -78,6 +78,7 @@ export function EvolutionPanel(): React.JSX.Element | null {
   const { t } = useTranslation('common');
 
   const hasCompanion = useCompanionStore((s) => s.companion !== null);
+  const name = useCompanionStore((s) => s.companion?.name ?? '');
   const species = useCompanionStore((s) => s.companion?.species ?? 'zephyr');
   const stage = useCompanionStore((s) => s.companion?.stage ?? 'seedling');
   const age = useCompanionStore((s) => s.companion?.age ?? 0);
@@ -87,7 +88,12 @@ export function EvolutionPanel(): React.JSX.Element | null {
 
   if (!hasCompanion) return null;
 
-  const { progressPct, nextStage } = computeProgress(age, interactionCounts, species, stage);
+  const { progressPct, nextStage, signatureAction } = computeProgress(
+    age,
+    interactionCounts,
+    species,
+    stage,
+  );
 
   // eslint-disable-next-line security/detect-object-injection
   const progressClass = SPECIES_PROGRESS_CLASS[species];
@@ -97,42 +103,55 @@ export function EvolutionPanel(): React.JSX.Element | null {
   const currentStageName = t(`species.${species}.stages.${stage}`);
   const nextStageName = nextStage ? t(`species.${species}.stages.${nextStage}`) : null;
 
+  const actionGerund = signatureAction ? t(`evolutionPanel.actionGerund.${signatureAction}`) : null;
+
+  const tooltipText = nextStage
+    ? signatureAction && actionGerund
+      ? t('evolutionPanel.tipSignature', { name, action: actionGerund })
+      : t('evolutionPanel.tipNoSignature', { name })
+    : t('evolutionPanel.tipComplete', { name });
+
   return (
     <div
-      className="flex w-full flex-col gap-1"
+      className="flex w-full flex-col gap-0.5"
       role="region"
       aria-label={t('evolutionPanel.title')}
     >
-      <div className="flex min-w-0 items-center gap-1.5">
-        <span className="shrink-0 text-micro font-medium uppercase tracking-widest text-ink-muted sm:text-nano">
-          {t('evolutionPanel.title')}
-        </span>
-        <span className="flex-1" />
-        <span
-          className={clsx(
-            'min-w-0 shrink truncate text-micro font-medium sm:text-nano',
-            labelClass,
-          )}
-        >
+      {/* Stage label row */}
+      <div className="flex min-w-0 items-center gap-1">
+        <span className={clsx('min-w-0 shrink truncate text-micro font-medium', labelClass)}>
           {currentStageName}
         </span>
         {nextStageName && (
           <>
-            <span className="shrink-0 text-micro text-ink-faint sm:text-nano" aria-hidden="true">
+            <span className="shrink-0 text-micro text-ink-faint" aria-hidden="true">
               →
             </span>
-            <span className="min-w-0 shrink truncate text-micro text-ink-muted sm:text-nano">
+            <span className="min-w-0 shrink truncate text-micro text-ink-muted">
               {nextStageName}
             </span>
-            <span className="shrink-0 text-micro font-normal tabular-nums text-ink-muted sm:text-nano">
+            <span className="shrink-0 tabular-nums text-micro font-normal text-ink-muted">
               {progressPct}%
             </span>
           </>
         )}
-        {!nextStage && (
-          <span className="shrink-0 text-micro text-golden-dark sm:text-nano">✨ max</span>
-        )}
+        {!nextStage && <span className="shrink-0 text-micro text-golden-dark">✨</span>}
+
+        {/* Spacer */}
+        <span className="flex-1" />
+
+        {/* ? tooltip badge */}
+        <div className="tooltip tooltip-left" data-tip={tooltipText}>
+          <button
+            type="button"
+            className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-base-300 text-micro leading-none text-base-content/40 hover:bg-base-content/10 hover:text-base-content/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+            aria-label={t('evolutionPanel.title')}
+          >
+            ?
+          </button>
+        </div>
       </div>
+
       <progress
         className={clsx('progress h-1 w-full', progressClass)}
         value={progressPct}

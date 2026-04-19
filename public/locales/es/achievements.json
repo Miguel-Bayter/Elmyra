@@ -1,0 +1,42 @@
+{
+  "title": "Logros",
+  "subtitle": "Tus hitos con {{name}}",
+  "locked": "Bloqueado",
+  "unlockedOn": "Desbloqueado el {{date}}",
+  "backToCompanion": "Volver",
+  "badges": {
+    "first_action": {
+      "name": "Primer cuidado",
+      "description": "Cuida a tu compañero por primera vez"
+    },
+    "streak_7": {
+      "name": "Una semana",
+      "description": "7 días consecutivos de uso"
+    },
+    "streak_30": {
+      "name": "Un mes fiel",
+      "description": "30 días consecutivos de uso"
+    },
+    "all_actions": {
+      "name": "Explorador",
+      "description": "Usa los cuatro tipos de cuidado"
+    },
+    "evolution_1": {
+      "name": "Crecimiento",
+      "description": "Tu compañero alcanzó la etapa Brote"
+    },
+    "evolution_max": {
+      "name": "Florecido",
+      "description": "Tu compañero alcanzó la etapa Florecido"
+    },
+    "breathing_5": {
+      "name": "Respiración consciente",
+      "description": "Completa 5 ejercicios de respiración"
+    },
+    "journal_7": {
+      "name": "Introspector",
+      "description": "Escribe 7 entradas en tu diario de ánimo"
+    }
+  },
+  "unlocked": "¡Logro desbloqueado — {{name}}! 🏅"
+}

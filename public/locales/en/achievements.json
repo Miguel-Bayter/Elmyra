@@ -1,0 +1,42 @@
+{
+  "title": "Achievements",
+  "subtitle": "Your milestones with {{name}}",
+  "locked": "Locked",
+  "unlockedOn": "Unlocked {{date}}",
+  "backToCompanion": "Back",
+  "badges": {
+    "first_action": {
+      "name": "First Care",
+      "description": "Take care of your companion for the first time"
+    },
+    "streak_7": {
+      "name": "One Week",
+      "description": "7 consecutive days of engagement"
+    },
+    "streak_30": {
+      "name": "One Month",
+      "description": "30 consecutive days of engagement"
+    },
+    "all_actions": {
+      "name": "Explorer",
+      "description": "Use all four types of care"
+    },
+    "evolution_1": {
+      "name": "Growing",
+      "description": "Your companion reached Sprout stage"
+    },
+    "evolution_max": {
+      "name": "Flourished",
+      "description": "Your companion reached Flourish stage"
+    },
+    "breathing_5": {
+      "name": "Mindful Breath",
+      "description": "Complete 5 breathing exercises"
+    },
+    "journal_7": {
+      "name": "Introspector",
+      "description": "Write 7 mood journal entries"
+    }
+  },
+  "unlocked": "Achievement unlocked — {{name}}! 🏅"
+}

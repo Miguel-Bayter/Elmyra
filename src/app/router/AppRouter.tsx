@@ -16,6 +16,9 @@ const SettingsPage = lazy(() =>
 const JournalPage = lazy(() =>
   import('@pages/JournalPage').then((m) => ({ default: m.JournalPage })),
 );
+const AchievementsPage = lazy(() =>
+  import('@pages/AchievementsPage').then((m) => ({ default: m.AchievementsPage })),
+);
 
 export function AppRouter(): React.JSX.Element {
   return (
@@ -25,6 +28,7 @@ export function AppRouter(): React.JSX.Element {
       <Route path="/resting" element={<RestModePage />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="/journal" element={<JournalPage />} />
+      <Route path="/achievements" element={<AchievementsPage />} />
       {/* Catch-all redirect to welcome */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -44,6 +44,7 @@
     "backToSpecies": "← Elegir otro compañero"
   },
   "journalBtn": "Diario de ánimo",
+  "achievementsBtn": "Logros",
   "journalCheckIn": "Ánimo",
   "journalView": "Diario",
   "sessionSummary": {
@@ -64,7 +65,10 @@
     "hintClose": "¡Casi en {{stage}}! {{count}} veces más {{action}} 🌱",
     "hintFar": "{{action}} ayuda a {{name}} a crecer, poco a poco",
     "hintNoSignature": "Cada pequeño acto de cuidado cuenta",
-    "complete": "{{name}} ha florecido ✨ Lo lograron juntos"
+    "complete": "{{name}} ha florecido ✨ Lo lograron juntos",
+    "tipSignature": "{{name}} evoluciona más rápido con {{action}}. Cada acción ayuda, pero esta es su favorita.",
+    "tipNoSignature": "Cuida a {{name}} regularmente — cada acción ayuda a crecer.",
+    "tipComplete": "{{name}} alcanzó su forma final. Lo lograron juntos ✨"
   },
   "species": {
     "zephyr": {
