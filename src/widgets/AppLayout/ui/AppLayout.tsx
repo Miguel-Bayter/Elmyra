@@ -60,8 +60,8 @@ export function AppLayout({ children }: AppLayoutProps): React.JSX.Element {
         </div>
       </header>
 
-      {/* Main */}
-      <main className="flex flex-1 flex-col items-center">{children}</main>
+      {/* Main — centers vertically on large screens where content is shorter than viewport */}
+      <main className="flex flex-1 flex-col items-center sm:justify-center">{children}</main>
 
       <ToastContainer />
     </div>

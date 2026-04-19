@@ -85,9 +85,20 @@ export const appPreferencesSchema = z.object({
   onboardingStep: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal('done')]).default(0),
 });
 
+// ─── Mood journal ─────────────────────────────────────────────────────────────
+export const moodEntrySchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  mood: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)]),
+  note: z.string().max(140).optional(),
+  companionMood: z.enum(['radiant', 'calm', 'restless', 'weary', 'fragile', 'resting']),
+});
+export const journalSchema = z.array(moodEntrySchema).max(90);
+
 // ─── Inferred TypeScript types (single source of truth) ──────────────────────
 // These override the manual interfaces in types.ts where Zod is the validator.
 export type CompanionState = z.infer<typeof companionStateSchema>;
 export type WellnessMilestone = z.infer<typeof wellnessMilestoneSchema>;
 export type AppPreferences = z.infer<typeof appPreferencesSchema>;
 export type StreakData = z.infer<typeof streakSchema>;
+export type MoodEntry = z.infer<typeof moodEntrySchema>;
+export type Journal = z.infer<typeof journalSchema>;

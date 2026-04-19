@@ -1,0 +1,36 @@
+{
+  "title": "Mood Journal",
+  "subtitle": "How have you been feeling?",
+  "checkIn": "How are you feeling today?",
+  "checkInDone": "You already checked in today",
+  "moods": {
+    "1": "Not great",
+    "2": "A bit down",
+    "3": "Okay",
+    "4": "Good",
+    "5": "Great"
+  },
+  "emojis": {
+    "1": "😔",
+    "2": "😟",
+    "3": "😐",
+    "4": "😊",
+    "5": "🌟"
+  },
+  "notePlaceholder": "A few words about your day… (optional)",
+  "save": "Save",
+  "cancel": "Maybe later",
+  "saved": "Feeling recorded 💜",
+  "viewHistory": "Journal",
+  "historyTitle": "Your entries",
+  "historyEmpty": "No entries yet. Check in today!",
+  "historyEmptyHint": "Your mood history will appear here.",
+  "companionFelt": "{{name}} was {{mood}}",
+  "daysAgo": "{{count}} day ago",
+  "daysAgo_other": "{{count}} days ago",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "noteLabel": "Note",
+  "trendLabel": "Trend — last 7 days",
+  "backToCompanion": "Back"
+}

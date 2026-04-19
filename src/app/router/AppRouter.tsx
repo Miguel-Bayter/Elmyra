@@ -13,6 +13,9 @@ const RestModePage = lazy(() =>
 const SettingsPage = lazy(() =>
   import('@pages/SettingsPage').then((m) => ({ default: m.SettingsPage })),
 );
+const JournalPage = lazy(() =>
+  import('@pages/JournalPage').then((m) => ({ default: m.JournalPage })),
+);
 
 export function AppRouter(): React.JSX.Element {
   return (
@@ -21,6 +24,7 @@ export function AppRouter(): React.JSX.Element {
       <Route path="/companion" element={<GamePage />} />
       <Route path="/resting" element={<RestModePage />} />
       <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/journal" element={<JournalPage />} />
       {/* Catch-all redirect to welcome */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

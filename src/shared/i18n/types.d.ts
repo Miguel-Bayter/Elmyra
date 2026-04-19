@@ -7,6 +7,7 @@ import type wellnessEn from '../../../public/locales/en/wellness.json';
 import type errorsEn from '../../../public/locales/en/errors.json';
 import type notificationsEn from '../../../public/locales/en/notifications.json';
 import type legalEn from '../../../public/locales/en/legal.json';
+import type journalEn from '../../../public/locales/en/journal.json';
 
 declare module 'i18next' {
   interface CustomTypeOptions {
@@ -19,6 +20,7 @@ declare module 'i18next' {
       errors: typeof errorsEn;
       notifications: typeof notificationsEn;
       legal: typeof legalEn;
+      journal: typeof journalEn;
     };
   }
 }

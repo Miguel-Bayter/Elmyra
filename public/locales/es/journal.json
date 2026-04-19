@@ -1,0 +1,36 @@
+{
+  "title": "Diario de ánimo",
+  "subtitle": "¿Cómo te has sentido?",
+  "checkIn": "¿Cómo estás hoy?",
+  "checkInDone": "Ya registraste cómo te sientes hoy",
+  "moods": {
+    "1": "Muy mal",
+    "2": "Mal",
+    "3": "Regular",
+    "4": "Bien",
+    "5": "Excelente"
+  },
+  "emojis": {
+    "1": "😔",
+    "2": "😟",
+    "3": "😐",
+    "4": "😊",
+    "5": "🌟"
+  },
+  "notePlaceholder": "Unas palabras sobre tu día… (opcional)",
+  "save": "Guardar",
+  "cancel": "Quizás después",
+  "saved": "Sentimiento registrado 💜",
+  "viewHistory": "Diario",
+  "historyTitle": "Tus entradas",
+  "historyEmpty": "Aún no hay entradas. ¡Regístralo hoy!",
+  "historyEmptyHint": "Tu historial de ánimo aparecerá aquí.",
+  "companionFelt": "{{name}} estaba {{mood}}",
+  "daysAgo": "hace {{count}} día",
+  "daysAgo_other": "hace {{count}} días",
+  "today": "Hoy",
+  "yesterday": "Ayer",
+  "noteLabel": "Nota",
+  "trendLabel": "Tendencia — últimos 7 días",
+  "backToCompanion": "Volver"
+}

@@ -5,6 +5,20 @@
   "comfort": "Comfort",
   "nourishDescription": "Share a meal with your companion",
   "playDescription": "Spend time playing together",
-  "restDescription": "Let your companion rest and recharge",
-  "comfortDescription": "Offer care and comfort"
+  "restDescription": "A guided breathing exercise to recharge",
+  "comfortDescription": "Offer care and comfort",
+  "breathing": {
+    "title": "Box Breathing",
+    "subtitle": "4-4-4-4 · 2 rounds · for you",
+    "ariaLabel": "Start guided breathing exercise",
+    "inhale": "Inhale",
+    "hold1": "Hold",
+    "exhale": "Exhale",
+    "hold2": "Hold",
+    "seconds": "seconds",
+    "cycle": "Round {{current}} of {{total}}",
+    "done": "Well done ✨",
+    "doneMessage": "{{name}} feels more at ease",
+    "close": "Skip"
+  }
 }

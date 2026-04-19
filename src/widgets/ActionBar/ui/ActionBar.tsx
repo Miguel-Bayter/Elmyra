@@ -8,21 +8,26 @@ import { usePlayWithPet } from '@features/play-with-pet';
 import { useRestPet } from '@features/rest-pet';
 import { useComfortPet } from '@features/comfort-pet';
 
+// Intent: uniform neutral surface — the EMOJI is the identity, not a colored blob.
+// Depth: surface-shift only (base-100 → base-200 → base-300). No shadows, no colored bg.
+// This works identically in light and dark because DaisyUI base tokens are theme-aware.
+
 interface ActionConfig {
   action: ActionType;
   emoji: string;
-  circleBg: string;
+  label: string; // used for aria only; visual label comes from i18n
 }
 
 const ACTION_CONFIG: ActionConfig[] = [
-  { action: 'nourish', emoji: '🍃', circleBg: 'bg-mint-mist' },
-  { action: 'play', emoji: '✨', circleBg: 'bg-golden-mist' },
-  { action: 'rest', emoji: '🌙', circleBg: 'bg-lavender-mist' },
-  { action: 'comfort', emoji: '💜', circleBg: 'bg-peach-mist' },
+  { action: 'nourish', emoji: '🍃', label: 'nourish' },
+  { action: 'play', emoji: '✨', label: 'play' },
+  { action: 'rest', emoji: '🌙', label: 'rest' },
+  { action: 'comfort', emoji: '💜', label: 'comfort' },
 ];
 
 interface ActionCardProps {
-  config: ActionConfig;
+  action: ActionType;
+  emoji: string;
   onClick: () => void;
   label: string;
   isDisabled: boolean;
@@ -32,7 +37,7 @@ interface ActionCardProps {
 }
 
 function ActionCard({
-  config,
+  emoji,
   onClick,
   label,
   isDisabled,
@@ -41,18 +46,18 @@ function ActionCard({
   highlightLabel,
 }: ActionCardProps): React.JSX.Element {
   return (
-    <div className="relative flex flex-1 flex-col">
-      {/* Onboarding tooltip — floats above button */}
+    <div className="relative">
+      {/* Onboarding tooltip */}
       <AnimatePresence>
         {isHighlighted && highlightLabel && (
           <motion.div
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="pointer-events-none absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-lg bg-lavender px-2 py-1 text-[10px] font-semibold text-white shadow-md"
+            className="pointer-events-none absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-xl bg-primary px-3 py-1 text-nano font-semibold text-primary-content shadow-lg"
           >
             {highlightLabel}
-            <div className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-lavender" />
+            <div className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-primary" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -62,34 +67,22 @@ function ActionCard({
         onClick={onClick}
         disabled={isDisabled}
         aria-label={ariaLabel}
-        whileTap={isDisabled ? {} : { scale: 0.92 }}
+        whileTap={isDisabled ? {} : { scale: 0.91 }}
         transition={{ duration: 0.1, ease: 'easeOut' }}
         className={clsx(
-          'flex w-full flex-col items-center justify-center gap-1.5',
-          'rounded-2xl py-2.5 px-1 text-center',
-          'border bg-parchment-deep',
-          'transition-colors duration-200',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lavender focus-visible:ring-offset-2',
-          isHighlighted
-            ? 'border-lavender/50 ring-2 ring-lavender/30 ring-offset-1'
-            : 'border-border-medium',
-          isDisabled
-            ? 'cursor-not-allowed opacity-35'
-            : 'hover:border-lavender/35 hover:bg-parchment-warm',
+          'flex w-full flex-col items-center justify-center gap-1',
+          'rounded-xl border border-base-300 bg-base-200',
+          'py-3 px-1 text-center',
+          'transition-colors duration-150',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+          isHighlighted && 'ring-2 ring-primary/40 border-primary/40',
+          isDisabled ? 'cursor-not-allowed opacity-40' : 'hover:bg-base-300 active:bg-base-300',
         )}
       >
-        {/* Emoji in tinted circle */}
-        <span
-          className={clsx(
-            'flex h-9 w-9 items-center justify-center rounded-full text-xl',
-            config.circleBg,
-          )}
-          aria-hidden="true"
-        >
-          {config.emoji}
+        <span className="text-2xl leading-none" aria-hidden="true">
+          {emoji}
         </span>
-
-        <span className="text-[10px] font-semibold leading-tight text-ink-secondary">{label}</span>
+        <span className="text-nano font-normal leading-none text-base-content/50">{label}</span>
       </motion.button>
     </div>
   );
@@ -121,13 +114,14 @@ export function ActionBar({
   };
 
   return (
-    <div className="flex w-full gap-1.5">
+    <div className="grid w-full grid-cols-4 gap-1.5">
       {ACTION_CONFIG.map((config) => {
         const { fn, isDisabled } = handlers[config.action];
         return (
           <ActionCard
             key={config.action}
-            config={config}
+            action={config.action}
+            emoji={config.emoji}
             onClick={() => {
               fn();
               onAction?.(config.action);

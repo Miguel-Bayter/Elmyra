@@ -5,6 +5,20 @@
   "comfort": "Consolar",
   "nourishDescription": "Comparte una comida con tu compañero",
   "playDescription": "Pasa tiempo jugando juntos",
-  "restDescription": "Deja que tu compañero descanse y se recargue",
-  "comfortDescription": "Ofrece cuidado y consuelo"
+  "restDescription": "Un ejercicio de respiración guiado para recargarte",
+  "comfortDescription": "Ofrece cuidado y consuelo",
+  "breathing": {
+    "title": "Respiración Cuadrada",
+    "subtitle": "4-4-4-4 · 2 rondas · para ti",
+    "ariaLabel": "Iniciar ejercicio de respiración guiada",
+    "inhale": "Inhala",
+    "hold1": "Aguanta",
+    "exhale": "Exhala",
+    "hold2": "Aguanta",
+    "seconds": "segundos",
+    "cycle": "Ronda {{current}} de {{total}}",
+    "done": "Bien hecho ✨",
+    "doneMessage": "{{name}} se siente más tranquilo",
+    "close": "Saltar"
+  }
 }

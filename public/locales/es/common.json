@@ -43,6 +43,16 @@
     "continue": "Continuar",
     "backToSpecies": "← Elegir otro compañero"
   },
+  "journalBtn": "Diario de ánimo",
+  "journalCheckIn": "Ánimo",
+  "journalView": "Diario",
+  "sessionSummary": {
+    "title": "Tu sesión",
+    "subtitle": "Esto hiciste hoy",
+    "noActions": "Solo estar con {{name}} ya es suficiente 🌿",
+    "moodLabel": "{{name}} se siente",
+    "close": "Seguir"
+  },
   "evolutionPanel": {
     "title": "Tu camino",
     "actionGerund": {

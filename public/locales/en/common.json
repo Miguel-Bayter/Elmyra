@@ -43,6 +43,16 @@
     "continue": "Continue",
     "backToSpecies": "← Choose a different companion"
   },
+  "journalBtn": "Mood journal",
+  "journalCheckIn": "Mood",
+  "journalView": "Journal",
+  "sessionSummary": {
+    "title": "Your session",
+    "subtitle": "Here's what you did today",
+    "noActions": "Just being with {{name}} is enough 🌿",
+    "moodLabel": "{{name}} is feeling",
+    "close": "Keep going"
+  },
   "evolutionPanel": {
     "title": "Your journey",
     "actionGerund": {

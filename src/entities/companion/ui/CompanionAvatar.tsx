@@ -36,7 +36,9 @@ function sizeToClass(size: number): string {
   if (size <= 80) return 'h-20 w-20';
   if (size <= 112) return 'h-28 w-28';
   if (size <= 120) return 'h-[120px] w-[120px]';
-  return 'h-40 w-40';
+  if (size <= 160) return 'h-40 w-40';
+  if (size <= 176) return 'h-44 w-44';
+  return 'h-48 w-48';
 }
 
 export function CompanionAvatar({

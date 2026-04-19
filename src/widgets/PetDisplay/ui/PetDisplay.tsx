@@ -181,7 +181,7 @@ export function PetDisplay({ speechBubble, reaction, compact }: Props): React.JS
             transition={{ duration: 0.35, ease: 'easeInOut' }}
             className="px-4"
           >
-            <div className="relative max-w-[220px] rounded-2xl rounded-bl-sm bg-parchment-warm border border-lavender/20 px-3 py-2 shadow-sm">
+            <div className="relative max-w-[200px] rounded-2xl rounded-bl-sm bg-parchment-warm border border-lavender/20 px-3 py-2 shadow-sm sm:max-w-[260px]">
               <p className="line-clamp-2 text-xs leading-snug text-ink-secondary">{speechBubble}</p>
               <div className="absolute -bottom-[7px] left-4 h-0 w-0 border-l-[6px] border-r-[6px] border-t-[7px] border-l-transparent border-r-transparent border-t-parchment-warm" />
             </div>
@@ -196,7 +196,7 @@ export function PetDisplay({ speechBubble, reaction, compact }: Props): React.JS
           aria-hidden="true"
         />
         <motion.div
-          className="relative h-40 w-40"
+          className="relative h-44 w-44"
           animate={moodAnimation}
           aria-label={`${name}, ${t(`moods.${mood}`, { ns: 'pet' })}`}
         >
@@ -204,7 +204,7 @@ export function PetDisplay({ speechBubble, reaction, compact }: Props): React.JS
             species={species}
             stage={stage}
             mood={mood}
-            size={160}
+            size={176}
             {...(reaction != null && { reactionKey: reaction.key })}
           />
         </motion.div>
@@ -233,15 +233,15 @@ export function PetDisplay({ speechBubble, reaction, compact }: Props): React.JS
       </div>
 
       {/* ── Name ── */}
-      <h2 className="mt-0.5 text-lg font-bold leading-tight text-ink">{name}</h2>
+      <h2 className="mt-0.5 text-lg font-light tracking-wide leading-tight text-ink">{name}</h2>
 
-      {/* ── Stage + mood chips ── */}
-      <div className="flex items-center gap-1.5">
+      {/* ── Stage + mood + streak chips ── */}
+      <div className="flex items-center gap-1.5 flex-wrap justify-center">
         <span
-          className={clsx('badge badge-sm gap-1 font-semibold', chipTheme.bg, chipTheme.text)}
+          className={clsx('badge badge-sm gap-1 font-normal', chipTheme.bg, chipTheme.text)}
           aria-label={`${t('stageLevelLabel', { ns: 'pet' })} ${levelLabel}: ${t(`species.${species}.stages.${stage}`, { ns: 'common' })}`}
         >
-          <span className={clsx('font-bold text-[10px]', chipTheme.level)} aria-hidden="true">
+          <span className={clsx('font-medium text-nano', chipTheme.level)} aria-hidden="true">
             {levelLabel}
           </span>
           <span aria-hidden="true" className="opacity-40">
@@ -260,34 +260,40 @@ export function PetDisplay({ speechBubble, reaction, compact }: Props): React.JS
           />
           {t(`moods.${mood}`, { ns: 'pet' })}
         </span>
-      </div>
 
-      {/* ── Age badge + comfort message ── */}
-      <div className="flex items-center gap-2">
-        <span className="badge badge-sm bg-parchment-deep text-ink-muted gap-1 font-medium">
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="h-2.5 w-2.5 shrink-0 opacity-50"
+        {streakCount >= 2 && (
+          <span
+            className="badge badge-sm bg-golden-mist text-golden-dark font-medium gap-1 px-2"
+            aria-label={t('streak.badge', { ns: 'pet', count: streakCount })}
           >
-            <path
-              fillRule="evenodd"
-              d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm0 2a5 5 0 1 1 0 10A5 5 0 0 1 8 3Zm.75 2.25a.75.75 0 0 0-1.5 0V8c0 .199.079.390.22.530l2 2a.75.75 0 1 0 1.06-1.06L8.75 7.689V5.25Z"
-              clipRule="evenodd"
-            />
-          </svg>
-          {duration}
-        </span>
-        <span className="text-[11px] italic text-ink-muted">{ageBadgeMsg}</span>
+            <span aria-hidden="true" className="text-tiny">
+              🔥
+            </span>
+            {streakCount}d
+          </span>
+        )}
       </div>
 
-      {/* ── Streak badge (≥ 2 days) ── */}
-      {streakCount >= 2 && (
-        <span className="badge badge-sm bg-golden-mist text-golden-dark font-semibold gap-1 px-2.5">
-          <span aria-hidden="true">🔥</span>
-          {t('streak.badge', { ns: 'pet', count: streakCount })}
-        </span>
+      {/* ── Age badge + comfort message — hidden in compact mode ── */}
+      {!compact && (
+        <div className="flex items-center gap-2">
+          <span className="badge badge-sm bg-parchment-deep text-ink-muted gap-1 font-medium">
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="h-2.5 w-2.5 shrink-0 opacity-50"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm0 2a5 5 0 1 1 0 10A5 5 0 0 1 8 3Zm.75 2.25a.75.75 0 0 0-1.5 0V8c0 .199.079.390.22.530l2 2a.75.75 0 1 0 1.06-1.06L8.75 7.689V5.25Z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {duration}
+          </span>
+          <span className="text-tiny italic text-ink-muted">{ageBadgeMsg}</span>
+        </div>
       )}
 
       {/* ── Resting indicator ── */}

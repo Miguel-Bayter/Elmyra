@@ -148,6 +148,14 @@
   --color-calm-text: #2d2520;
   --color-calm-text-muted: #8a7a70;
   --color-soft-gray: #c4bab0;
+
+  /* ── Micro typography — compact UI labels & metadata ──────── */
+  --font-size-micro: 0.5625rem; /* 9px  — evolution panel labels    */
+  --font-size-nano: 0.625rem; /* 10px — action labels, stat nums  */
+  --font-size-tiny: 0.6875rem; /* 11px — onboarding hints, badges  */
+
+  /* ── Custom shadows ───────────────────────────────────────── */
+  --shadow-care: 0 -4px 20px rgba(0, 0, 0, 0.06);
 }
 
 /* ── Dark mode overrides for custom @theme tokens ────────────────────────────
@@ -214,7 +222,7 @@ body {
   background-color: var(--color-base-100);
   color: var(--color-base-content);
   font-family:
-    'Inter',
+    'Figtree',
     system-ui,
     -apple-system,
     sans-serif;
@@ -265,6 +273,14 @@ body {
 
 .animate-breathe {
   animation: breathe 2s ease-in-out infinite;
+}
+
+/* ── Custom static utilities ──────────────────────────────────── */
+@layer utilities {
+  /* Thin progress bar — 3px. Named utility avoids h-[3px] arbitrary value. */
+  .h-bar {
+    height: 3px;
+  }
 }
 
 /* ── Custom background utilities ─────────────────────────────── */

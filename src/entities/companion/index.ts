@@ -27,12 +27,16 @@ export {
   appPreferencesSchema,
   streakSchema,
   statValueSchema,
+  moodEntrySchema,
+  journalSchema,
 } from './model/schemas';
 export type {
   CompanionState,
   WellnessMilestone,
   AppPreferences,
   StreakData,
+  MoodEntry,
+  Journal,
 } from './model/schemas';
 
 export {

@@ -6,21 +6,20 @@ import { clsx } from 'clsx';
 import { useCompanionStore, CRITICAL_THRESHOLD } from '@entities/companion';
 import { getStatColorClass } from '@shared/ui/ProgressBar';
 
-const criticalTransition: Transition = { repeat: Infinity, duration: 2.5, ease: 'easeInOut' };
-const criticalAnimate = { opacity: [1, 0.55, 1] };
+const criticalTransition: Transition = { repeat: Infinity, duration: 2.2, ease: 'easeInOut' };
+const criticalAnimate = { opacity: [1, 0.45, 1] };
 
 interface StatConfig {
   key: 'nourishment' | 'joy' | 'energy' | 'vitality';
   emoji: string;
-  accentBorder: string;
-  dotColor: string;
+  barColor: string; // fallback when not critical
 }
 
 const STAT_CONFIG: StatConfig[] = [
-  { key: 'nourishment', emoji: '🍃', accentBorder: 'border-l-soft-mint', dotColor: 'bg-soft-mint' },
-  { key: 'joy', emoji: '✨', accentBorder: 'border-l-golden', dotColor: 'bg-golden' },
-  { key: 'energy', emoji: '⚡', accentBorder: 'border-l-warm-peach', dotColor: 'bg-warm-peach' },
-  { key: 'vitality', emoji: '💎', accentBorder: 'border-l-lavender', dotColor: 'bg-lavender' },
+  { key: 'nourishment', emoji: '🍃', barColor: 'progress-accent' },
+  { key: 'joy', emoji: '✨', barColor: 'progress-warning' },
+  { key: 'energy', emoji: '⚡', barColor: 'progress-warning' },
+  { key: 'vitality', emoji: '💎', barColor: 'progress-primary' },
 ];
 
 export function StatsPanel(): React.JSX.Element | null {
@@ -37,8 +36,8 @@ export function StatsPanel(): React.JSX.Element | null {
   const values: Record<string, number> = { nourishment, joy, energy, vitality };
 
   return (
-    <div className="flex w-full gap-1.5">
-      {STAT_CONFIG.map(({ key, emoji, accentBorder, dotColor }) => {
+    <div className="grid w-full grid-cols-4 gap-1" role="list">
+      {STAT_CONFIG.map(({ key, emoji, barColor }) => {
         // eslint-disable-next-line security/detect-object-injection
         const value = values[key] ?? 0;
         const clamped = Math.min(100, Math.max(0, Math.round(value)));
@@ -49,48 +48,30 @@ export function StatsPanel(): React.JSX.Element | null {
         return (
           <motion.div
             key={key}
-            className={clsx(
-              'flex flex-1 flex-col gap-1.5 rounded-xl border border-border-medium border-l-2 bg-parchment-deep py-2 pl-2.5 pr-2 min-w-0',
-              accentBorder,
-            )}
+            role="listitem"
+            className="flex flex-col items-center gap-1"
             animate={isCritical ? criticalAnimate : {}}
             transition={isCritical ? criticalTransition : {}}
             aria-label={`${label}: ${clamped}`}
           >
-            {/* Dot + label */}
-            <div className="flex items-center gap-1 min-w-0">
-              <span
-                className={clsx('h-1.5 w-1.5 shrink-0 rounded-full', dotColor)}
-                aria-hidden="true"
-              />
+            {/* Emoji + value */}
+            <div className="flex items-baseline gap-0.5 leading-none">
+              <span className="text-sm" aria-hidden="true">
+                {emoji}
+              </span>
               <span
                 className={clsx(
-                  'truncate text-[9px] font-bold uppercase tracking-wide leading-none',
+                  'text-nano font-medium tabular-nums sm:text-tiny',
                   isCritical ? 'text-amber-400' : 'text-ink-muted',
                 )}
               >
-                {label}
-              </span>
-            </div>
-
-            {/* Value + emoji inline */}
-            <div className="flex items-baseline gap-1">
-              <span
-                className={clsx(
-                  'text-lg font-bold tabular-nums leading-none',
-                  isCritical ? 'text-amber-400' : 'text-ink',
-                )}
-              >
                 {clamped}
-              </span>
-              <span className="text-xs leading-none" aria-hidden="true">
-                {emoji}
               </span>
             </div>
 
             {/* Progress bar */}
             <progress
-              className={clsx('progress h-1 w-full', colorClass)}
+              className={clsx('progress h-bar w-full sm:h-1', colorClass || barColor)}
               value={clamped}
               max={100}
               aria-hidden="true"
